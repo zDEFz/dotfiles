@@ -1,4 +1,0 @@
-import = ["./themes/themes/seashells.toml"]
-
-[font]
-size = 19.0
