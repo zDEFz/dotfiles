@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# shellcheck disable=SC1090
+#shellcheck disable=SC1090
 source ~/.config/i3/mutelist.conf
 
 declare -A entry_map
@@ -12,9 +12,10 @@ for entry in "${entries[@]}"; do
 done
 
 prev_class=""
+export DISPLAY=:0 
 
 while true; do
-  cur=$(xdotool getwindowfocus getwindowclassname)
+  cur=$( xdotool getwindowfocus getwindowclassname )
   if [[ "$cur" != "$prev_class" ]]; then
     # matched=false
     search_term=""

@@ -23,9 +23,15 @@ if [ "$1" == "CaptureEntireScreenToClipboard" ]; then
 fi
 
 if [ "$1" == "CaptureSelectedRegionUniqueToClipboard" ]; then
-    # Capture selected region with a unique name & open Dolphin
-    maim --select ~/Pictures/"$(uuidgen)".png
-    notify-send "Captured selection region uniquely open Dolphin"
+    # Capture selected region with a unique name
+    image_path=~/Pictures/"$(uuidgen)".png
+    maim --select "$image_path"
+
+    # Copy the image to clipboard using xclip
+    xclip -selection clipboard -t image/png -i "$image_path"
+
+    # Notify and open Dolphin
+    notify-send "Captured selection region uniquely, image copied to clipboard"
     dolphin ~/Pictures/
 fi
 

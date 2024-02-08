@@ -54,7 +54,7 @@ exec xset -dpms s off
 
 ### WORKSPACES
 
-set $R DP-1
+set $R HDMI-1
 set $L DP-3
 
 include ~/.config/i3/workspace-definitions.conf

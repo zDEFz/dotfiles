@@ -45,6 +45,46 @@ case "$current_workspace" in
     feh --nofehbg --bg-center "/home/blu/.config/i3/wallpaper/gaming/CodeWeavers-logo.png" 
     #feh --bg-fill path/to/your/image.jpg
     ;;
+
+    14)
+    feh --nofehbg --bg-center "/home/blu/.config/i3/wallpaper/gaming/parallel.png" 
+    #feh --bg-fill path/to/your/image.jpg
+    ;;
+
+    16)
+    feh --nofehbg --bg-center "/home/blu/.config/i3/wallpaper/study/musictheory.net.png" 
+    #feh --bg-fill path/to/your/image.jpg
+    ;;
+
+    18)
+    feh --nofehbg --bg-center "/home/blu/.config/i3/wallpaper/pianoteq/pianoteq8-logo.png" 
+    #feh --bg-fill path/to/your/image.jpg
+    ;;
+
+    20)
+    feh --nofehbg --bg-center "/home/blu/.config/i3/wallpaper/cloud/iCloud.png" 
+    #feh --bg-fill path/to/your/image.jpg
+    ;;
+
+    24)
+    feh --nofehbg --bg-center "/home/blu/.config/i3/wallpaper/study/kanatrainer.png" 
+    #feh --bg-fill path/to/your/image.jpg
+    ;;
+
+    26)
+    feh --nofehbg --bg-center "/home/blu/.config/i3/wallpaper/study/wanikani.png" 
+    #feh --bg-fill path/to/your/image.jpg
+    ;;
+
+    38)
+    feh --nofehbg --bg-center "/home/blu/.config/i3/wallpaper/notes/obsidian-logo.png" 
+    #feh --bg-fill path/to/your/image.jpg
+    ;;
+
+    40)
+    feh --nofehbg --bg-center "/home/blu/.config/i3/wallpaper/dl/jdownloader.png" 
+    #feh --bg-fill path/to/your/image.jpg
+    ;;
     *)
         # if it does not match to either, reset wallpaper to solid black
         feh --no-fehbg --bg-fill $solid_black_wallpaper
