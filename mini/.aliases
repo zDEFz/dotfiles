@@ -313,6 +313,13 @@ speaker-on() {
     python3 plugp100-helper.py 192.168.178.24 on
 }
 
+speaker-off() {
+    cd /home/blu/git/plugp100 || exit
+    source venv/bin/activate
+    python3 plugp100-helper.py 192.168.178.21 off
+    python3 plugp100-helper.py 192.168.178.24 off
+}
+
 ssh-snippetbox() {
     ssh -p 764 -N -L 5000:127.0.0.1:5000 root@tail.ws &
 }
