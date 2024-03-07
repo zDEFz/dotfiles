@@ -12,7 +12,7 @@ for entry in "${entries[@]}"; do
 done
 
 prev_class=""
-export DISPLAY=:0 
+#export DISPLAY=:0 
 
 while true; do
   cur=$( xdotool getwindowfocus getwindowclassname )
