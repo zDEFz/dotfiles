@@ -15,6 +15,7 @@ prev_class=""
 # export DISPLAY=:0 
 
 while true; do
+  # get e.g th19.exe (window focus name)
   cur=$( xdotool getwindowfocus getwindowclassname )
   if [[ "$cur" != "$prev_class" ]]; then
     # matched=false
@@ -32,7 +33,13 @@ while true; do
       input_number=$(pactl list sink-inputs | awk -v term="$search_term" '/Sink Input/ {sink_input = $3} $0 ~ "application.name = \"" term "\"" {gsub("#", "", sink_input); print sink_input;}')
       pactl set-sink-input-mute "$input_number" 0
       # matched=true
+      
+      # Continue Process
+  
+
     else
+      # Sleep process thats unfocused
+  
       for entry in "${!entry_map[@]}"; do
         input_number=$(pactl list sink-inputs | awk -v term="$entry" '/Sink Input/ {sink_input = $3} $0 ~ "application.name = \"" term "\"" {gsub("#", "", sink_input); print sink_input;}')
         echo "    Disabling audio for unmatched condition: $input_number"
