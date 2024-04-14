@@ -27,6 +27,7 @@ set $mtor move to output right
 set $mtou move to output up
 set $mts move to scratchpad
 set $mtw move to workspace
+set $mtp move to position
 set $mu move up
 set $rs resize set
 set $ws workspace
