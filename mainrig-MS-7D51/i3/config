@@ -42,6 +42,7 @@ set $bm bindsym
 ####
 set $c class
 set $t title
+set $i instance
 
 
 
