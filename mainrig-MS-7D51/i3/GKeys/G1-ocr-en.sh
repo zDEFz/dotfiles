@@ -1,7 +1,2 @@
 #!/bin/bash
-echo "Running ocr-en function"
-export TESSDATA_PREFIX=/usr/share/tessdata 
-scrot -s /tmp/screenshot.png
-tesseract /tmp/screenshot.png /tmp/ocr_result
-xclip -selection clipboard < /tmp/ocr_result.txt
-rm -f /tmp/screenshot.png /tmp/ocr_result.txt
+echo "Running OCR"; TESSDATA_PREFIX=/usr/share/tessdata maim -s | tesseract stdin stdout --dpi 300 --psm 6 | xclip -selection clipboard
