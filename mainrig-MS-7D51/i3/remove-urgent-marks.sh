@@ -2,7 +2,5 @@
 
 while true; do
     sleep 60
-    for win in $(wmctrl -l | awk -F' ' '{print $1}'); do
-        wmctrl -i -r $win -b remove,demands_attention
-    done
+    wmctrl -l | cut -d " " -f1 | xargs -I {} wmctrl -i -r {} -b remove,demands_attention
 done
