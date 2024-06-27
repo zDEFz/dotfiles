@@ -15,23 +15,24 @@ set $fs fullscreen
 set $fst fullscreen toggle
 set $fu focus up
 set $fw for_window
+set $map move absolute position
 set $mctw move container to workspace
 set $md move down
 set $ml move left
 set $mp move position
+set $mpc move position center
 set $mr move right
 set $mto move to output
 set $mtod move to output down
 set $mtol move to output left
 set $mtor move to output right
 set $mtou move to output up
+set $mtp move to position
 set $mts move to scratchpad
 set $mtw move to workspace
-set $mtp move to position
 set $mu move up
 set $rs resize set
 set $ws workspace
-set $map move absolute position
 ####
 set $ensi exec --no-startup-id
 set $e exec
@@ -62,9 +63,11 @@ focus_follows_mouse no
 # $ensi xset -dpms s off
 
 ### WORKSPACES
-set $R DP-1
+set $R DisplayPort-0
+set $L DisplayPort-1
+#set $R DP-1
 # set $R DP-1
-set $L DP-2
+#set $L DP-2
 # set $RR DP-2
 include ~/.config/i3/workspace-definitions.conf
 
