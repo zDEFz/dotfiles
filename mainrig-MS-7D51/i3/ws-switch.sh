@@ -1,22 +1,23 @@
 #!/bin/bash
-# real current workspace
+# Real current workspace
 
-# current workspace - e.g 3=>4 instead of 3
-current_workspace=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused == true).name | tonumber | if . % 2 == 1 then . + 1 else . end')
+# Get current workspace name and convert it to a number, then adjust for even or odd
+current_workspace=$(swaymsg -t get_workspaces | jq -r '.[] | select(.focused == true).name | tonumber | if . % 2 == 1 then . + 1 else . end')
 
 if [ "$1" == "next" ]; then
-    nr=$((current_workspace + 2)) # next on right monitor is workspace 3
-    nl=$((current_workspace + 1)) # next on left monitor is workspace 2
-    i3-msg "workspace $nl, workspace $nr"
+    nr=$((current_workspace + 2)) # Next on right monitor
+    nl=$((current_workspace + 1)) # Next on left monitor
+    swaymsg "workspace $nl; workspace $nr"
 fi
 
 if [ "$1" == "prev" ]; then
     nr=$((current_workspace - 2))
     nl=$((current_workspace - 3))
     if [ $nl -gt -1 ]; then
-        i3-msg "workspace $nl, workspace $nr"
+        swaymsg "workspace $nl; workspace $nr"
     fi
 fi
+
 
 # # Get the current workspace name directly from i3-msg
 # current_workspace=$(i3-msg -t get_workspaces | jq -r '..|objects|select(has("focused") and .focused==true)|.name')
