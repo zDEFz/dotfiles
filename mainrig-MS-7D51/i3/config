@@ -47,6 +47,7 @@ set $i instance
 
 
 
+
 # Use Mouse+$meta to drag floating windows to their wanted position
 floating_modifier $meta
 
