@@ -1,4 +1,5 @@
 #!/bin/bash
+
 function control_dac() {
     cd ~/broadlink || exit
     python3 -m venv venv
