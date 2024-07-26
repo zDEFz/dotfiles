@@ -3,7 +3,11 @@
 # Triple-click (left mouse button)
 xdotool click --repeat 3 1
 
+sleep 0.2
+
 # Copy clipboard content
+xdotool key ctrl+c
+sleep 0.1
 xdotool key ctrl+c
 
 #Open a new tab
