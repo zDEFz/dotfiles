@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Send Down arrow key 10 times
-for i in {1..12422}
+for i in {1..1200}
 do
   xdotool key Down
-  sleep .3
+  sleep .8
 done
