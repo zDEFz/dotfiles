@@ -61,7 +61,6 @@ focus_follows_mouse no
 # Keyboard
 input type:keyboard xkb_numlock enabled
 
-
 # disable power saving (for example if using xscreensaver)
 # $ensi xset -dpms
 # $ensi xset -dpms s off
