@@ -47,8 +47,6 @@ set $i instance
 set $a app_id
 set $n name
 
-
-
 # Use Mouse+$meta to drag floating windows to their wanted position
 floating_modifier $meta
 
