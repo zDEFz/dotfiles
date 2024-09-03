@@ -8,7 +8,6 @@ set $alt Mod1
 set $as assign
 set $bp0 border pixel 0
 set $fd focus downx
-set $fe floating enable
 set $fl focus left
 set $fr focus right
 set $fs fullscreen enable
@@ -40,6 +39,7 @@ set $ea exec_always
 set $ubin /usr/bin
 ####
 set $bm bindsym
+set $bc bindcode
 ####
 set $c class
 set $t title
