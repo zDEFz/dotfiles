@@ -77,8 +77,8 @@ set $L DP-2
 # Set up the left display
 output $L color_profile icc '/usr/share/color/icc/colord/XL2546K-Left.icc'  mode 1920x1080@144Hz transform 270 position 0 0
 # output $L mode 1920x1080@144Hz transform 270 position 0 0
-#output $R color_profile icc '/usr/share/color/icc/colord/XL2546K-Right.icc' mode 1920x1080@144Hz position 1080 340
-output $R mode 1920x1080@144Hz position 1080 340 mode 1920x1080@144Hz position 1080 340
+output $R color_profile icc '/usr/share/color/icc/colord/XL2546K-Right.icc' mode 1920x1080@144Hz position 1080 340
+# output $R mode 1920x1080@144Hz position 1080 340 mode 1920x1080@144Hz position 1080 340
 
 
 
