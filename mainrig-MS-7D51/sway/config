@@ -130,3 +130,6 @@ set $cyan         #8ec07c
 set $white        #ebdbb2
 
 include ~/.config/sway/conf.d/*
+
+
+focus_on_window_activation none
