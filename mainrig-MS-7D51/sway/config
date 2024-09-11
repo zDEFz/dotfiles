@@ -132,4 +132,4 @@ set $white        #ebdbb2
 include ~/.config/sway/conf.d/*
 
 
-focus_on_window_activation none
+# focus_on_window_activation none
