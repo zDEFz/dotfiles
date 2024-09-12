@@ -7,8 +7,14 @@ dotoold &
 for i in 1 2 3; do echo click left; sleep 0.05; done | dotoolc
 
 # Simulate Ctrl+C key press
+for i in 1 2; do
 echo key ctrl+c | dotoolc
-echo key ctrl+t | dotoolc
-echo key ctrl+l | dotoolc
+swaymsg '[class="code-oss"] focus'
+sleep 0.1
 echo key ctrl+v | dotoolc
 echo key enter  | dotoolc
+; done
+#echo key ctrl+t | dotoolc
+#echo key ctrl+l | dotoolc
+#echo key ctrl+v | dotoolc
+#echo key enter  | dotoolc
