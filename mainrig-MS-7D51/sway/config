@@ -4,16 +4,25 @@
 set $meta Mod4
 set $alt Mod1
 
-# shorter for_window
+set $a app_id
 set $as assign
+set $bc bindcode
+set $bm bindsym
 set $bp0 border pixel 0
-set $fd focus downx
+set $c class
+set $e exec
+set $ea exec_always
+set $ensi exec --no-startup-id
+set $f focus
+set $fd focus down
+set $fe floating enable
 set $fl focus left
 set $fr focus right
 set $fs fullscreen enable
 set $fst fullscreen toggle
 set $fu focus up
 set $fw for_window
+set $i instance
 set $map move absolute position
 set $mctw move container to workspace
 set $md move down
@@ -30,22 +39,11 @@ set $mtp move to position
 set $mts move to scratchpad
 set $mtw move to workspace
 set $mu move up
-set $rs resize set
-set $ws workspace
-####
-set $ensi exec --no-startup-id
-set $e exec
-set $ea exec_always
-set $ubin /usr/bin
-####
-set $bm bindsym
-set $bc bindcode
-####
-set $c class
-set $t title
-set $i instance
-set $a app_id
 set $n name
+set $rs resize set
+set $t title
+set $ubin /usr/bin
+set $ws workspace
 
 # Use Mouse+$meta to drag floating windows to their wanted position
 floating_modifier $meta
@@ -133,6 +131,3 @@ include ~/.config/sway/conf.d/*
 
 
 # focus_on_window_activation none
-
-set $foo 800px
-set $bar 600px
