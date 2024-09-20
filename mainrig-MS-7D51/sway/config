@@ -133,3 +133,6 @@ include ~/.config/sway/conf.d/*
 
 
 # focus_on_window_activation none
+
+set $foo 1280 px
+set $bar 1024 px
