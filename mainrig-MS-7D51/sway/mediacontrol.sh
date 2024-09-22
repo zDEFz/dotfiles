@@ -3,19 +3,19 @@
 case "$1" in
     pause)
         echo cycle pause | socat - /tmp/mpvsocket
-        playerctl pause
+        #playerctl pause
         ;;
     next)
         echo playlist-next | socat - /tmp/mpvsocket
-        playerctl next
+#       playerctl next
         ;;
     prev)
         echo playlist-prev | socat - /tmp/mpvsocket
-        playerctl previous
+ #      playerctl previous
         ;;
     stop)
         echo quit | socat - /tmp/mpvsocket
-        playerctl stop
+  #     playerctl stop
         ;;
     *)
         echo "Invalid command"
