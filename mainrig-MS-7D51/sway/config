@@ -73,24 +73,13 @@ set $L DP-2
 #output * adaptive_sync on
 
 # Set up the left display
-#output $L color_profile icc '/usr/share/color/icc/colord/XL2546K-L-120-cdm-D6500.icc' mode 1920x1080@144Hz transform 270 position 0 0
-#output $R color_profile icc '/usr/share/color/icc/colord/XL2546K-R-120-cdm-D6500.icc' mode 1920x1080@144Hz position 1080 340
-#output $R mode 1920x1080@144Hz position 1080 340 mode 1920x1080@144Hz position 1080 340
+# Feels too dark
+        #output $L color_profile icc '/usr/share/color/icc/colord/XL2546K-L-120-cdm-D6500.icc' mode 1920x1080@144Hz transform 270 position 0 0
+        #output $R color_profile icc '/usr/share/color/icc/colord/XL2546K-R-120-cdm-D6500.icc' mode 1920x1080@144Hz position 1080 340
+    # without profile
 output $L color_profile srgb mode 1920x1080@144Hz transform 270 position 0 0
 output $R color_profile srgb mode 1920x1080@144Hz position 1080 340 mode 1920x1080@144Hz position 1080 340
 
-
-
-# output $L mode 1920x1080@240Hz transform 270 position 0 720
-# output $R mode 1920x1080@240Hz position 1080 1080
-
-# output $RR mode 1920x1080@144Hz transform 270 position 3000 720
-
-# output $RR mode 1920x1080@60Hz transform 270 position 3000 720
-
-
-#set $L DP-2
-# set $RR DP-2
 include ~/.config/sway/workspace-definitions.conf
 
 # Theming
@@ -128,6 +117,3 @@ set $cyan         #8ec07c
 set $white        #ebdbb2
 
 include ~/.config/sway/conf.d/*
-
-
-# focus_on_window_activation none
