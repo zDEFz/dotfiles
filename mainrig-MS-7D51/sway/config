@@ -67,8 +67,9 @@ input type:keyboard xkb_numlock enabled
 # set $R DisplayPort-0
 #set $L DisplayPort-1
 
-set $R DP-1
-set $L DP-2
+set $L 'BNQ ZOWIE XL LCD EBMCM01300SL0'
+set $R 'BNQ ZOWIE XL LCD EBX7M01214SL0'
+
 
 #output * adaptive_sync on
 
