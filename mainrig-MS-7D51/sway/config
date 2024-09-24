@@ -78,7 +78,7 @@ set $L DP-2
         #output $R color_profile icc '/usr/share/color/icc/colord/XL2546K-R-120-cdm-D6500.icc' mode 1920x1080@144Hz position 1080 340
     # without profile
 output $L color_profile srgb mode 1920x1080@144Hz transform 270 position 0 0
-output $R color_profile srgb mode 1920x1080@144Hz position 1080 340 mode 1920x1080@144Hz position 1080 340
+output $R color_profile srgb mode 1920x1080@144Hz position 1080 270
 
 include ~/.config/sway/workspace-definitions.conf
 
