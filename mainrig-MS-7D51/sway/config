@@ -3,6 +3,7 @@
 
 set $meta Mod4
 set $alt Mod1
+set $ctrl Mod2
 
 set $a app_id
 set $as assign
