@@ -1,19 +1,29 @@
 #!/bin/bash
+MPV_SOCKET="/tmp/mpvsocket"
+
 case "$1" in
-    pause)
-      echo cycle pause | socat - /tmp/mpvsocket
-      playerctl pause
+    mpv-next)
+      echo playlist-next | socat - "$MPV_SOCKET"
         ;;
-    next)
-      echo playlist-next | socat - /tmp/mpvsocket
+    mpv-pause)
+      echo cycle pause | socat - "$MPV_SOCKET"
+        ;;
+    mpv-prev)
+      echo playlist-prev | socat - "$MPV_SOCKET"
+        ;;
+    mpv-stop)
+      echo quit | socat - "$MPV_SOCKET"
+        ;;
+    playerctl-next)
       playerctl next
         ;;
-    prev)
-      echo playlist-prev | socat - /tmp/mpvsocket
+    playerctl-play-pause)
+      playerctl play-pause
+        ;;
+    playerctl-prev)
       playerctl previous
         ;;
-    stop)
-      echo quit | socat - /tmp/mpvsocket
+    playerctl-stop)
       playerctl stop
         ;;
     *)
