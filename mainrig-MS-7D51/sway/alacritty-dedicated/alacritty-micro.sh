@@ -9,7 +9,7 @@ unique_id=$(printf "%x" $(( $(date +%s%N) + RANDOM )))
 
 # Specify the width and height for the Alacritty window
 width=394
-height=247
+height=527
 
 # Launch Alacritty with the unique ID as part of the class name and disown the process
 alacritty --working-directory="/home/blu/notes" \
