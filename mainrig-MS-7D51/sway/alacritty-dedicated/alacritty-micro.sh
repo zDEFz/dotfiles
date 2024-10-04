@@ -1,19 +1,8 @@
 #!/bin/bash
 
 # Set the color variable based on user input (blue or orange)
-case $1 in
-    blue)
-        micro_args="-colorscheme blue"
-        ;;
-    orange)
-        micro_args="-colorscheme orange"
-        ;;
-    *)
-        echo "Invalid option. Use 'blue' or 'orange'."
-        exit 1
-        ;;
-esac
 
+micro_args="-colorscheme $1"
 
 # Generate a unique ID using the current timestamp and a random hex value
 unique_id=$(printf "%x" $(( $(date +%s%N) + RANDOM )))
