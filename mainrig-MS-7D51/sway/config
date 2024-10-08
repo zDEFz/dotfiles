@@ -1,5 +1,10 @@
 # i3 config main file
 # shellcheck disable=SC2148
+default_border none
+default_floating_border none
+
+titlebar_padding 1
+titlebar_border_thickness 0
 
 set $meta Mod4
 set $alt Mod1
@@ -79,7 +84,12 @@ set $R 'BNQ ZOWIE XL LCD EBX7M01214SL0'
         #output $L color_profile icc '/usr/share/color/icc/colord/XL2546K-L-120-cdm-D6500.icc' mode 1920x1080@144Hz transform 270 position 0 0
         #output $R color_profile icc '/usr/share/color/icc/colord/XL2546K-R-120-cdm-D6500.icc' mode 1920x1080@144Hz position 1080 340
     # without profile
-output $L color_profile srgb mode 1920x1080@144Hz transform 270 position 0 0
+output $L {
+    color_profile srgb 
+    mode 1920x1080@144Hz transform 270 position 0 0
+    background /home/blu/.config/sway/wallpaper/DP-2/1.png fill
+    resolution 1920x1080
+    }
 output $R color_profile srgb mode 1920x1080@144Hz position 1080 270
 
 include ~/.config/sway/workspace-definitions.conf
@@ -119,3 +129,4 @@ set $cyan         #8ec07c
 set $white        #ebdbb2
 
 include ~/.config/sway/conf.d/*
+
