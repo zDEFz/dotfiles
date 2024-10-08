@@ -7,19 +7,20 @@ mode="$2"
 pos_args=""
 workspace="$3"
 
-echo $3
+# echo $3
 
-if [[ $mode == "--startup" ]]; then
+#if [[ $mode == "--startup" ]]; then
   # swaymsg "focus output 'BNQ ZOWIE XL LCD EBMCM01300SL0"
-    swaymsg workspace $3
-fi
+ #   swaymsg workspace $3
+# echo foo
+#fi
 
 if [[ $mode == "--cursor" ]]; then
   pos_args="move position cursor"
 fi
 
 # Generate a unique ID using the current timestamp and a random hex value
-unique_id=$(printf "%x" $(( $(date +%s%N) + RANDOM )))
+unique_id="$1"
 
 # Specify the width and height for the Alacritty window
 width=394
@@ -31,7 +32,7 @@ alacritty --working-directory="/home/blu/notes" \
 -e micro $micro_args &
 
 # Give Alacritty time to launch
-sleep .3
+sleep .5
 
 # Move and resize the newly created Alacritty window to the cursor position
-swaymsg "[app_id=\"alacritty-micro-$unique_id\"] floating enable, resize set ${width} ${height}, ${pos_args}, border none"
+#swaymsg "[app_id=\"alacritty-micro-$unique_id\"] floating enable, resize set ${width} ${height}, ${pos_args}"
