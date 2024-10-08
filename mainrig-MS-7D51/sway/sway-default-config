@@ -226,3 +226,15 @@ bar {
 }
 
 include @sysconfdir@/sway/config.d/*
+
+
+	for_window [app_id="^alacritty-micro-blue jap-cheat$"] move to workspace 4, splitv
+	for_window [app_id="^alacritty-micro-orange firefox-tweaks$"] move to workspace 4, splitv 
+	for_window [app_id="^alacritty-micro-orange sap-talk-become$"] move to workspace 4, splitv 
+	for_window [app_id="^alacritty-micro-orange sap-talk-I-am$"] move to workspace 4, splitv
+	for_window [app_id="^alacritty-micro-orange sap-talk-I-was$"] move to workspace 4, splitv
+	for_window [app_id="^alacritty-micro-orange sap-talk-myself$"] move to workspace 4, splitv
+	for_window [app_id="^alacritty-micro-purple mind$"] move to workspace 4, splitv
+	for_window [app_id="^alacritty-micro-purple todo$"] move to workspace 4, splitv
+	for_window [app_id="^alacritty-micro-red health$"] move to workspace 4, splitv
+	for_window [app_id="^alacritty-micro-transparent groceries$"] move to workspace 4, splitv
