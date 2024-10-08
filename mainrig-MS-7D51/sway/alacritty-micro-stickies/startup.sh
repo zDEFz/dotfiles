@@ -9,10 +9,10 @@ $script "blue jap-cheat" --startup "24" "2607 853"
 
 # First Row
 
-    $script "transparent sap-talk-I-was"                         --startup    "52" "1077 268"
-    $script "transparent sap-talk-become"                         --startup    "52" "1469 268"
-    $script "transparent sap-talk-myself"                         --startup    "52" "1861 268"
-    $script "transparent sap-talk-I-am"                           --startup    "52" "2253 268"      
+    $script "transparent sap-talk-I-was"                         --startup    "52" "1307 268"
+    $script "transparent sap-talk-become"                         --startup    "52" "1599 268"
+    $script "transparent sap-talk-myself"                         --startup    "52" "1981 268"
+    $script "transparent sap-talk-I-am"                           --startup    "52" "2373 268"      
 
 # Second Row
     $script "transparent mind"                                   --startup    "52" "1077 768"

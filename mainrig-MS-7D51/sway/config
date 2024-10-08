@@ -1,11 +1,5 @@
 # i3 config main file
 # shellcheck disable=SC2148
-default_border none
-default_floating_border none
-
-titlebar_padding 1
-titlebar_border_thickness 0
-
 set $meta Mod4
 set $alt Mod1
 set $ctrl Mod2
@@ -90,7 +84,12 @@ output $L {
     background /home/blu/.config/sway/wallpaper/DP-2/1.png fill
     resolution 1920x1080
     }
-output $R color_profile srgb mode 1920x1080@144Hz position 1080 270
+output $R {
+    color_profile srgb 
+    mode 1920x1080@144Hz position 1080 270
+    background /home/blu/.config/sway/wallpaper/DP-1/2.png fill
+    resolution 1920x1080
+}
 
 include ~/.config/sway/workspace-definitions.conf
 
