@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # Set the color variable based on user input (blue or orange)
-
 micro_args="-colorscheme $1"
 mode="$2"
 pos_args=""
