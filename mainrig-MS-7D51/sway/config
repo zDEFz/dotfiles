@@ -88,17 +88,26 @@ set $R 'BNQ ZOWIE XL LCD EBX7M01214SL0'
 
      #background /home/blu/.config/sway/wallpaper/DP-2/1.png fill
      #background /home/blu/.config/sway/wallpaper/DP-1/2.png fill
+
 output $L {
     color_profile srgb 
-    mode 1920x1080@144Hz transform 270 position 0 0
-   
+    mode 1920x1080@144Hz
+    position 0 0
+    render_bit_depth 8
     resolution 1920x1080
+    scale_filter smart
+    subpixel rgb
+    transform 270
     }
 output $R {
     color_profile srgb 
-    mode 1920x1080@144Hz position 1080 270
-    
+    max_render_time 1
+    mode 1920x1080@144Hz
+    position 1080 270
+    render_bit_depth 8
     resolution 1920x1080
+    scale_filter smart
+    subpixel rgb
 }
 
 include ~/.config/sway/workspace-definitions.conf
