@@ -1,5 +1,5 @@
 #!/bin/bash
-sleep 20
+# sleep 20
 script=/home/blu/.config/sway/alacritty-micro-stickies/micro-stickies.sh
 
 # Wanikani bottom right
@@ -9,7 +9,7 @@ $script "transparent jap-cheat" --startup "24" "2607 853"
 
 # First Row
 
-    $script "transparent sap-talk-I-was"                         --startup    "52" "1257 325"
+    $script "transparent sap-talk-I-was"                         --startup    "52" "1263 325"
     $script "transparent sap-talk-become"                         --startup    "52" "1649 325"
     $script "transparent sap-talk-myself"                         --startup    "52" "2041 325"
     $script "transparent sap-talk-I-am"                           --startup    "52" "2433 325"      

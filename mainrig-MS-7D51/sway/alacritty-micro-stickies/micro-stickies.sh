@@ -23,7 +23,7 @@ fi
 name="$1"
 
 # Specify the width and height for the Alacritty window
-width=394
+width=384
 height=498
 
 # Launch Alacritty with the unique ID as part of the class name and disown the process
