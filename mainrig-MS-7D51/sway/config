@@ -85,16 +85,19 @@ set $R 'BNQ ZOWIE XL LCD EBX7M01214SL0'
         #output $L color_profile icc '/usr/share/color/icc/colord/XL2546K-L-120-cdm-D6500.icc' mode 1920x1080@144Hz transform 270 position 0 0
         #output $R color_profile icc '/usr/share/color/icc/colord/XL2546K-R-120-cdm-D6500.icc' mode 1920x1080@144Hz position 1080 340
     # without profile
+
+     #background /home/blu/.config/sway/wallpaper/DP-2/1.png fill
+     #background /home/blu/.config/sway/wallpaper/DP-1/2.png fill
 output $L {
     color_profile srgb 
     mode 1920x1080@144Hz transform 270 position 0 0
-    #background /home/blu/.config/sway/wallpaper/DP-2/1.png fill
+   
     resolution 1920x1080
     }
 output $R {
     color_profile srgb 
     mode 1920x1080@144Hz position 1080 270
-    #background /home/blu/.config/sway/wallpaper/DP-1/2.png fill
+    
     resolution 1920x1080
 }
 
