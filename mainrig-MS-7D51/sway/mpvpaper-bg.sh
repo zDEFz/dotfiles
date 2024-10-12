@@ -46,9 +46,10 @@ get_visible_workspaces() {
 # Function to set wallpapers based on workspace number
 set_wallpaper() {
     case "$1" in
-        1) echo "${wallpaper_left_path}22BW73_resized.png" ;;
-        2) echo "${wallpaper_right_path}4K - _vectorpaper__tatsumaki_by_azizkeybackspace-d9gq3v7(noise_scale)(x2.0)(level1).png" ;;
-        3) echo "${wallpaper_left_path}002e1ab4d079c20f36dbefdf83aa73ee_001(noise_scale)(x2.0)(level1)_cr.png" ;;
+        1) echo "${wallpaper_left_path}default.png" ;;
+        2) echo "${wallpaper_right_path}default.png" ;;
+        3) echo "${wallpaper_left_path}3.png" ;;
+        4) echo "${wallpaper_left_path}4.png" ;;
         *) return ;;
     esac
 }
@@ -114,7 +115,7 @@ handle_workspace_change() {
 handle_workspace_change &
 
 # Silly workaround to trigger initial loading of wallpapers
-sleep 0.1; swaymsg workspace 1; sleep 0.1; swaymsg workspace 2; swaymsg workspace 1
+# sleep 0.1; swaymsg workspace 1; sleep 0.1; swaymsg workspace 2; swaymsg workspace 1
 
 # Wait for the background job to finish (it won't, as it's an infinite loop)
 wait
