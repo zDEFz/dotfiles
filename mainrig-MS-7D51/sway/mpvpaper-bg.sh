@@ -1,54 +1,74 @@
 #!/bin/bash
-b="/tmp/mpvsock-bg-"
-DEFAULT_IMG="default.png"  # Unused variable; consider removing if not needed.
+
+b="$HOME/mpvsock-bg-"
 MPV_L_WALL_PATH="/home/blu/.config/sway/wallpaper/L_SCREEN/"
 MPV_R_WALL_PATH="/home/blu/.config/sway/wallpaper/R_SCREEN/"
 MPV_SOCK_L="${b}left"
 MPV_SOCK_R="${b}right"
 
+FIRST_RUN=false
+
 # Start mpvpaper instances for left and right monitors
 mpvpaper -f -o "input-ipc-server=$MPV_SOCK_L --no-keepaspect-window" -n 10 'DP-2' null &
 mpvpaper -f -o "input-ipc-server=$MPV_SOCK_R --no-keepaspect-window" -n 10 'DP-1' null &
 
-# Function to load the wallpaper for left monitor based on workspace number
-load_wallpaper_left() {
-    workspace_num="$1"  # Quote to prevent globbing and word splitting
-    echo "workspace no $workspace_num"  # Quote for consistency
+# Function to set the wallpaper for a monitor based on workspace number
+set_wallpaper() {
+    workspace_num="$1"
 
+    # Determine wallpaper based on workspace number
     case $workspace_num in
-        1) wallpaper="22BW73_resized.png" ;;
-        3) wallpaper="005 - RLKrR5h_cr.jpg" ;;
-        *) wallpaper="$DEFAULT_IMG" ;;  # Default fallback wallpaper
+        1) echo "${MPV_L_WALL_PATH}22BW73_resized.png" ;;
+        2) echo "${MPV_R_WALL_PATH}4K - _vectorpaper__tatsumaki_by_azizkeybackspace-d9gq3v7(noise_scale)(x2.0)(level1).png" ;;
+        3) echo "${MPV_L_WALL_PATH}002e1ab4d079c20f36dbefdf83aa73ee_001(noise_scale)(x2.0)(level1)_cr.png" ;;
+        *) return ;;  # No wallpaper for other workspaces
     esac
-
-    echo "wallpaper $wallpaper"  # Quote for consistency
-
-    echo "loadfile ${MPV_L_WALL_PATH}${wallpaper}" | socat - "$MPV_SOCK_L"
 }
 
-# Function to load the wallpaper for right monitor based on workspace number
-load_wallpaper_right() {
-    workspace_num="$1"  # Quote to prevent globbing and word splitting
-    echo "workspace no $workspace_num"  # Quote for consistency
+# Get the list of visible workspaces
+visible_workspaces=$(swaymsg -t get_workspaces | jq -r '.[] | select(.visible == true) | .num')
 
-    case $workspace_num in
-        2) wallpaper="4K - _vectorpaper__tatsumaki_by_azizkeybackspace-d9gq3v7(noise_scale)(x2.0)(level1).png" ;;
-        *) wallpaper="$DEFAULT_IMG" ;;  # Default fallback wallpaper
-    esac
+echo $visible_workspaces
 
-    echo "wallpaper $wallpaper"  # Quote for consistency
-
-    echo "loadfile ${MPV_R_WALL_PATH}${wallpaper}" | socat - "$MPV_SOCK_R"
-}
-
-# Main loop to listen for workspace changes and update wallpapers
 while true; do
-    swaymsg -t subscribe '["workspace"]' | while read -r event; do
-        # Get the current workspace number
-        workspace_num=$(swaymsg -t get_workspaces | jq '.[] | select(.focused == true).num')
+    # Get the list of visible workspaces
+    visible_workspaces=$(swaymsg -t get_workspaces | jq -r '.[] | select(.visible == true) | .num')
 
-        # Load the appropriate wallpaper for left and right monitors
-        load_wallpaper_left "$workspace_num"
-        load_wallpaper_right "$workspace_num"
+    echo "Visible Workspaces: $visible_workspaces"
+
+    # Iterate through visible workspaces
+    for i in $visible_workspaces; do
+        wallpaper=$(set_wallpaper $i)
+        
+        # Output the current workspace and its wallpaper
+        echo "============================"
+        echo "Workspace: $i"
+        echo "Wallpaper: '$wallpaper'"
+        
+        if [[ -n $wallpaper ]]; then
+            # Check if the workspace index is odd or even
+            if [[ $((i % 2)) -ne 0 ]]; then
+                echo "Action: Setting wallpaper on the LEFT screen (SCREEN_L)"
+                # Send command to load wallpaper to the left screen
+                echo "loadfile \"$wallpaper\"" | socat - "$HOME/mpvsock-bg-left"
+            else
+                echo "Action: Setting wallpaper on the RIGHT screen (SCREEN_R)"
+                # Send command to load wallpaper to the right screen
+                echo "loadfile \"$wallpaper\"" | socat - "$HOME/mpvsock-bg-right"
+            fi
+        else
+            echo "Status: No wallpaper set for workspace $i."
+        fi
+
+        echo "============================"
     done
+    
+    FIRST_RUN=true
+
+    # if first run=true, use swaymsg -t subscribe '["workspace"]' | while read -r event; do
 done
+
+
+
+
+
