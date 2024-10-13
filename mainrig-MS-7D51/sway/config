@@ -74,6 +74,7 @@ input type:keyboard xkb_numlock enabled
 # set $R DisplayPort-0
 #set $L DisplayPort-1
 
+set $LL "LG Electronics 24GM79G 0x0008042C"
 set $L 'BNQ ZOWIE XL LCD EBMCM01300SL0'
 set $R 'BNQ ZOWIE XL LCD EBX7M01214SL0'
 
@@ -89,7 +90,7 @@ set $R 'BNQ ZOWIE XL LCD EBX7M01214SL0'
      #background /home/blu/.config/sway/wallpaper/DP-2/1.png fill
      #background /home/blu/.config/sway/wallpaper/DP-1/2.png fill
 
-output $L {
+output $LL {
     color_profile srgb 
     mode 1920x1080@144Hz
     position 0 0
@@ -98,17 +99,30 @@ output $L {
     scale_filter smart
     subpixel rgb
     transform 270
-    }
+}
+
+output $L {
+    color_profile srgb 
+    mode 1920x1080@144Hz
+    position 1080 0
+    render_bit_depth 8
+    resolution 1920x1080
+    scale_filter smart
+    subpixel rgb
+    transform 270
+}
+
 output $R {
     color_profile srgb 
     max_render_time 1
     mode 1920x1080@144Hz
-    position 1080 310
+    position 2160 0
     render_bit_depth 8
     resolution 1920x1080
     scale_filter smart
     subpixel rgb
 }
+
 
 include ~/.config/sway/workspace-definitions.conf
 
