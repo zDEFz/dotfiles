@@ -63,6 +63,9 @@ floating_modifier $meta
 mouse_warping none
 focus_follows_mouse no
 
+# PS4 controller disable touchpad / mouse
+input '1356:2508:Sony_Interactive_Entertainment_Wireless_Controller_Touchpad' events disabled
+
 # Keyboard
 input type:keyboard xkb_numlock enabled
 
