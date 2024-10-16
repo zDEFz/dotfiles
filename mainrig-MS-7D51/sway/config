@@ -94,6 +94,7 @@ set $R 'BNQ ZOWIE XL LCD EBX7M01214SL0'
      #background /home/blu/.config/sway/wallpaper/DP-1/2.png fill
 
 output $LL {
+disable
     color_profile srgb 
     mode 1920x1080@144Hz
     position 0 0

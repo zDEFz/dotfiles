@@ -1,5 +1,5 @@
 #!/bin/bash
-#sleep 20
+sleep 15
 script=/home/blu/.config/sway/alacritty-micro-stickies/micro-stickies.sh
 
 # Wanikani bottom right
