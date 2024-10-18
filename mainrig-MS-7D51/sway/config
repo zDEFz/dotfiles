@@ -77,10 +77,10 @@ input type:keyboard xkb_numlock enabled
 # set $R DisplayPort-0
 #set $L DisplayPort-1
 
-set $LL "LG Electronics 24GM79G 0x0008042C"
-set $RR 'BNQ ZOWIE XL LCD EBMCM01300SL0'
 set $L 'BNQ ZOWIE XL LCD EBX7M01214SL0'
+set $LL "LG Electronics 24GM79G 0x0008042C"
 set $R 'BNQ ZOWIE XL LCD EBF2R02905SL0'
+set $RR 'BNQ ZOWIE XL LCD EBMCM01300SL0'
 
 
 #output * adaptive_sync on
@@ -125,6 +125,7 @@ output $R {
     resolution 1920x1080
     scale_filter smart
     subpixel rgb
+    background /home/blu/.config/sway/wallpaper/R_SCREEN/1920x1080.png fill
 }
 
 output $RR {
@@ -136,6 +137,7 @@ output $RR {
     scale_filter smart
     subpixel rgb
     transform 270
+    background /home/blu/.config/sway/wallpaper/RR_SCREEN/1080x1920.png fill
 }
 
 include ~/.config/sway/workspace-definitions.conf
