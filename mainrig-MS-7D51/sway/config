@@ -120,7 +120,7 @@ output $R {
     color_profile srgb 
     max_render_time 1
     mode 1920x1080@360Hz
-    position 2160 320
+    position 2160 342
     render_bit_depth 8
     resolution 1920x1080
     scale_filter smart
@@ -130,7 +130,7 @@ output $R {
 output $RR {
     color_profile srgb 
     mode 1920x1080@240Hz
-    position 4080 320
+    position 4080 14
     render_bit_depth 8
     resolution 1920x1080
     scale_filter smart
