@@ -33,7 +33,7 @@ alacritty --working-directory="/home/blu/notes" \
 
 # Give Alacritty time to launch
 sleep .5
-echo ${pos_args}
+# echo ${pos_args}
 
 # Move and resize the newly created Alacritty window to the cursor position
 swaymsg "[app_id=\"alacritty-micro-$name\"] floating enable, resize set ${width} ${height}, ${pos_args}, border none"
