@@ -78,19 +78,17 @@ input type:keyboard xkb_numlock enabled
 #set $L DisplayPort-1
 
 set $LL "LG Electronics 24GM79G 0x0008042C"
-set $L 'BNQ ZOWIE XL LCD EBMCM01300SL0'
-
-
-
+set $RR 'BNQ ZOWIE XL LCD EBMCM01300SL0'
+set $L 'BNQ ZOWIE XL LCD EBX7M01214SL0'
 set $R 'BNQ ZOWIE XL LCD EBF2R02905SL0'
-set $RR 'BNQ ZOWIE XL LCD EBX7M01214SL0'
+
 
 #output * adaptive_sync on
 
 # Set up the left display
 # Feels too dark
-        #output $L color_profile icc '/usr/share/color/icc/colord/XL2546K-L-120-cdm-D6500.icc' mode 1920x1080@240Hz transform 270 position 0 0
-        #output $R color_profile icc '/usr/share/color/icc/colord/XL2546K-R-120-cdm-D6500.icc' mode 1920x1080@240Hz position 1080 340
+        #output $L color_profile icc '/usr/share/color/icc/colord/XL2546K-L-120-cdm-D6500.icc' mode 1920x1080@144Hz transform 270 position 0 0
+        #output $R color_profile icc '/usr/share/color/icc/colord/XL2546K-R-120-cdm-D6500.icc' mode 1920x1080@144Hz position 1080 340
     # without profile
 
      #background /home/blu/.config/sway/wallpaper/DP-2/1.png fill
@@ -131,7 +129,6 @@ output $R {
 
 output $RR {
     color_profile srgb 
-    max_render_time 1
     mode 1920x1080@240Hz
     position 4080 320
     render_bit_depth 8
@@ -140,7 +137,6 @@ output $RR {
     subpixel rgb
     transform 270
 }
-
 
 include ~/.config/sway/workspace-definitions.conf
 
