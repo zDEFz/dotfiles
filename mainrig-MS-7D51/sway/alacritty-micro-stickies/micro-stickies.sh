@@ -27,9 +27,10 @@ width=500
 height=498
 
 # Launch Alacritty with the unique ID as part of the class name and disown the process
-alacritty --working-directory="/home/blu/notes" \
+alacritty \
 --class="alacritty-micro-$unique_id" \
 -e micro $micro_args &
+
 
 # Give Alacritty time to launch
 sleep .5

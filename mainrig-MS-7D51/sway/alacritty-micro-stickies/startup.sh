@@ -43,23 +43,25 @@ script=/home/blu/.config/sway/alacritty-micro-stickies/micro-stickies.sh
 # R screen
 R_SCREEN_BOTTOM_RIGHT="3581 949"    
 
-$script "transparent sap-talk-I-was"    --startup "4" "$RR_SCREEN_pos01_portrait" &
+p="/home/blu/notes"
+
+$script "transparent ${p}/ws-04/sap-talk-I-was"    --startup "4" "$RR_SCREEN_pos01_portrait" &
     sleep .25
-$script "transparent sap-talk-become"   --startup "4" "$RR_SCREEN_pos02_portrait" &
+$script "transparent ${p}/ws-04/sap-talk-become"   --startup "4" "$RR_SCREEN_pos02_portrait" &
     sleep .25
-$script "transparent sap-talk-myself"   --startup "4" "$RR_SCREEN_pos10_portrait" &
+$script "transparent ${p}/ws-04/sap-talk-myself"   --startup "4" "$RR_SCREEN_pos10_portrait" &
     sleep .25
-$script "transparent workout"           --startup "4" "$RR_SCREEN_pos11_portrait" &
+$script "transparent ${p}/ws-04/workout"           --startup "4" "$RR_SCREEN_pos11_portrait" &
     sleep .25
-$script "transparent mind"              --startup "4" "$RR_SCREEN_pos20_portrait" &
+$script "transparent ${p}/ws-04/mind"              --startup "4" "$RR_SCREEN_pos20_portrait" &
     sleep .25
-$script "transparent health"            --startup "4" "$RR_SCREEN_pos21_portrait" &
+$script "transparent ${p}/ws-04/health"            --startup "4" "$RR_SCREEN_pos21_portrait" &
     sleep .25
-$script "transparent groceries"         --startup "4" "$RR_SCREEN_pos30_portrait" &
+$script "transparent ${p}/ws-04/groceries"         --startup "4" "$RR_SCREEN_pos30_portrait" &
     sleep .25
-$script "transparent todo"              --startup "4" "$RR_SCREEN_pos31_portrait" &
+$script "transparent ${p}/ws-04/todo"              --startup "4" "$RR_SCREEN_pos31_portrait" &
     sleep .25
 # Wanikani bottom right
-    $script "blue jap-cheat"            --startup "31"   "$R_SCREEN_BOTTOM_RIGHT"   "600" "498" &
+$script "blue ${p}/ws-31/jap-cheat"                --startup "31"   "$R_SCREEN_BOTTOM_RIGHT" &
     
 #     $script "transparent workout"                --startup    "52" "3707 820"
