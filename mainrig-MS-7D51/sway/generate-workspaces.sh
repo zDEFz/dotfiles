@@ -27,7 +27,6 @@
 # # 	workspace $ws3-L output $L
 
 #!/bin/bash
-
 # Function to generate workspace settings for 4 screens
 generate_workspace() {
     local ws_name="$1"
@@ -46,7 +45,7 @@ generate_workspace() {
     echo -e "\tworkspace \$${ws_name}-R output \$R"
 }
 
-# Loop to generate the code for 200 workspaces
+# Loop to generate the code for 200 workspaces with zero-padded names
 for i in {1..200}; do
-    generate_workspace "ws$i" "$((4*i-3))"
+    generate_workspace "ws$(printf "%02d" $i)" "$((4*i-3))"
 done

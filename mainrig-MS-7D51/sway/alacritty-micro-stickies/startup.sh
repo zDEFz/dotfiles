@@ -60,6 +60,6 @@ $script "transparent groceries"         --startup "RR1" "$RR_SCREEN_pos30_portra
 $script "transparent todo"              --startup "RR1" "$RR_SCREEN_pos31_portrait" &
     sleep .25
 # Wanikani bottom right
-    $script "transparent jap-cheat"     --startup "24"   "$R_SCREEN_BOTTOM_RIGHT" &
+    $script "transparent jap-cheat"     --startup "31"   "$R_SCREEN_BOTTOM_RIGHT" &
     
 #     $script "transparent workout"                                 --startup    "52" "3707 820"

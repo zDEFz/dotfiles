@@ -141,7 +141,7 @@ output $R {
     transform 270
 }
 
-include ~/.config/sway/workspace-definitions.conf
+include /home/blu/.config/sway/workspaces/workspace-definitions.conf
 
 # Theming
 
