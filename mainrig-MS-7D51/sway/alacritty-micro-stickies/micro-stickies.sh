@@ -38,7 +38,7 @@ if [[ $mode == "--startup" ]]; then
     -e micro $micro_args &
 
     # Give Alacritty time to launch
-    sleep 0.12
+    sleep 0.3
 
     # Move the newly created Alacritty window to the specified position
     swaymsg "[app_id=\"${name}${unique_id}\"] move absolute position $4" &
