@@ -57,7 +57,10 @@ if [[ $mode == "--cursor" ]]; then
     # Start time measurement for launching Alacritty in cursor mode
     cursor_start_time=$(date +%s.%N)
     
+    p="/home/blu/notes/custom/"
+
     alacritty \
+    --working-directory=${p} \
     --class="${name}${unique_id}" \
     -e micro $micro_args &
 
