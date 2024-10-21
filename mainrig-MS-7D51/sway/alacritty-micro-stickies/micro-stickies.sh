@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set the color variable based on user input (blue or orange)
-micro_args="-colorscheme $1 -encoding shift_jis"
+micro_args="-colorscheme $1"
 mode="$2"
 workspace="$3"
 name=""
