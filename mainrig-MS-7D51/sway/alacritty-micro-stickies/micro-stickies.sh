@@ -33,7 +33,7 @@ alacritty \
 
 
 # Give Alacritty time to launch
-sleep .5
+sleep .4
 
 # Move and resize the newly created Alacritty window to the cursor position or specified position
 swaymsg "[app_id=\"alacritty-micro-$unique_id\"] floating enable, resize set ${width} ${height}, ${pos_args}, border none"
