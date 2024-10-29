@@ -1,0 +1,493 @@
+#!/bin/bash
+archive() {
+    if [ "$#" -ne 3 ]; then echo "Usage: archive path_of_folder_to_archive archive_name archive_type"; echo "Supported archive types: tar, zip"; return 1
+    fi
+    
+    local folder_to_archive="$1"
+    local archive_name="$2"
+    local archive_type="$3"
+    local archive_path="/tmp/$archive_name"
+    
+    if [ ! -d "$folder_to_archive" ]; then
+        echo "Error: The specified folder to archive does not exist."
+        return 1
+    fi
+    
+    case "$archive_type" in
+        "tar")
+            archive_path="$archive_path.tar.gz"
+            tar -czf "$archive_path" "$folder_to_archive" && echo "Archive saved to: $archive_path"
+            ;;
+        "zip")
+            archive_path="$archive_path.zip"
+            zip -r "$archive_path" "$folder_to_archive" && echo "Archive saved to: $archive_path"
+            ;;
+        *)
+            echo "Error: Unsupported archive type '$archive_type'. Supported types: tar, zip"
+            return 1
+            ;;
+    esac
+}
+
+argon2v13() {
+    argon2-cli bluetail -v 13 -r | xclip -r
+    history -p
+    clear
+}
+
+c2() {
+    sh /home/blu/git/c2-patch/Linux-32-Start-cultris2.sh >/dev/null 2>&1 &
+    sleep 3
+    xdotool search --name "Cultris II" windowmove 1450 500
+}
+
+cdapplications-home-local-share() {
+    cd /home/blu/.local/share/applications || exit
+}
+
+cdapplications-usr-local-share() {
+    cd /usr/local/share/applications || exit
+}
+
+cdautostart-user() {
+    cd /home/blu/.config/autostart || exit
+}
+
+cdlocalsharefolder() {
+    cd /home/blu/.local/share/applications || exit
+}
+
+cdosb() {
+    cd /home/blu/git/os-base-configurations || exit
+}
+
+cdsway() {
+    cd /home/blu/.config/sway || exit
+}
+
+cdtheme() {
+    theme.sh -i
+}
+
+check-dac-on() {
+    lsusb | grep -q "ADI-2" && echo on
+}
+
+check-speaker-info() {
+    venv
+    cd ~/git/plugp100 || exit
+    source venv/bin/activate
+    python3 plugp100-helper.py 192.168.178.21 info
+    python3 plugp100-helper.py 192.168.178.24 info
+}
+
+check-speaker-on() {
+    check-speaker-info 2>/dev/null | grep -c "Success" | tr -d '\n'
+}
+
+convert-heic-to-png() {
+    for i in *.HEIC; do
+        heif-convert "$i" "${i%.HEIC}.png"
+    done
+}
+
+countwebdav() {
+    mount | grep -c /webdav
+}
+
+cpu-and-gpu-perf() {
+    corectrl --toggle-manual-profile "cpu-and-gpu-perf"
+}
+
+cpu-perf() {
+    corectrl --toggle-manual-profile "cpu-perf"
+}
+
+dac-and-speaker-toggle() {
+    dac-toggle
+    #speaker-toggle
+}
+
+dac-ipad() {
+    cd /home/blu/git/plugp100 || exit
+    source venv/bin/activate
+    broadlink_cli --device @/home/blu/broadlink/BEDROOM.device --send @/home/blu/broadlink/ezcoo/EZ-SW24-U3L/ezcoo-usb-hub-pc-2
+}
+
+dac-pc() {
+    cd /home/blu/git/plugp100 || exit
+    source venv/bin/activate
+    broadlink_cli --device @/home/blu/broadlink/BEDROOM.device --send @/home/blu/broadlink/ezcoo/EZ-SW24-U3L/ezcoo-usb-hub-pc-1
+}
+
+dac-toggle() {
+    broadlink_cli --device @/home/blu/broadlink/BEDROOM.device --send @/home/blu/broadlink/RME/ADI2-DAC-FS/power-held
+}
+
+generate-firefox-desktopfiles() {
+    /home/blu/scripts/cronjobs/generate-firefox-profiles-desktopfiles.sh
+}
+
+generate-thumbnails() {
+    local format=""
+    local path=""
+    
+    for arg in "$@"; do
+        case "$arg" in
+            format=*)
+                format="${arg#*=}"
+                ;;
+            path=*)
+                path="${arg#*=}"
+                ;;
+        esac
+    done
+    
+    if [ -z "$format" ] || [ -z "$path" ]; then
+        echo "Usage: generate-thumbnails format=<webm/mp4> path=<path_to_folder>"
+        return 1
+    fi
+    
+    if [ ! -x /usr/bin/ffmpeg ]; then
+        echo "Error: /usr/bin/ffmpeg not found. Please install ffmpeg before running this script."
+        return 1
+    fi
+    
+    for file in "$path"/*."$format"; do
+        output_file="${file%.*}.png"
+        /usr/bin/ffmpeg -i "$file" -ss 00:00:05 -vframes 1 "$output_file"
+    done
+}
+
+gpu-perf() {
+    corectrl --toggle-manual-profile "gpu-perf"
+}
+
+httpserver() {
+    python3 -m http.server
+}
+
+i3blocksreload() {
+    killall i3bar
+    i3-msg "exec --no-startup-id i3bar --bar_id=bar-1"
+    i3-msg "exec --no-startup-id i3bar --bar_id=bar-2"
+}
+
+i3exit() {
+    i3-msg exit
+}
+
+i3focusedwindowclass() {
+    /home/blu/.config/i3blocks/i3blocks/custom/i3-focusedwindow -class
+}
+
+i3focusedwindowdim() {
+    /home/blu/.local/libexec/i3blocks/custom/i3-focusedwindow -dim
+}
+
+i3focusedwindowname() {
+    /home/blu/.local/libexec/i3blocks/custom/i3-focusedwindow -win
+}
+
+list-firefox-profiles() {
+    awk -F= "/Name=/{print \$2}" ~/.mozilla/firefox/profiles.ini | sort
+}
+
+loop-i3focusedwindowclass() {
+    while true; do
+        sleep 3
+        /home/blu/.config/i3blocks/i3blocks/custom/i3-focusedwindow -class
+    done
+}
+
+loop-i3focusedwindowdim() {
+    while true; do
+        sleep 3
+        /home/blu/.local/libexec/i3blocks/custom/i3-focusedwindow -dim
+    done
+}
+
+loop-i3focusedwindowname() {
+    while true; do
+        sleep 3
+        /home/blu/.local/libexec/i3blocks/custom/i3-focusedwindow -win
+    done
+}
+
+m1ssh() {
+    ssh blu@192.168.178.32
+}
+
+mainrigssh() {
+    ssh blu@192.168.178.37
+}
+
+match-mpv-string() {
+    while true; do
+        if [ "$1" = "" ]; then
+            echo "usage: match-mpv-string 'string'"
+            exit
+        fi
+        if [ "$(i3focusedwindowname)" != "$1" ]; then
+            echo "not matched"
+        else
+            echo "matched"
+        fi
+    done
+}
+
+mon-hdmi-landscape() {
+    ddcutil setvcp 60 0x11 --display 1
+}
+
+mount-nvme-backup() {
+    sudo mount UUID=e4384f6f-f9bf-4b17-9566-005bace0b373 /mnt/firecuda2nd
+    cd /mnt/firecuda2nd || exit
+}
+
+mountsshfs-2tb-1() {
+    sshfs blu@192.168.178.32:/mnt/external-ssd-storage/2tb-1 /sshfsmounts/2tb-1 -o IdentityFile=/home/blu/.ssh/id_rsa
+}
+
+myip() {
+    curl -s icanhazip.com | tr -d '\n'
+}
+
+off() {
+    broadlink_cli --device @/home/blu/broadlink/BEDROOM.device --send @/home/blu/broadlink/RME/ADI2-DAC-FS/power-held
+    kasa --host 192.168.178.58 off
+    systemctl poweroff
+}
+
+oh() {
+    xdg-open .
+}
+
+pianolessons() {
+    cd /sshfsmounts/20tb-1-raid1c3/personal/Documents/studies/pianostudy/piano-lessons/Thomas-Dorn || exit
+}
+
+pianostudy() {
+    cd /sshfsmounts/20tb-1-raid1c3/personal/Documents/studies/pianostudy/piano-lessons/ || exit
+}
+
+playlist-th() {
+        mpv --x11-name=mpvleft --profile=fast /sshfsmounts/2tb-1/youtube >/dev/null 2>&1 &
+}
+
+speaker-left-off() {
+    cd /home/blu/git/plugp100 || exit
+    source venv/bin/activate
+    python3 plugp100-helper.py 192.168.178.24 off
+}
+
+speaker-off() {
+    cd /home/blu/git/plugp100 || exit
+    source venv/bin/activate
+    python3 plugp100-helper.py 192.168.178.21 off
+    python3 plugp100-helper.py 192.168.178.24 off
+}
+
+speaker-right-off() {
+    cd /home/blu/git/plugp100 || exit
+    source venv/bin/activate
+    python3 plugp100-helper.py 192.168.178.21 off
+}
+
+speaker-right-on() {
+    cd /home/blu/git/plugp100 || exit
+    source venv/bin/activate
+    python3 plugp100-helper.py 192.168.178.21 on
+}
+
+speaker-left-on() {
+    cd /home/blu/git/plugp100 || exit
+    source venv/bin/activate
+    python3 plugp100-helper.py 192.168.178.24 on
+}
+
+speaker-on() {
+    cd /home/blu/git/plugp100 || exit
+    source venv/bin/activate
+    python3 plugp100-helper.py 192.168.178.21 on
+    python3 plugp100-helper.py 192.168.178.24 on
+}
+
+speaker-off() {
+    cd /home/blu/git/plugp100 || exit
+    source venv/bin/activate
+    python3 plugp100-helper.py 192.168.178.21 off
+    python3 plugp100-helper.py 192.168.178.24 off
+}
+
+ssh-snippetbox() {
+    ssh -p 764 -N -L 5000:127.0.0.1:5000 root@tail.ws &
+}
+
+suspend() {
+    kasa --host 192.168.178.58 off
+    systemctl suspend
+}
+
+switch-to-minipc() {
+    cd /home/blu/git/python-broadlink || exit
+    source venv/bin/activate
+    ddcutil setvcp 60 0x11 --display 1
+    #sleep 3
+    ddcutil setvcp 60 0xf --display 2
+broadlink_cli --device @/home/blu/broadlink/BEDROOM.device --send @/home/blu/broadlink/ezcoo/EZ-SW24-U3L/ezcoo-usb-hub-pc-2
+}
+
+switch-to-mainrig ()
+{
+cd /home/blu/git/python-broadlink || exit
+
+/usr/bin/python3 -m venv venv
+source venv/bin/activate
+
+# switch display 1 to DP
+ddcutil setvcp 60 0xf --display 1
+
+#sleep 3
+
+# switch display 2 to HDMI
+# ddcutil setvcp 60 0x11 --display 2
+# send peripherals to mainrig
+broadlink_cli --device @/home/blu/broadlink/BEDROOM.device --send @/home/blu/broadlink/ezcoo/EZ-SW24-U3L/ezcoo-usb-hub-pc-1
+}
+
+unzip-japanese() {
+    unzip -O shift-jis "$1"
+}
+
+update() {
+    sudo pacman -Syu --noconfirm
+    yay -Syu --noconfirm
+}
+
+uptailaudio() {
+    scp -P 764 "$1" root@tail.ws:/root/www/up.tail.ws/public/audio
+    echo "uploaded to https://up.tail.ws/audio/${1##*/}"
+}
+uptailconfig() {
+    scp -P 764 "$1" root@tail.ws:/root/www/up.tail.ws/public/config
+    echo "uploaded to https://up.tail.ws/config/${1##*/}"
+}
+
+uptailflac() {
+    scp -P 764 "$1" root@tail.ws:/root/www/up.tail.ws/public/flac
+    echo "uploaded to https://up.tail.ws/flac/${1##*/}"
+}
+
+uptailimages-separate() {
+    if [ "$#" -ne 2 ]; then
+        echo "Usage: uptailimages-separate local_file folder_name_on_server"
+        return 1
+    fi
+    
+    local local_file="$1"
+    local folder_name="$2"
+    
+    scp -P 764 "$local_file" root@tail.ws:/root/www/up.tail.ws/public/images/"$folder_name"/
+    echo "Uploaded $local_file to https://up.tail.ws/images/$folder_name/$(basename "$local_file")"
+}
+
+uptailimages() {
+    scp -P 764 "$1" root@tail.ws:/root/www/up.tail.ws/public/images
+    echo "uploaded to https://up.tail.ws/images/${1##*/}"
+}
+uptailkey() {
+    scp -P 764 "$1" root@tail.ws:/root/www/up.tail.ws/public/key
+    echo "uploaded to https://up.tail.ws/key/${1##*/}"
+}
+
+uptailmd() {
+    scp -P 764 "$1" root@tail.ws:/root/www/up.tail.ws/public/md
+    echo "uploaded to https://up.tail.ws/md/${1##*/}"
+}
+
+uptailnix() {
+    scp -P 764 "$1" root@tail.ws:/root/www/up.tail.ws/public/nix
+    echo "uploaded to https://up.tail.ws/nix/nix/${1##*/}"
+}
+
+uptailpdf() {
+    scp -P 764 "$1" root@tail.ws:/root/www/up.tail.ws/public/pdf
+    echo "uploaded to https://up.tail.ws/pdf/${1##*/}"
+}
+
+uptailscripts() {
+    scp -P 764 "$1" root@tail.ws:/root/www/up.tail.ws/public/scripts
+    echo "uploaded to https://up.tail.ws/scripts/${1##*/}"
+}
+
+uptailtxt() {
+    scp -P 764 "$1" root@tail.ws:/root/www/up.tail.ws/public/txt
+    echo "uploaded to https://up.tail.ws/txt/${1##*/}"
+}
+
+video-pixel7a() {
+    adb devices | grep -q "192.168.178.57:5555" || adb connect 192.168.178.57:5555 &
+    sleep 1
+    scrcpy --no-audio &
+    sleep 1
+    xdotool windowactivate --sync "$(xdotool search --class scrcpy);"
+}
+
+wake-apple-macmini-archm1() {
+    wol A0:CE:C8:6E:79:40
+}
+
+wakemainrig-MS-7D51() {
+    wol D8:BB:C1:98:30:55
+}
+
+wakemini-am06pro() {
+    wol 1C:83:41:40:9D:BF
+}
+
+wattage-table() {
+    cd /home/blu/git/plugp100 || exit
+    source venv/bin/activate
+    python3 plugp100-helper.py 192.168.178.22 watt 2>/dev/null | awk -F '[=)]' '{print $2}' | tr -d '\n'
+}
+
+windowadjust-Extn1_SAP() {
+    xdotool search --name "Extn1_SAP Desktop — Mozilla Firefox" windowmove 1081 380 windowsize 1420 985
+    xdotool search --name "Extn1_SAP Desktop Preview — Mozilla Firefox" windowmove 1081 380 windowsize 1420 985
+}
+
+windowadjust-video-pixel7a() {
+    xdotool search --class "scrcpy" windowmove 2535 380 windowsize 434 985
+}
+
+
+venv() {
+    echo "Creating virtual environment in $(pwd)/.venv"
+    python3 -m venv .venv --upgrade-deps
+    source .venv/bin/activate
+
+    # Append .venv to the Git exclude file, but only if it's not already there.
+    if [[ -e .git ]]; then
+        line_to_append=".venv"
+        target_file=".git/info/exclude"
+
+        if ! grep -qxF "$line_to_append" "$target_file" 2>/dev/null; then
+            echo "$line_to_append" >> "$target_file"
+        fi
+    fi
+
+    # Tell Time Machine that it doesn't need to both backing up the virtualenv directory. (macOS-only)
+    # See https://ss64.com/mac/tmutil.html
+    if command -v tmutil &>/dev/null; then
+        tmutil addexclusion .venv
+    fi
+}
+
+tmpdir() {
+    cd "$(mktemp -d)"
+}
+
+investigate-processes() {
+while true; do sleep 1; ps -eo pid,cmd:500,%cpu --sort=-%cpu | awk 'NR==2 { for(i=3;i<=NF;i++) printf "%s ", $i; printf "\n" }'; done
+}

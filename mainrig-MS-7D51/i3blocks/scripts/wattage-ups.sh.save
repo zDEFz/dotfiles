@@ -1,0 +1,2 @@
+#!/bin/bash
+echo "$(/usr/bin/upsc ups | grep ups.realpower | head -n1 | cut -d ':' -f2 | tr -d ' ')"

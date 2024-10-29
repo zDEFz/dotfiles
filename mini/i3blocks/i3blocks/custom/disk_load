@@ -1,0 +1,4 @@
+#!/bin/bash
+disk="nvme0n1"
+diskload=$(iostat -x -d "$disk" 1 1 | grep "$disk" | awk '{print $NF}')
+echo "7450-Max Busy <span foreground='#00FF00'>$diskload%</span>"
