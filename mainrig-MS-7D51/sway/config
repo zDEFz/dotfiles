@@ -95,7 +95,7 @@ set $R 'BNQ ZOWIE XL LCD EBMCM01300SL0'
      #background /home/blu/.config/sway/wallpaper/DP-1/2.png fill
 
 output $LL {
-    background /home/blu/.config/sway/wallpaper/LL_SCREEN/1080x1920.png fill
+    background /home/blu/.config/sway/wallpaper/9x16-Portrait.png fill
     mode 1920x1080@144Hz
     position 0 0
     render_bit_depth 8
@@ -106,7 +106,7 @@ output $LL {
 }
 
 output $L {
-    background /home/blu/.config/sway/wallpaper/L_SCREEN/1080x1920.png fill
+    background /home/blu/.config/sway/wallpaper/9x16-Portrait.png fill
     mode 1920x1080@240Hz
     position 1080 0
     render_bit_depth 8
@@ -117,7 +117,7 @@ output $L {
 }
 
 output $M {
-    background /home/blu/.config/sway/wallpaper/R_SCREEN/1920x1080.png fill
+    background /home/blu/.config/sway/wallpaper/16x9-Landscape.png fill
     mode 1920x1080@360Hz
     position 2160 342
     render_bit_depth 8
@@ -127,7 +127,7 @@ output $M {
 }
 
 output $R {
-    background /home/blu/.config/sway/wallpaper/RR_SCREEN/1080x1920.png fill
+    background /home/blu/.config/sway/wallpaper/9x16-Portrait.png fill
     mode 1920x1080@240Hz
     position 4080 14
     render_bit_depth 8
