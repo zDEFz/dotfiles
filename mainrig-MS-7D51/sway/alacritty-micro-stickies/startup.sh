@@ -55,17 +55,18 @@ p="/home/blu/notes"
  
    
 $script "transparent ${p}/ws-04/intake" --startup & sleep .24
+$script "transparent ${p}/ws-04/wellbeing" --startup & sleep .24
 #$script "transparent ${p}/ws-04/supplements" --startup & sleep .24
     
-$script "transparent ${p}/ws-04/todo" --startup & sleep .24
+#$script "transparent ${p}/ws-04/todo" --startup & sleep .24
 
-$script "transparent ${p}/ws-04/mind" --startup & sleep .24
+#$script "transparent ${p}/ws-04/mind" --startup & sleep .24
 
-$script "transparent ${p}/ws-04/body" --startup & sleep .24
+#$script "transparent ${p}/ws-04/body" --startup & sleep .24
 
-$script "transparent ${p}/ws-04/i-am" --startup & sleep .24
+#$script "transparent ${p}/ws-04/i-am" --startup & sleep .24
 
-$script "transparent ${p}/ws-04/levetiracetam" --startup & sleep .24
+#$script "transparent ${p}/ws-04/levetiracetam" --startup & sleep .24
 
 
 
