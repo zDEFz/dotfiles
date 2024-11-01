@@ -54,16 +54,21 @@ p="/home/blu/notes"
    
  
    
-$script "transparent ${p}/ws-04/intake"         --startup "4" "$RR_SCREEN_pos30_portrait" & sleep .24
+$script "transparent ${p}/ws-04/intake" --startup & sleep .24
+$script "transparent ${p}/ws-04/supplements" --startup & sleep .24
     
-$script "transparent ${p}/ws-04/todo"              --startup "4" "$RR_SCREEN_pos31_portrait" & sleep .24
+$script "transparent ${p}/ws-04/todo" --startup & sleep .24
 
-$script "transparent ${p}/ws-04/mind"              --startup "4" "$RR_SCREEN_pos20_portrait" & sleep .24
+$script "transparent ${p}/ws-04/mind" --startup & sleep .24
 
-$script "transparent ${p}/ws-04/body"            --startup "4" "$RR_SCREEN_pos21_portrait" & sleep .24
+$script "transparent ${p}/ws-04/body" --startup & sleep .24
 
-$script "transparent ${p}/ws-04/i-am"            --startup "4" "$RR_SCREEN_pos21_portrait" & sleep .24
+$script "transparent ${p}/ws-04/i-am" --startup & sleep .24
+
+$script "transparent ${p}/ws-04/levetiracetam" --startup & sleep .24
+
+
 # Wanikani bottom right
-$script "blue ${p}/ws-31/wanikani-cheat"                --startup "31"   "$R_SCREEN_BOTTOM_RIGHT" & sleep .24
+$script "blue ${p}/ws-31/wanikani-cheat" & sleep .24
     
 #     $script "transparent workout"                --startup    "52" "3707 820"

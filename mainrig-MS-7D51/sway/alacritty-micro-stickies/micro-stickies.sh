@@ -36,19 +36,6 @@ if [[ $mode == "--startup" ]]; then
     alacritty \
     --class="${name}${unique_id}" \
     -e micro $micro_args &
-
-    # Give Alacritty time to launch
-    sleep 0.3
-
-    # Move the newly created Alacritty window to the specified position
-#    swaymsg "[app_id=\"${name}${unique_id}\"] move absolute position $position" &
-
-    # End time measurement for launching Alacritty
-    alacritty_end_time=$(date +%s.%N)
-    alacritty_elapsed_time=$(echo "$alacritty_end_time - $alacritty_start_time" | bc)
-
-    # Output Alacritty launch time
-    echo "Alacritty launch time: $alacritty_elapsed_time seconds"
 fi
 
 if [[ $mode == "--cursor" ]]; then
