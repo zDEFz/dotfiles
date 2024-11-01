@@ -4,26 +4,21 @@
 micro_args="-colorscheme $1"
 mode="$2"
 workspace="$3"
+position="$4"
 name=""
+
+# Function to generate a fixed unique ID from the filename only
+generate_fixed_id() {
+    local fullpath="$1"
+    local filename=$(basename "$fullpath")  # Extract the filename from the path only
+    # You can modify the filename here if needed (e.g., remove spaces, etc.)
+    echo "${filename// /_}"  # Replace spaces with underscores (optional)
+}
 
 # Start overall time measurement
 total_start_time=$(date +%s.%N)
 
-# Start time measurement for unique ID generation
-unique_id_start_time=$(date +%s.%N)
-
-# Generate a unique ID using the current timestamp and a random hex value (non-blocking)
-unique_id=$( (timestamp=$(date +%s); 
-random_hex=$(printf "%x" $((RANDOM))); 
-echo "${timestamp}-${random_hex}") & wait $!)
-
-# End time measurement for unique ID generation
-unique_id_end_time=$(date +%s.%N)
-unique_id_elapsed_time=$(echo "$unique_id_end_time - $unique_id_start_time" | bc)
-
-# Output unique ID generation time
-echo "Unique ID generation time: $unique_id_elapsed_time seconds"
-
+# Check for mode and set name and class based on it
 if [[ $mode == "--startup" ]]; then
     name="alacritty-micro-startup-"
     
@@ -34,7 +29,10 @@ if [[ $mode == "--startup" ]]; then
     # Start time measurement for launching Alacritty
     alacritty_start_time=$(date +%s.%N)
 
-    # Launch Alacritty with the unique ID as part of the class name and disown the process
+    # Generate the fixed unique ID based on the filename
+    unique_id=$(generate_fixed_id "$1")
+    
+    # Launch Alacritty with the fixed unique ID as part of the class name and disown the process
     alacritty \
     --class="${name}${unique_id}" \
     -e micro $micro_args &
@@ -43,7 +41,7 @@ if [[ $mode == "--startup" ]]; then
     sleep 0.3
 
     # Move the newly created Alacritty window to the specified position
-    swaymsg "[app_id=\"${name}${unique_id}\"] move absolute position $4" &
+#    swaymsg "[app_id=\"${name}${unique_id}\"] move absolute position $position" &
 
     # End time measurement for launching Alacritty
     alacritty_end_time=$(date +%s.%N)

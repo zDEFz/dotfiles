@@ -44,19 +44,19 @@ R_SCREEN_BOTTOM_RIGHT="3581 949"
 
 p="/home/blu/notes"
 
-$script "transparent ${p}/ws-04/sap-talk-I-was"    --startup "4" "$RR_SCREEN_pos01_portrait" & sleep .24
+#$script "transparent ${p}/ws-04/sap-talk-I-was"    --startup "4" "$RR_SCREEN_pos01_portrait" & sleep .24
     
-$script "transparent ${p}/ws-04/sap-talk-become"   --startup "4" "$RR_SCREEN_pos02_portrait" & sleep .24
+#$script "transparent ${p}/ws-04/sap-talk-become"   --startup "4" "$RR_SCREEN_pos02_portrait" & sleep .24
     
-$script "transparent ${p}/ws-04/sap-talk-myself"   --startup "4" "$RR_SCREEN_pos10_portrait" & sleep .24
+#$script "transparent ${p}/ws-04/sap-talk-myself"   --startup "4" "$RR_SCREEN_pos10_portrait" & sleep .24
     
-$script "transparent ${p}/ws-04/workout"           --startup "4" "$RR_SCREEN_pos11_portrait" & sleep .24
+#$script "transparent ${p}/ws-04/workout"           --startup "4" "$RR_SCREEN_pos11_portrait" & sleep .24
     
-$script "transparent ${p}/ws-04/mind"              --startup "4" "$RR_SCREEN_pos20_portrait" & sleep .24
+#$script "transparent ${p}/ws-04/mind"              --startup "4" "$RR_SCREEN_pos20_portrait" & sleep .24
     
-$script "transparent ${p}/ws-04/health"            --startup "4" "$RR_SCREEN_pos21_portrait" & sleep .24
+#$script "transparent ${p}/ws-04/health"            --startup "4" "$RR_SCREEN_pos21_portrait" & sleep .24
     
-$script "transparent ${p}/ws-04/groceries"         --startup "4" "$RR_SCREEN_pos30_portrait" & sleep .24
+$script "transparent ${p}/ws-04/intake-notes"         --startup "4" "$RR_SCREEN_pos30_portrait" & sleep .24
     
 $script "transparent ${p}/ws-04/todo"              --startup "4" "$RR_SCREEN_pos31_portrait" & sleep .24
     
