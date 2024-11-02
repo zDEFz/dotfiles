@@ -51,10 +51,6 @@ if [[ $mode == "--cursor" ]]; then
     --class="${name}${unique_id}" \
     -e micro $micro_args &
 
-    sleep .1
-    swaymsg "for_window [class="${name}${unique_id}"] floating enable"
-
-
     # End time measurement for launching Alacritty in cursor mode
     cursor_end_time=$(date +%s.%N)
     cursor_elapsed_time=$(echo "$cursor_end_time - $cursor_start_time" | bc)
