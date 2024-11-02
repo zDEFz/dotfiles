@@ -261,5 +261,5 @@ elif [[ -n "$today_holiday" ]]; then
 elif [[ -n "$next_holiday" ]]; then
     echo "$next_holiday"
 else
-    echo "No public holidays today are upcoming"
+    echo "No public holidays today, none are upcoming"
 fi
