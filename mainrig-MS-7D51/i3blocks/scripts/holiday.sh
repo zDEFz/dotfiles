@@ -1,9 +1,14 @@
 #!/bin/bash
 
+# Path to the i3blocks configuration file
+CONFIG_FILE="/home/blu/.config/i3blocks/i3blocks.conf"
+# Backup of the original color
+ORIGINAL_COLOR="#FF8A65"
+# Bright purple color
+NEW_COLOR="#00FF00"  # You can change this to your preferred bright purple
 
 # Fetch today's date in YYYY-MM-DD format
 TODAY=$(date +%Y-%m-%d)
-
 # Hardcoded holidays for Baden-Württemberg from 2024 to 2040
 declare -A holidays
 holidays=(
@@ -242,7 +247,7 @@ if [[ -n "${holidays[$TODAY]}" ]]; then
     today_holiday="${holidays[$TODAY]} today"
 fi
 
-# Loop through the next 30 days to find the next holiday
+# Loop through the next 365 days to find the next holiday
 for i in {1..365}; do
     DATE=$(date -d "$TODAY + $i days" +%Y-%m-%d)
     HOLIDAY="${holidays[$DATE]}"
@@ -260,6 +265,15 @@ fi
 
 if [[ -n "$next_holiday" ]]; then
     echo "$next_holiday"
+fi
+
+# Modify the configuration file based on whether today is a holiday
+if [[ -n "$today_holiday" ]]; then
+    # If today is a holiday, replace the color with bright purple
+    sed -i "s/color=$ORIGINAL_COLOR/color=$NEW_COLOR/g" "$CONFIG_FILE"
+else
+    # If not a holiday, revert to the original color
+    sed -i "s/color=$NEW_COLOR/color=$ORIGINAL_COLOR/g" "$CONFIG_FILE"
 fi
 
 # Only print a message if there are no holidays today and none upcoming
