@@ -5,6 +5,7 @@
 export XDG_CURRENT_DESKTOP=sway
 export QT_QPA_PLATFORMTHEME=qt5ct
 export GTK_THEME=Breeze:dark
+export XDG_CONFIG_HOME="$HOME/.config"
 # export WLR_RENDERER=vulkan
 # export WAYLAND_DEBUG=1
 # Launch sway with the desired option
