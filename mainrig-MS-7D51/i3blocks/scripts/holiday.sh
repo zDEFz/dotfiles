@@ -242,8 +242,8 @@ if [[ -n "${holidays[$TODAY]}" ]]; then
     today_holiday="${holidays[$TODAY]} today"
 fi
 
-# Loop through the next 60 days to find the next holiday
-for i in {1..30}; do
+# Loop through the next 30 days to find the next holiday
+for i in {1..365}; do
     DATE=$(date -d "$TODAY + $i days" +%Y-%m-%d)
     HOLIDAY="${holidays[$DATE]}"
 
@@ -254,12 +254,15 @@ for i in {1..30}; do
 done
 
 # Output the results on the same line
-if [[ -n "$today_holiday" && -n "$next_holiday" ]]; then
-    echo "$today_holiday Today $next_holiday"
-elif [[ -n "$today_holiday" ]]; then
+if [[ -n "$today_holiday" ]]; then
     echo "$today_holiday"
-elif [[ -n "$next_holiday" ]]; then
+fi
+
+if [[ -n "$next_holiday" ]]; then
     echo "$next_holiday"
-else
-    echo "No public holidays today, none are upcoming"
+fi
+
+# Only print a message if there are no holidays today and none upcoming
+if [[ -z "$today_holiday" && -z "$next_holiday" ]]; then
+    echo "No holidays today, none are upcoming"
 fi
