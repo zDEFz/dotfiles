@@ -102,7 +102,9 @@ if [[ -z "$next_meeting" && -z "$meeting_active" ]]; then
     for meeting in "${meetings[@]}"; do
         read -r day_or_date start end description <<< "$meeting"
         if [[ "$day_or_date" =~ ^[A-Za-z]{3}$ ]]; then
-            if [[ "$day_or_date" == "Mon" && "$current_day_short" != "Mon" ]]; then
+            if [[ "$day_or_date" == "$current_day_short" ]]; then
+                continue  # Skip if the meeting is for today.
+            elif [[ "$day_or_date" == "Mon" && "$current_day_short" != "Mon" ]]; then
                 next_meeting="<span color='white'>$description on Mon at $start - $end</span>"
             fi
             break
