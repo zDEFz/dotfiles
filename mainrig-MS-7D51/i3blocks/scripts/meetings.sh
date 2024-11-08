@@ -13,8 +13,25 @@ current_day_short=$(echo "$current_day" | awk '{print substr($0, 1, 3)}')  # Abb
 current_date=$(date '+%d')
 current_time=$(date '+%H:%M')
 
-# Function to calculate time difference in minutes
-time_difference() {
+# Function to calculate time difference in human-readable format (h min)
+time_difference_human_readable() {
+    local start_time=$1
+    local current_time=$2
+    local start_seconds=$(date -d "$start_time" +%s)
+    local current_seconds=$(date -d "$current_time" +%s)
+    local total_minutes=$(( (start_seconds - current_seconds) / 60 ))
+    
+    if (( total_minutes >= 60 )); then
+        local hours=$(( total_minutes / 60 ))
+        local minutes=$(( total_minutes % 60 ))
+        echo "${hours}h ${minutes}m"
+    else
+        echo "${total_minutes}m"
+    fi
+}
+
+# Function to calculate time difference in minutes (for notifications)
+time_difference_minutes() {
     local start_time=$1
     local current_time=$2
     local start_seconds=$(date -d "$start_time" +%s)
@@ -44,18 +61,18 @@ for meeting in "${meetings[@]}"; do
                 meeting_active="<span color='red'>$description in progress</span>"
                 break
             elif [[ -z "$next_meeting" && "$current_time" < "$start" ]]; then
-                countdown=$(time_difference "$start" "$current_time")
-                next_meeting="<span color='white'>$description in $countdown minutes</span>"
+                countdown=$(time_difference_human_readable "$start" "$current_time")
+                next_meeting="<span color='white'>$description in $countdown</span>"
             fi
         fi
-    # If the meeting is based on a specific day of the week (e.g., "Mon", "Tue")
+    # If the meeting is based on a specific day of the week (e.g., "Fri")
     elif [[ "$day_or_date" == "$current_day_short" ]]; then
         if [[ "$current_time" > "$start" && "$current_time" < "$end" ]]; then
             meeting_active="<span color='red'>$description in progress</span>"
             break
         elif [[ -z "$next_meeting" && "$current_time" < "$start" ]]; then
-            countdown=$(time_difference "$start" "$current_time")
-            next_meeting="<span color='white'>$description in $countdown minutes</span>"
+            countdown=$(time_difference_human_readable "$start" "$current_time")
+            next_meeting="<span color='white'>$description in $countdown</span>"
         fi
     # If the meeting is based on a specific date (e.g., "14")
     elif [[ "$day_or_date" == "$current_date" ]]; then
@@ -63,10 +80,21 @@ for meeting in "${meetings[@]}"; do
             meeting_active="<span color='red'>$description in progress</span>"
             break
         elif [[ -z "$next_meeting" && "$current_time" < "$start" ]]; then
-            countdown=$(time_difference "$start" "$current_time")
-            next_meeting="<span color='white'>$description in $countdown minutes</span>"
+            countdown=$(time_difference_human_readable "$start" "$current_time")
+            next_meeting="<span color='white'>$description in $countdown</span>"
         fi
     fi
+
+    # Calculate minutes until start for notification
+    minutes_until_start=$(time_difference_minutes "$start" "$current_time")
+
+    # Send notifications 30, 15, 10, and 5 minutes before the meeting starts
+    case $minutes_until_start in
+        30) notify-send "$description" "Meeting starts in 30 minutes" ;;
+        15) notify-send "$description" "Meeting starts in 15 minutes" ;;
+        10) notify-send "$description" "Meeting starts in 10 minutes" ;;
+         5) notify-send "$description" "Meeting starts in 5 minutes" ;;
+    esac
 done
 
 # Handle the case where next meeting is based on weekdays (e.g., Monday)
@@ -88,8 +116,3 @@ if [[ -n "$meeting_active" ]]; then
 else
     echo "$next_meeting"
 fi
-0 
-+
-
-\
-   
