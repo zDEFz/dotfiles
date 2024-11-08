@@ -1,9 +1,8 @@
 #!/bin/bash
 
-# Configuration file and colors
-CONFIG_FILE="/home/blu/.config/i3blocks/i3blocks.conf"
-ORIGINAL_COLOR="#FF8A65"
-NEW_COLOR="#00FF00"
+# Colors for holiday and non-holiday states
+HOLIDAY_COLOR="yellow"  # New color for holidays
+DEFAULT_COLOR="white"  # Original color
 
 # Today's date and year
 TODAY=$(date +%Y-%m-%d)
@@ -30,13 +29,15 @@ next_holiday=""
 for i in {1..365}; do
     NEXT_DATE=$(date -d "$TODAY + $i days" +"%Y-%m-%d")
     if [[ -n "${holidays[$NEXT_DATE]}" ]]; then
-        next_holiday="${holidays[$NEXT_DATE]} at $NEXT_DATE"
+        next_holiday="${holidays[$NEXT_DATE]} on $NEXT_DATE"
         break
     fi
 done
 
-# Display holiday status: today's, next one, or default message
-echo "${today_holiday:-${next_holiday:-No holidays today, none are upcoming}}"
+# Determine display message and color
+display_message="${today_holiday:-${next_holiday:-No holidays today, none are upcoming}}"
+color="${today_holiday:+$HOLIDAY_COLOR}"
+color="${color:-$DEFAULT_COLOR}"
 
-# Update i3blocks color based on whether today is a holiday
-sed -i "s/color=$ORIGINAL_COLOR/color=${today_holiday:+$NEW_COLOR}$ORIGINAL_COLOR/g" "$CONFIG_FILE"
+# Output with Pango markup
+echo "<span color=\"$color\">$display_message</span>"
