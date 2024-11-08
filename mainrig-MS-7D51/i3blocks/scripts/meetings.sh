@@ -3,7 +3,7 @@
 # Define meetings in the format: "DAY/DATE/NTH_WEEKDAY START END DESCRIPTION"
 meetings=(
     "Mon 16:30 17:20 Team Sync"
-    "14 18:00 15:00 Team Meeting"
+    "14 14:00 15:00 Team Meeting"
     "3 Thu 10:30 10:55 1:1 Nicole"
 )
 
@@ -77,16 +77,27 @@ for meeting in "${meetings[@]}"; do
             next_meeting="<span color='white'>$description in $countdown</span>"
         fi
 
-    # specific date (e.g., "14")
-    elif [[ "$day_or_date" == "$current_date" ]]; then
-        if [[ "$current_time" > "$start" && "$current_time" < "$end" ]]; then
-            meeting_active="<span color='red'>$description in progress</span>"
-            break
-        elif [[ -z "$next_meeting" && "$current_time" < "$start" ]]; then
-            countdown=$(time_difference_human_readable "$start" "$current_time")
-            next_meeting="<span color='white'>$description in $countdown</span>"
-        fi
+# specific date (e.g., "14")
+elif [[ "$day_or_date" == "$current_date" ]]; then
+    if [[ "$current_time" > "$start" && "$current_time" < "$end" ]]; then
+        meeting_active="<span color='red'>$description in progress</span>"
+        break
+    elif [[ -z "$next_meeting" && "$current_time" < "$start" ]]; then
+        countdown=$(time_difference_human_readable "$start" "$current_time")
+        next_meeting="<span color='white'>$description in $countdown</span>"
     fi
+
+    # Calculate minutes until start for notification only if today is the specified date
+    minutes_until_start=$(time_difference_minutes "$start" "$current_time")
+    case $minutes_until_start in
+        30) notify-send "$description" "Meeting starts in 30 minutes" ;;
+        15) notify-send "$description" "Meeting starts in 15 minutes" ;;
+        10) notify-send "$description" "Meeting starts in 10 minutes" ;;
+         5) notify-send "$description" "Meeting starts in 5 minutes" ;;
+    esac
+fi
+
+
 
     # Calculate minutes until start for notification
     if [[ "$meeting_active" == "" ]]; then
