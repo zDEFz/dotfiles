@@ -129,7 +129,7 @@ output $M {
 output $R {
     background /home/blu/.config/sway/wallpaper/9x16-Portrait.png fill
     mode 1920x1080@240Hz
-    position 4080 14
+    position 4080 0
     render_bit_depth 8
     resolution 1920x1080
     scale_filter smart
