@@ -15,27 +15,33 @@ generate_fixed_id() {
     echo "${filename// /_}"  # Replace spaces with underscores (optional)
 }
 
-# Start overall time measurement
-total_start_time=$(date +%s.%N)
-
 # Check for mode and set name and class based on it
 if [[ $mode == "--startup" ]]; then
     name="alacritty-micro-startup-"
     
     # Focus output and switch workspace in a single command
     swaymsg "focus output 'BNQ ZOWIE XL LCD EBMCM01300SL0'" &
-    swaymsg "workspace $workspace" &
+
+    if [[ ! $workspace -eq "" ]]; then 
+        swaymsg "workspace $workspace" &
+    else
+        echo "Assuming set by sway config. $micro_args "
+    fi
 
     # Start time measurement for launching Alacritty
     alacritty_start_time=$(date +%s.%N)
 
     # Generate the fixed unique ID based on the filename
-    unique_id=$(generate_fixed_id "$1")
-    
-    # Launch Alacritty with the fixed unique ID as part of the class name and disown the process
-    alacritty \
-    --class="${name}${unique_id}" \
-    -e micro $micro_args &
+    fixed_id=$(generate_fixed_id "$1")
+
+    # Check if any app_id starting with 'alacritty-micro-startup-' matches the generated fixed_id
+    if ! swaymsg -t get_tree | jq -r '.. | .app_id? // empty' | grep -q "^alacritty-micro-startup-${fixed_id}$"; then
+        # Launch Alacritty with the fixed unique ID as part of the class name and disown the process
+        alacritty --class="${name}${fixed_id}" -e micro $micro_args &
+    else
+        echo "'$fixed_id' already runs. Not launching."
+    fi
+
 fi
 
 if [[ $mode == "--cursor" ]]; then
@@ -58,10 +64,3 @@ if [[ $mode == "--cursor" ]]; then
     # Output cursor mode launch time
     echo "Cursor mode Alacritty launch time: $cursor_elapsed_time seconds"
 fi
-
-# End overall time measurement
-total_end_time=$(date +%s.%N)
-total_elapsed_time=$(echo "$total_end_time - $total_start_time" | bc)
-
-# Output total execution time
-echo "Total script execution time: $total_elapsed_time seconds"

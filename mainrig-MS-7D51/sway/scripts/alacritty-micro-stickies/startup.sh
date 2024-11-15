@@ -51,8 +51,7 @@ p="/home/blu/notes"
 #$script "transparent ${p}/ws-04/sap-talk-myself"   --startup "4" "$RR_SCREEN_pos10_portrait" & sleep .24
     
 #$script "transparent ${p}/ws-04/workout"           --startup "4" "$RR_SCREEN_pos11_portrait" & sleep .24
-   
- 
+
    
 $script "transparent ${p}/ws-04/intake" --startup & sleep .24
 $script "transparent ${p}/ws-04/wellbeing" --startup & sleep .24

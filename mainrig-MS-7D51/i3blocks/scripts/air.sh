@@ -5,17 +5,17 @@ content=$(curl -s https://www.iqair.com/germany/baden-wuerttemberg/wiesloch)
 
 # Check for different air quality levels
 if echo "$content" | grep -q "Open your windows"; then
-    echo "Good air outside"
+    echo "Good air"
 elif echo "$content" | grep -q "Moderate"; then
-    echo "Moderate air outside"
+    echo "Moderate air"
 elif echo "$content" | grep -q "Unhealthy for sensitive groups"; then
-    echo "Unhealthy for sensitive groups outside"
+    echo "Unhealthy for sensitive groups"
 elif echo "$content" | grep -q "Unhealthy"; then
-    echo "Unhealthy air outside"
+    echo "Unhealthy air"
 elif echo "$content" | grep -q "Very unhealthy"; then
-    echo "Very unhealthy air outside"
+    echo "Very unhealthy air"
 elif echo "$content" | grep -q "Hazardous"; then
-    echo "Hazardous air outside"
+    echo "Hazardous air"
 else
-    echo "Bad air outside"
+    echo "Bad air"
 fi
