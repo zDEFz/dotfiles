@@ -1,6 +1,0 @@
-type What is tested?
-key enter
-type Why is this tested?
-key enter
-type How to test?
-key enter tab enter backspace up up up up

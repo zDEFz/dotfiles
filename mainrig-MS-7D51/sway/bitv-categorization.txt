@@ -1,4 +1,0 @@
-type Classification of the test step
-key enter tab
-type Classification of the test step in accordance with EN 301 549 V3.2.1
-key enter

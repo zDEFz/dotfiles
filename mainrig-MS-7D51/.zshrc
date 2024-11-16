@@ -1,0 +1,1 @@
+/home/blu/git/mainrig-MS-7D51/.zshrc
