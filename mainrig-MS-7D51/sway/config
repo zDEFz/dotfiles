@@ -52,6 +52,8 @@ set $t title
 set $ubin /usr/bin
 set $ws workspace
 
+
+
 # Use Mouse+$meta to drag floating windows to their wanted position
 floating_modifier $meta
 
