@@ -87,6 +87,10 @@ set $R 'BNQ ZOWIE XL LCD EBMCM01300SL0'
 set $P 'Prechen 1920 * 720'
 set $T2 'BNQ 1920 * 1080'
 
+
+exec swaymsg 'create_output "HEADLESS-1"'
+output HEADLESS-1 mode 1920x1080@1000Hz subpixel rgb position 2160 354
+exec swaymsg output 'HEADLESS-1' enable
 #output * adaptive_sync on
 
 # Set up the left display
