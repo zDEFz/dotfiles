@@ -1,0 +1,7 @@
+key ctrl+c
+keydown leftmeta
+key up
+keyup leftmeta
+key ctrl+a
+key backspace
+key ctrl+v
