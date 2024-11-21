@@ -155,16 +155,17 @@ output $R {
     transform 270
 }
 
-# output $T2 {
-#     background /home/blu/.config/sway/wallpaper/16x9-Landscape.png fill
-#     mode 1920x1080@360Hz
-#     position 5160 8
-#     render_bit_depth 8
-#     resolution 1920x1080
-#     scale_filter smart
-#     subpixel rgb
-# }
+output $T2 {
+    background /home/blu/.config/sway/wallpaper/16x9-Landscape.png fill
+    mode 1920x1080@360Hz
+    position 5160 8
+    render_bit_depth 8
+    resolution 1920x1080
+    scale_filter smart
+    subpixel rgb
+}
 
+output $T2 toggle
 include /home/blu/.config/sway/workspaces/workspace-definitions.conf
 
 # Theming
