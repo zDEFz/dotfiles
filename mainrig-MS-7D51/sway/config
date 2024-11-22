@@ -155,7 +155,7 @@ output $R {
     transform 270
 }
 
-output $T2 {
+output $TAIKO {
     background /home/blu/.config/sway/wallpaper/16x9-Landscape.png fill
     mode 1920x1080@360Hz
     position 5160 8
@@ -165,7 +165,6 @@ output $T2 {
     subpixel rgb
 }
 
-output $T2 toggle
 include /home/blu/.config/sway/workspaces/workspace-definitions.conf
 
 # Theming
