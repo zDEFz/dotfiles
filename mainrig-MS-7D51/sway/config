@@ -71,14 +71,6 @@ input '1356:2508:Sony_Interactive_Entertainment_Wireless_Controller_Touchpad' ev
 # Keyboard
 input type:keyboard xkb_numlock enabled
 
-# disable power saving (for example if using xscreensaver)
-# $ensi xset -dpms
-# $ensi xset -dpms s off
-
-### WORKSPACES
-# set $R DisplayPort-0
-#set $L DisplayPort-1
-
 set $LL "LG Electronics 24GM79G 0x0008042C"
 set $L 'BNQ ZOWIE XL LCD EBX7M01214SL0'
 set $M 'BNQ ZOWIE XL LCD EBF2R02905SL0'
@@ -87,27 +79,11 @@ set $R 'BNQ ZOWIE XL LCD EBMCM01300SL0'
 set $MON_KB 'Iiyama North America PL2590HS 1219241201302'
 set $TAIKO 'BNQ ZOWIE XL LCD EBF2R02370SL0'
 
-# exec swaymsg 'create_output "HEADLESS-1"'
-# output HEADLESS-1 mode 1920x1080@1000Hz subpixel rgb position 2160 354
-# exec swaymsg output 'HEADLESS-1' enable
-#output * adaptive_sync on
-
-# Set up the left display
-# Feels too dark
-        #output $L color_profile icc '/usr/share/color/icc/colord/XL2546K-L-120-cdm-D6500.icc' mode 1920x1080@144Hz transform 270 position 0 0
-        #output $R color_profile icc '/usr/share/color/icc/colord/XL2546K-R-120-cdm-D6500.icc' mode 1920x1080@144Hz position 1080 340
-    # without profile
-
-     #background /home/blu/.config/sway/wallpaper/DP-2/1.png fill
-     #background /home/blu/.config/sway/wallpaper/DP-1/2.png fill
-
 output $LL {
     background /home/blu/.config/sway/wallpaper/9x16-Portrait.png fill
     mode 1920x1080@144Hz
     position 0 0
     render_bit_depth 8
-    
-    scale_filter smart
     subpixel rgb
     transform 270
 }
@@ -117,7 +93,6 @@ output $L {
     mode 1920x1080@240Hz
     position 1080 0
     render_bit_depth 8
-    scale_filter smart
     subpixel rgb
     transform 270
 }
@@ -127,7 +102,6 @@ output $M {
     mode 1920x1080@360Hz
     position 2160 354
     render_bit_depth 8
-    scale_filter smart
     subpixel rgb
 }
 
@@ -136,7 +110,6 @@ output $MON_KB {
     mode 1920x1080@240Hz
     position 2160 1434
     render_bit_depth 8
-    scale_filter smart
     subpixel rgb
     transform 180
 }
@@ -146,19 +119,18 @@ output $R {
     mode 1920x1080@240Hz
     position 4080 8
     render_bit_depth 8
-    scale_filter smart
     subpixel rgb
     transform 270
 }
 
 output $TAIKO {
-    background /home/blu/.config/sway/wallpaper/16x9-Landscape.png fill
+    background /home/blu/.config/sway/wallpaper/9x16-Portrait.png fill
     mode 1920x1080@240Hz
     position 5160 8
     render_bit_depth 8
-    scale_filter smart
     subpixel rgb
 }
+
 
 include /home/blu/.config/sway/workspaces/workspace-definitions.conf
 

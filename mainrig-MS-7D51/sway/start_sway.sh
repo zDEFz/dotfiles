@@ -5,7 +5,7 @@
 # export XWAYLAND_NO_GLAMOR=1
 
 #export WINE_WAYLAND_DISPLAY_INDEX=4
-
+export WLR_SCENE_DISABLE_DIRECT_SCANOUT=1 
 export ELECTRON_OZONE_PLATFORM_HINT=wayland
 export GTK_THEME=Breeze:dark
 export QT_QPA_PLATFORMTHEME=qt5ct
@@ -13,8 +13,8 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CURRENT_DESKTOP=sway
 export _JAVA_AWT_WM_NONREPARENTING=1
 # AMD 6950XT as main renderer W7500 Pro / RX 6400 as secondary
-export WLR_DRM_DEVICES=/dev/dri/by-name/AMD_6950XT:/dev/dri/by-name/AMD_Pro_W7500:/dev/dri/by-name/AMD_RX_6400
+export WLR_DRM_DEVICES=/dev/dri/by-name/AMD_6950XT:/dev/dri/by-name/AMD_Pro_W7500
 
 # Start sway
 exec sway -c /home/blu/.config/sway/config
-# exec sway -c /home/blu/.config/sway/config --debug 2>> /home/blu/sway2.log
+#exec sway -c /home/blu/.config/sway/config --debug 2>> /home/blu/sway2.log
