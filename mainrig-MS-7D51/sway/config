@@ -165,6 +165,8 @@ output $TAIKO {
     subpixel rgb
 }
 
+# output $TAIKO toggle
+
 include /home/blu/.config/sway/workspaces/workspace-definitions.conf
 
 # Theming

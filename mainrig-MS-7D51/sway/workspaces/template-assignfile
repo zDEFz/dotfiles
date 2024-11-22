@@ -1,78 +1,47 @@
 ### ws01-LL (1)
-    $fw [$a="^firefox-deepl$"] $mtw $ws01-LL
-    $fw [$a="^firefox-SAP-BITV$"] $mtw $ws01-LL
+	
 ### ws01-L (2)
 	
 ### ws01-M (3)
-    $fw [$a="^firefox-default$"] $mtw $ws01-M, focus
-	$fw [$a="^firefox(-nightly)?$"] $mtw $ws01-M
-	$fw [$t="^Cultris II$"] $mtw $ws01-M, allow_tearing yes, max_render_time 1, focus
-
+	
 ### ws01-R (4)
 	
 ### ws01-TAIKO (5)
-    # We don't use that because the game itself needs to be set to display
-        # $fw [$c="steam_app_3040760"] move to workspace 5
-
+	
 ### ws01-MON_KB (6)
-	$fw [$a="^firefox-time$"] $mtw $ws01-MON_KB, layout stacking
-    $fw [$c="Slippi Launcher"] $mtw $ws01-MON_KB, layout stacking, focus
-    $fw [$t="^Faster Melee - Slippi \(\d+\.\d+\.\d+\)$"] $mtw $ws12-M, focus, border none, allow_tearing yes, max_render_time 1
-
-    $fw [$c="Apprun"] $mtw $ws01-MON_KB, focus
-    $fw [$c="dolphin-emu"] $mtw $ws01-MON_KB, layout stacking, focus
-    $fw [$t="Dolphin 2[0-9]+"] $mtw $ws01-MON_KB, layout stacking, focus
-
-    $fw [$a="^firefox-wire$"] $mtw $ws01-MON_KB
-
-    $fw [$a="MuseScore[0-9]|mscore|org.musescore.MuseScore"] $mtw $ws01-MON_KB
-    # $fw [$t="^piano-lessons - Thunar$"] $mtw $ws01-MON_KB
+	
 ### ws02-LL (7)
-    $fw [$a="org.keepassxc.KeePassXC"] $mtw $ws02-LL, border none
+	
 ### ws02-L (8)
-    $fw [$a="thunderbird"] $mtw $ws02-L, border none
+	
 ### ws02-M (9)
-    $fw [$a="alacritty-btop"] $mtw $ws02-M, border none, layout stacking
-    $fw [$a="alacritty-nvtop"] $mtw $ws02-M, border none, layout stacking
-    $fw [$a="firefox-overview-nas"] $mtw $ws02-M, border none, layout stacking
+	
 ### ws02-R (10)
-    $fw [$a="^firefox-posteo$"] $mtw $ws02-R
+	
 ### ws02-TAIKO (11)
 	
 ### ws02-MON_KB (12)
 	
 ### ws03-LL (13)
-    $fw [$c="kdenlive"] $mtw $ws03-LL, fullscreen enable
+	
 ### ws03-L (14)
-
+	
 ### ws03-M (15)
-    $fw [$a="^firefox-iOS-GuideCode$"] $mtw $ws03-M, focus, layout stacking
-    $fw [$a="^firefox-figma-SAP$"] $mtw $ws03-M, focus, layout stacking
-		
+	
 ### ws03-R (16)
-    $fw [$a="^firefox-WTS-SAP$"] $mtw $ws03-R, focus
+	
 ### ws03-TAIKO (17)
 	
 ### ws03-MON_KB (18)
 	
 ### ws04-LL (19)
-    $fw [$a="ca.parallel_launcher.ParallelLauncher"] $mtw $ws04-LL, layout stacking, focus
-    $fw [$a="crossover"] $mtw $ws04-LL, layout stacking, focus
+	
 ### ws04-L (20)
-    $fw [$c="[sS]team"] $mtw $ws04-L
+	
 ### ws04-M (21)
-    $fw [$t="^RetroArch"] $mtw $ws04-M, focus
-    $fw [$t="^RetroArch ParaLLEl N64 \d+\.\d+\.\d+ \(Parallel Launcher Edition\)$"] $mtw $ws04-M
-
-    $fw [$c="^.*steam_app_[0-9]+$"] $mtw $ws04-M, allow_tearing yes, max_render_time 1
-
-	$fw [$t="^Everspace  $"] $mtw $ws04-M, max_render_time 1, fullscreen enable
-
-    $fw [$c="Binding of Isaac:.*"] $mtw $ws04-M 
-    $fw [$c="[fF]actorio"] $mtw $ws04-M 
-	$fw [$t="Dorfromantik"] $mtw $ws04-M 
+	
 ### ws04-R (22)
-    $fw [$a="^firefox-noita-wiki$"] $mtw $ws04-R
+	
 ### ws04-TAIKO (23)
 	
 ### ws04-MON_KB (24)
@@ -80,7 +49,7 @@
 ### ws05-LL (25)
 	
 ### ws05-L (26)
-	$fw [$a="^firefox-n64-hacks$"] $mtw $ws05-L
+	
 ### ws05-M (27)
 	
 ### ws05-R (28)
@@ -90,23 +59,21 @@
 ### ws05-MON_KB (30)
 	
 ### ws06-LL (31)
-    $fw [$c="mullvad-realdebrid"] $mtw $ws06-LL, focus
-    $fw [$a="Mullvad Browser|Mullvad Browser Alpha"] $mtw $ws06-LL, focus
+	
 ### ws06-L (32)
-	$fw [$c="JDownloader|org-jdownloader-update-launcher-JDLauncher"] $mtw $ws06-L, focus
+	
 ### ws06-M (33)
-	$fw [$c="mullvad-sneedex"] $mtw $ws06-M, focus
+	
 ### ws06-R (34)
-    $fw [$a="^firefox-anime-charts$"] $mtw $ws06-R
+	
 ### ws06-TAIKO (35)
 	
 ### ws06-MON_KB (36)
 	
 ### ws07-LL (37)
-    $fw [$a="^firefox-musictheory.net-exercises$"] $mtw $ws07-LL
-    $fw [$a="^firefox-musictheory.net-lessons$"] $mtw $ws07-LL
+	
 ### ws07-L (38)
-    $fw [$t="sheets - Thunar"] $mtw $ws07-L
+	
 ### ws07-M (39)
 	
 ### ws07-R (40)
@@ -116,13 +83,13 @@
 ### ws07-MON_KB (42)
 	
 ### ws08-LL (43)
-	$fw [$a="^firefox-japanese-monkeytype$"] $mtw $ws08-LL
+	
 ### ws08-L (44)
-    $fw [$a="^firefox-japanese-hiragana-kanatrainer$"] $mtw $ws08-L
+	
 ### ws08-M (45)
-	$fw [$a="^firefox-japanese-wanikani$"] $mtw $ws08-M
+	
 ### ws08-R (46)
-	$fw [$a="^firefox-japanese-bunpro-jp$"] $mtw $ws08-R 
+	
 ### ws08-TAIKO (47)
 	
 ### ws08-MON_KB (48)
@@ -132,9 +99,9 @@
 ### ws09-L (50)
 	
 ### ws09-M (51)
-	$fw [$a="^firefox-swaywm-code$"] $mtw $ws09-M, focus
+	
 ### ws09-R (52)
-	$fw [$a="^firefox-i3blocks-code$"] $mtw $ws09-R, focus
+	
 ### ws09-TAIKO (53)
 	
 ### ws09-MON_KB (54)
@@ -144,7 +111,7 @@
 ### ws10-L (56)
 	
 ### ws10-M (57)
-	$fw [$a="^firefox-figma-sway$"] $mtw $ws10-M, focus
+	
 ### ws10-R (58)
 	
 ### ws10-TAIKO (59)
@@ -158,7 +125,7 @@
 ### ws11-M (63)
 	
 ### ws11-R (64)
-
+	
 ### ws11-TAIKO (65)
 	
 ### ws11-MON_KB (66)
@@ -200,7 +167,7 @@
 ### ws14-MON_KB (84)
 	
 ### ws15-LL (85)
-    
+	
 ### ws15-L (86)
 	
 ### ws15-M (87)
@@ -1230,4 +1197,3 @@
 ### ws100-TAIKO (599)
 	
 ### ws100-MON_KB (600)
-	
