@@ -73,11 +73,11 @@ input type:keyboard xkb_numlock enabled
 
 set $LL "LG Electronics 24GM79G 0x0008042C"
 set $L 'BNQ ZOWIE XL LCD EBX7M01214SL0'
-set $M 'BNQ ZOWIE XL LCD EBF2R02905SL0'
+set $M 'BNQ ZOWIE XL LCD EBF2R02370SL0'
 set $R 'BNQ ZOWIE XL LCD EBMCM01300SL0'
 
 set $MON_KB 'Iiyama North America PL2590HS 1219241201302'
-set $TAIKO 'BNQ ZOWIE XL LCD EBF2R02370SL0'
+set $TAIKO ''
 
 output $LL {
     background /home/blu/.config/sway/wallpaper/9x16-Portrait.png fill
@@ -123,13 +123,13 @@ output $R {
     transform 270
 }
 
-output $TAIKO {
-    background /home/blu/.config/sway/wallpaper/9x16-Portrait.png fill
-    mode 1920x1080@240Hz
-    position 5160 8
-    render_bit_depth 8
-    subpixel rgb
-}
+# output $TAIKO {
+#     background /home/blu/.config/sway/wallpaper/9x16-Portrait.png fill
+#     mode 1920x1080@240Hz
+#     position 5160 8
+#     render_bit_depth 8
+#     subpixel rgb
+# }
 
 
 include /home/blu/.config/sway/workspaces/workspace-definitions.conf
