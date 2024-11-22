@@ -50,37 +50,38 @@
 #     generate_workspace "ws$(printf "%02d" $i)" "$((4*i-3))"
 # done
 
-
-
 #!/bin/bash
+# Function to generate workspace settings for 4 screens
+generate_workspace() {
+    local ws_name="$1"
+    local ws_value="$2"
 
-# Define the starting values
-start_num=1
-end_num=500
-
-# Loop to generate the sequence for 6 outputs (LL, L, M, R, TAIKO, MON_KB)
-for ((i = "$start_num"; i <= "$end_num"; i++)); do
     # LL
-    echo "### ws$(printf "%02d" $i)-LL ($(($i * 4 - 3)))"
-    echo -e "\t"
+    echo "set \$${ws_name}-LL \"$ws_value\""
+    echo -e "\tworkspace \$${ws_name}-LL output \$LL"
 
     # L
-    echo "### ws$(printf "%02d" $i)-L ($(($i * 4 - 2)))"
-    echo -e "\t"
+    echo "set \$${ws_name}-L \"$((ws_value+1))\""
+    echo -e "\tworkspace \$${ws_name}-L output \$L"
 
     # M
-    echo "### ws$(printf "%02d" $i)-M ($(($i * 4 - 1)))"
-    echo -e "\t"
+    echo "set \$${ws_name}-M \"$((ws_value+2))\""
+    echo -e "\tworkspace \$${ws_name}-M output \$M"
 
     # R
-    echo "### ws$(printf "%02d" $i)-R ($(($i * 4)))"
-    echo -e "\t"
+    echo "set \$${ws_name}-R \"$((ws_value+3))\""
+    echo -e "\tworkspace \$${ws_name}-R output \$R"
 
     # TAIKO
-    echo "### ws$(printf "%02d" $i)-TAIKO ($(($i * 4 + 1)))"
-    echo -e "\t"
+    echo "set \$${ws_name}-TAIKO \"$((ws_value+4))\""
+    echo -e "\tworkspace \$${ws_name}-TAIKO output \$TAIKO"
 
     # MON_KB
-    echo "### ws$(printf "%02d" $i)-MON_KB ($(($i * 4 + 2)))"
-    echo -e "\t"
+    echo "set \$${ws_name}-MON_KB \"$((ws_value+5))\""
+    echo -e "\tworkspace \$${ws_name}-MON_KB output \$MON_KB"
+}
+
+# Loop to generate the code for 200 workspaces with zero-padded names
+for i in {1..70}; do
+    generate_workspace "ws$(printf "%02d" $i)" "$((6*i-5))"
 done
