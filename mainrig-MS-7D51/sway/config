@@ -85,7 +85,7 @@ output $LL {
     position 0 0
     render_bit_depth 8
     subpixel rgb
-    transform 270
+    # transform 270
 }
 
 output $L {
