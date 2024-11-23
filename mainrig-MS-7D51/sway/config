@@ -1,83 +1,73 @@
 # i3 config main file
-# shellcheck disable=SC2148
-
-# default_border none
-# default_floating_border none
-
-# titlebar_padding 2
-# titlebar_border_thickness 0
-
-set $meta Mod4
-set $alt Mod1
-set $ctrl Mod2
-
-set $a app_id
-set $as assign
-set $bc bindcode
-set $bm bindsym
-set $bp0 border pixel 0
-set $c class
-set $e exec
-set $ea exec_always
-set $ensi exec --no-startup-id
-set $f focus
-set $fd focus down
-set $fe floating enable
-set $fl focus left
-set $fr focus right
-set $fs fullscreen enable
-set $fst fullscreen toggle
-set $fu focus up
-set $fw for_window
-set $i instance
-set $map move absolute position
-set $mctw move container to workspace
-set $md move down
-set $ml move left
-set $mp move position
-set $mpc move position center
-set $mr move right
-set $mto move to output
-set $mtod move to output down
-set $mtol move to output left
-set $mtor move to output right
-set $mtou move to output up
-set $mtp move to position
-set $mts move to scratchpad
-set $mtw move to workspace
-set $mu move up
-set $n name
-set $rs resize set
-set $t title
-set $ubin /usr/bin
-set $ws workspace
+set { 
+    $a app_id
+    $alt Mod1
+    $as assign
+    $bc bindcode
+    $bm bindsym
+    $bp0 border pixel 0
+    $c class
+    $ctrl Mod2
+    $e exec
+    $ea exec_always
+    $ensi exec --no-startup-id
+    $f focus
+    $fd focus down
+    $fe floating enable
+    $fl focus left
+    $fr focus right
+    $fs fullscreen enable
+    $fst fullscreen toggle
+    $fu focus up
+    $fw for_window
+    $i instance
+    $map move absolute position
+    $mctw move container to workspace
+    $md move down
+    $meta Mod4
+    $ml move left
+    $mp move position
+    $mpc move position center
+    $mr move right
+    $mto move to output
+    $mtod move to output down
+    $mtol move to output left
+    $mtor move to output right
+    $mtou move to output up
+    $mtp move to position
+    $mts move to scratchpad
+    $mtw move to workspace
+    $mu move up
+    $n name
+    $rs resize set
+    $t title
+    $ubin /usr/bin
+    $ws workspace
+}
 
 
-
-# Use Mouse+$meta to drag floating windows to their wanted position
-floating_modifier $meta
-
-# move tiling windows via drag & drop by left-clicking into the title bar,
-# or left-clicking anywhere into the window while holding the floating modifier.
-# tiling_drag modifier titlebar
 
 # Mouse
-mouse_warping none
+# Use Mouse+$meta to drag floating windows to their wanted position
+floating_modifier $meta 
 focus_follows_mouse no
+mouse_warping none
 
 # PS4 controller disable touchpad / mouse
-input '1356:2508:Sony_Interactive_Entertainment_Wireless_Controller_Touchpad' events disabled
+input {
+    '1356:2508:Sony_Interactive_Entertainment_Wireless_Controller_Touchpad' events disabled
+    type:keyboard xkb_numlock enabled
+}
 
-# Keyboard
-input type:keyboard xkb_numlock enabled
-
-set $LL "LG Electronics 24GM79G 0x0008042C"
-set $L 'BNQ ZOWIE XL LCD EBX7M01214SL0'
-set $M 'BNQ ZOWIE XL LCD EBF2R02370SL0'
-set $R 'BNQ ZOWIE XL LCD EBMCM01300SL0'
-
-set $MON_KB 'Iiyama North America PL2590HS 1219241201302'
-set $TAIKO ''
+# Displays
+set { 
+    $L 'BNQ ZOWIE XL LCD EBX7M01214SL0'
+    $LL "LG Electronics 24GM79G 0x0008042C"
+    $M 'BNQ ZOWIE XL LCD EBF2R02370SL0'
+    $MON_KB 'Iiyama North America PL2590HS 1219241201302'
+    $R 'BNQ ZOWIE XL LCD EBMCM01300SL0'
+    $TAIKO ''
+}
 
 output $LL {
     background /home/blu/.config/sway/wallpaper/9x16-Portrait.png fill
@@ -131,7 +121,6 @@ output $R {
 #     subpixel rgb
 # }
 
-
 include /home/blu/.config/sway/workspaces/workspace-definitions.conf
 
 # Theming
@@ -139,34 +128,38 @@ include /home/blu/.config/sway/workspaces/workspace-definitions.conf
 font pango: Noto Mono Nerd Font Complete 11, Hack 11, IPAPGothic 11, Noto Sans Mono CJK JP 11, FontAwesome 11, Hack Nerd Font Mono 11
 
 # Color shemes for windows
-set $bgcolor    #2d6876
-set $in-bgcolor #363636
-set $text       #ffffff
-set $u-bgcolor  #ff0000
-set $indicator  #a8a3c1
-set $in-text    #969696
+set { 
+    $bgcolor    #2d6876
+    $in-bgcolor #363636
+    $text       #ffffff
+    $u-bgcolor  #ff0000
+    $indicator  #a8a3c1
+    $in-text    #969696
+}
+
 #                       border          background      text            indicator (a line which shows where the next window will be placed)
 client.focused          $bgcolor        $bgcolor        $text           $indicator
 client.unfocused        $in-bgcolor     $in-bgcolor     $in-text        $in-bgcolor
 client.focused_inactive $in-bgcolor     $in-bgcolor     $in-text        $in-bgcolor
 client.urgent           $u-bgcolor      $u-bgcolor      $text           $u-bgcolor
 
-set $black        #282828
-set $darkred      #cc241d
-set $darkgreen    #98971a
-set $darkyellow   #d79921
-set $darkblue     #458588
-set $darkmagenta  #b16286
-set $darkcyan     #689d6a
-set $lightgray    #a89984
-set $darkgray     #928374
-set $red          #fb4934
-set $green        #b8bb26
-set $yellow       #fabd2f
-set $blue         #83a598
-set $magenta      #d3869b
-set $cyan         #8ec07c
-set $white        #ebdbb2
+set {
+    $black        #282828
+    $darkred      #cc241d
+    $darkgreen    #98971a
+    $darkyellow   #d79921
+    $darkblue     #458588
+    $darkmagenta  #b16286
+    $darkcyan     #689d6a
+    $lightgray    #a89984
+    $darkgray     #928374
+    $red          #fb4934
+    $green        #b8bb26
+    $yellow       #fabd2f
+    $blue         #83a598
+    $magenta      #d3869b
+    $cyan         #8ec07c
+    $white        #ebdbb2
+}
 
 include ~/.config/sway/conf.d/*
-
