@@ -45,13 +45,14 @@ set {
     $ws workspace
 }
 
-
-
 # Mouse
 # Use Mouse+$meta to drag floating windows to their wanted position
 floating_modifier $meta 
 focus_follows_mouse no
 mouse_warping none
+
+# Urgency Marks
+# urgent deny
 
 # PS4 controller disable touchpad / mouse
 input {
