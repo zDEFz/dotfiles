@@ -61,7 +61,6 @@ input {
     '0:0:wlr_virtual_keyboard_v1' events disabled
     '0:0:antimicrox_Mouse_Emulation' events disabled
     '0:0:antimicrox_Abs_Mouse_Emulation' events disabled
-    "1189:32772:BenQ_ZOWIE_BenQ_ZOWIE_Gaming_Mouse" xkb_disabled yes
 }
 
 # Displays
