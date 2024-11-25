@@ -125,15 +125,6 @@ output $R {
 #     subpixel rgb
 # }
 
-### General Configuration ###
-
-
-### Seat 1: Main User ###
-# Attach specific devices to seat1
-seat seat2 attach '1003:8258:Keyboard'
-
-
-
 include /home/blu/.config/sway/workspaces/workspace-definitions.conf
 
 # Theming
@@ -174,5 +165,7 @@ set {
     $cyan         #8ec07c
     $white        #ebdbb2
 }
+
+output $LL disable
 
 include ~/.config/sway/conf.d/*
