@@ -166,6 +166,6 @@ set {
     $white        #ebdbb2
 }
 
-output $LL disable
+#output $LL disable
 
 include ~/.config/sway/conf.d/*
