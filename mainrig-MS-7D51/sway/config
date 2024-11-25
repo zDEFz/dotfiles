@@ -70,7 +70,7 @@ set {
     $M 'BNQ ZOWIE XL LCD EBF2R02370SL0'
     $MON_KB 'Iiyama North America PL2590HS 1219241201302'
     $R 'BNQ ZOWIE XL LCD EBMCM01300SL0'
-    $TAIKO ''
+    $TAIKO 'Iiyama North America PL2590HS 1219241201616'
 }
 
 output $LL {
