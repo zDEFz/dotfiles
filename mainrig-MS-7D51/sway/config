@@ -114,13 +114,13 @@ output $R {
     transform 270
 }
 
-# output $TAIKO {
-#     background /home/blu/.config/sway/wallpaper/9x16-Portrait.png fill
-#     mode 1920x1080@240Hz
-#     position 5160 8
-#     render_bit_depth 8
-#     subpixel rgb
-# }
+output $TAIKO {
+    background /home/blu/.config/sway/wallpaper/9x16-Portrait.png fill
+    mode 1920x1080@240Hz
+    position 5160 8
+    render_bit_depth 8
+    subpixel rgb
+}
 
 include /home/blu/.config/sway/workspaces/workspace-definitions.conf
 
