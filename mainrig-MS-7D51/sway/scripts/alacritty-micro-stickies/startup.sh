@@ -4,7 +4,7 @@ if [[ "$1" == "--sleep" ]]; then
 fi
 
 script=~/.config/sway/scripts/alacritty-micro-stickies/micro-stickies.sh
-
+p="/home/blu/notes"
 $script "blue ${p}/ws-31/wanikani-cheat" --startup & sleep .24
 $script "transparent ${p}/ws-04/intake" --startup & sleep .24
 $script "transparent ${p}/ws-04/wellbeing" --startup & sleep .24
