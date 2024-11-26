@@ -1,18 +1,28 @@
 #!/bin/bash
 MPV_SOCKET="/tmp/mpvsocket"
 
+# Function to handle errors with mpv and fallback to playerctl
+handle_mpv_error() {
+  if ! socat - "$MPV_SOCKET" <<< "ping" &>/dev/null; then
+    echo "MPV error or socket unavailable, switching to playerctl."
+    playerctl "$@"
+  else
+    socat - "$MPV_SOCKET" <<< "$1"
+  fi
+}
+
 case "$1" in
     mpv-next)
-      echo playlist-next | socat - "$MPV_SOCKET"
+      handle_mpv_error "playlist-next"
         ;;
     mpv-pause)
-      echo cycle pause | socat - "$MPV_SOCKET"
+      handle_mpv_error "cycle pause"
         ;;
     mpv-prev)
-      echo playlist-prev | socat - "$MPV_SOCKET"
+      handle_mpv_error "playlist-prev"
         ;;
     mpv-stop)
-      echo quit | socat - "$MPV_SOCKET"
+      handle_mpv_error "quit"
         ;;
     playerctl-next)
       playerctl next
