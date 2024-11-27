@@ -95,12 +95,9 @@ output {
 
 # Display backgrounds
 output {
-    $LL     background /home/blu/.config/sway/wallpaper/9x16-Portrait.png fill
-    $L      background /home/blu/.config/sway/wallpaper/9x16-Portrait.png fill
+    *       background /home/blu/.config/sway/wallpaper/9x16-Portrait.png fill
     $M      background /home/blu/.config/sway/wallpaper/16x9-Landscape.png fill
     $MON_KB background /home/blu/.config/sway/wallpaper/16x9-Landscape.png fill
-    $R      background /home/blu/.config/sway/wallpaper/9x16-Portrait.png fill
-    $RR     background /home/blu/.config/sway/wallpaper/9x16-Portrait.png fill
     $TAIKO  background /home/blu/.config/sway/wallpaper/16x9-Landscape.png fill
 }
 

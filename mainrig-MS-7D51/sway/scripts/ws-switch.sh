@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Define paths and file locations
-TEMPLATE_FILE="/home/blu/.config/sway/workspaces/template-assignfile"
+TEMPLATE_FILE="/home/blu/.config/sway/conf.d/workspaces/template-assignfile"
 
 # Group settings
-GROUP_SIZE=6  # Adjusted to 6 workspaces per group
+GROUP_SIZE=7  # Adjusted to 7 workspaces per group (LL, L, M, R, RR, TAIKO, MON_KB)
 
 # Focused workspace retrieval
 CURRENT_WORKSPACE=$(swaymsg -t get_workspaces | jq -r '.[] | select(.focused == true) | .name | tonumber')
@@ -12,8 +12,8 @@ CURRENT_WORKSPACE=$(swaymsg -t get_workspaces | jq -r '.[] | select(.focused == 
 # Function to count the total number of workspaces (based on how many IDs we have in the file)
 count_total_workspaces() {
     local file_path=$1
-    # Count how many workspace IDs exist in the file
-    total_workspaces=$(grep -oP '\(\K[0-9]+' "$file_path" | wc -l)
+    # Extract workspace numbers (using regex to match ws<number>-<type>) and count unique workspace IDs
+    total_workspaces=$(grep -oP 'ws\d+' "$file_path" | sort -u | wc -l)
     
     if [ "$total_workspaces" -le 0 ]; then
         echo "No workspaces found in $file_path."
@@ -67,7 +67,7 @@ done
 swaymsg "$WORKSPACE_LIST"
 
 # Focus the specific output 'BNQ ZOWIE XL LCD EBF2R02905SL0'
-swaymsg "focus output 'BNQ ZOWIE XL LCD EBF2R02905SL0'"
+swaymsg "focus output 'BNQ ZOWIE XL LCD EBF2R02370SL0'"
 
 # Output the workspace list
 echo "Switched to: $WORKSPACE_LIST"
