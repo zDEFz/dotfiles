@@ -62,75 +62,55 @@ input {
 
 # Displays
 set { 
-    $LL 'Iiyama North America PL2590HS 1219241201677'
-    $L 'BNQ ZOWIE XL LCD EBX7M01214SL0'
-    $M 'BNQ ZOWIE XL LCD EBF2R02370SL0'
+    $LL     'Iiyama North America PL2590HS 1219241201677'
+    $L      'BNQ ZOWIE XL LCD EBX7M01214SL0'
+    $M      'BNQ ZOWIE XL LCD EBF2R02370SL0'
     $MON_KB 'Iiyama North America PL2590HS 1219241201302'
-    $R 'BNQ ZOWIE XL LCD EBMCM01300SL0'
-    $RR "Iiyama North America PL2590HS 1219241201699"
-    $TAIKO 'Iiyama North America PL2590HS 1219241201616'
+    $R      'BNQ ZOWIE XL LCD EBMCM01300SL0'
+    $RR     'Iiyama North America PL2590HS 1219241201699'
+    $TAIKO  'Iiyama North America PL2590HS 1219241201616'
 }
 
-output $LL {
-    background /home/blu/.config/sway/wallpaper/9x16-Portrait.png fill
-    mode 1920x1080@144Hz
-    position 0 0
-    render_bit_depth 8
-    subpixel rgb
-    transform 90
+# Display modes
+output {
+    $LL     mode 1920x1080@240Hz
+    $L      mode 1920x1080@240Hz
+    $M      mode 1920x1080@360Hz
+    $MON_KB mode 1920x1080@240Hz
+    $R      mode 1920x1080@240Hz
+    $RR     mode 1920x1080@240Hz
+    $TAIKO  mode 1920x1080@240Hz
 }
 
-output $L {
-    background /home/blu/.config/sway/wallpaper/9x16-Portrait.png fill
-    mode 1920x1080@240Hz
-    position 1080 0
-    render_bit_depth 8
-    subpixel rgb
-    transform 270
+# Display positions
+output {
+    $LL     position 0 230 
+    $L      position 1080 210
+    $M      position 2160 464
+    $MON_KB position 2160 1544
+    $R      position 4080 354
+    $RR     position 5160 384
+    $TAIKO  position 6240 384
 }
 
-output $M {
-    background /home/blu/.config/sway/wallpaper/16x9-Landscape.png fill
-    mode 1920x1080@360Hz
-    position 2160 354
-    render_bit_depth 8
-    subpixel rgb
+# Display backgrounds
+output {
+    $LL     background /home/blu/.config/sway/wallpaper/9x16-Portrait.png fill
+    $L      background /home/blu/.config/sway/wallpaper/9x16-Portrait.png fill
+    $M      background /home/blu/.config/sway/wallpaper/16x9-Landscape.png fill
+    $MON_KB background /home/blu/.config/sway/wallpaper/16x9-Landscape.png fill
+    $R      background /home/blu/.config/sway/wallpaper/9x16-Portrait.png fill
+    $RR     background /home/blu/.config/sway/wallpaper/9x16-Portrait.png fill
+    $TAIKO  background /home/blu/.config/sway/wallpaper/16x9-Landscape.png fill
 }
 
-output $MON_KB {
-    background /home/blu/.config/sway/wallpaper/16x9-Landscape-Perf.png fill
-    mode 1920x1080@240Hz
-    position 2160 1434
-    render_bit_depth 8
-    subpixel rgb
-    transform 180
-}
-
-output $R {
-    background /home/blu/.config/sway/wallpaper/9x16-Portrait.png fill
-    mode 1920x1080@240Hz
-    position 4080 354
-    render_bit_depth 8
-    subpixel rgb
-    transform 270
-}
-
-output $RR {
-    background /home/blu/.config/sway/wallpaper/9x16-Portrait.png fill
-    mode 1920x1080@144Hz
-    position 5160 8
-    render_bit_depth 8
-    subpixel rgb
-    transform 270
-}
-
-
-output $TAIKO {
-    background /home/blu/.config/sway/wallpaper/9x16-Portrait.png fill
-    mode 1920x1080@240Hz
-    position 6240 8
-    render_bit_depth 8
-    subpixel rgb
+# Display transforms
+output { 
+    $L      transform 270
+    $LL     transform 90
+    $MON_KB transform 180
+    $R      transform 270
+    $RR     transform 270
 }
 
 include /home/blu/.config/sway/conf.d/workspaces/workspace-definitions.conf
