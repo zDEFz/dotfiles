@@ -1,8 +1,6 @@
 #!/bin/bash
-killall swaybar
-swaymsg "exec --no-startup-id swaybar --bar_id=bar-1"
-swaymsg "exec --no-startup-id swaybar --bar_id=bar-2"
-swaymsg "exec --no-startup-id swaybar --bar_id=bar-3"
-swaymsg "exec --no-startup-id swaybar --bar_id=bar-4"
-swaymsg "exec --no-startup-id swaybar --bar_id=bar-5"
-swaymsg "exec --no-startup-id swaybar --bar_id=bar-6"
+
+killall -q swaybar   # Ensure no lingering swaybar processes without output
+
+# Parallel execution of all swaymsg commands (no wait)
+swaymsg "exec --no-startup-id swaybar --bar_id=bar-{1..7}" &

@@ -62,11 +62,12 @@ input {
 
 # Displays
 set { 
+    $LL 'Iiyama North America PL2590HS 1219241201677'
     $L 'BNQ ZOWIE XL LCD EBX7M01214SL0'
-    $LL "LG Electronics 24GM79G 0x0008042C"
     $M 'BNQ ZOWIE XL LCD EBF2R02370SL0'
     $MON_KB 'Iiyama North America PL2590HS 1219241201302'
     $R 'BNQ ZOWIE XL LCD EBMCM01300SL0'
+    $RR "Iiyama North America PL2590HS 1219241201699"
     $TAIKO 'Iiyama North America PL2590HS 1219241201616'
 }
 
@@ -76,7 +77,7 @@ output $LL {
     position 0 0
     render_bit_depth 8
     subpixel rgb
-    # transform 270
+    transform 90
 }
 
 output $L {
@@ -108,16 +109,26 @@ output $MON_KB {
 output $R {
     background /home/blu/.config/sway/wallpaper/9x16-Portrait.png fill
     mode 1920x1080@240Hz
-    position 4080 8
+    position 4080 354
     render_bit_depth 8
     subpixel rgb
     transform 270
 }
 
+output $RR {
+    background /home/blu/.config/sway/wallpaper/9x16-Portrait.png fill
+    mode 1920x1080@144Hz
+    position 5160 8
+    render_bit_depth 8
+    subpixel rgb
+    transform 270
+}
+
+
 output $TAIKO {
     background /home/blu/.config/sway/wallpaper/9x16-Portrait.png fill
     mode 1920x1080@240Hz
-    position 5160 8
+    position 6240 8
     render_bit_depth 8
     subpixel rgb
 }
@@ -162,7 +173,5 @@ set {
     $cyan         #8ec07c
     $white        #ebdbb2
 }
-
-output $LL disable
 
 include ~/.config/sway/conf.d/*
