@@ -84,8 +84,8 @@ output {
 
 # Display positions
 output {
-    $LL     position 0 230 
-    $L      position 1080 210
+    $LL     position 0 380 
+    $L      position 1080 350
     $M      position 2160 464
     $MON_KB position 2160 1544
     $R      position 4080 354
@@ -150,5 +150,6 @@ set {
     $cyan         #8ec07c
     $white        #ebdbb2
 }
+output $TAIKO disable
 
 include ~/.config/sway/conf.d/*
