@@ -51,6 +51,9 @@ floating_modifier $meta
 focus_follows_mouse no
 mouse_warping none
 
+# No urgency marks focus_on_window_activation smart|urgent|focus|none
+focus_on_window_activation none
+
 # PS4 controller disable touchpad / mouse
 input {
     '1356:2508:Sony_Interactive_Entertainment_Wireless_Controller_Touchpad' events disabled
@@ -130,7 +133,7 @@ set {
 client.focused          $bgcolor        $bgcolor        $text           $indicator
 client.unfocused        $in-bgcolor     $in-bgcolor     $in-text        $in-bgcolor
 client.focused_inactive $in-bgcolor     $in-bgcolor     $in-text        $in-bgcolor
-client.urgent           $bgcolor        $bgcolor        $in-text        $bgcolor
+# client.urgent           $bgcolor        $bgcolor        $in-text        $bgcolor
 
 set {
     $black        #282828
