@@ -155,14 +155,26 @@ set {
 }
 output $TAIKO disable
 
+
+## Workaround for xwayland pos 0 0 applications
+
 output { 
-    $LL     disable
-    $L      disable
-    $M      disable
-    $R      disable
-    $RR     disable
-    $TAIKO  disable
     $MON_KB position 0 0
+
+    $LL     position 1920 350 
+    $L      position 3000 350
+    $M      position 4080 464
+    
+    $R      position 6000 354
+    $RR     position 7080 384
+    $TAIKO  position 8160 384
 }
+focus_follows_mouse yes
+mouse_warping output
+
+## Workaround END
+
+
+
 
 include ~/.config/sway/conf.d/*
