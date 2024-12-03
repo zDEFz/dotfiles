@@ -162,7 +162,6 @@ bindsym $meta+F1 $ensi ~/.config/sway/scripts/xwayland-workaround.sh default
 bindsym $meta+F2 $ensi ~/.config/sway/scripts/xwayland-workaround.sh workaround
 
 #focus_follows_mouse yes
-mouse_warping output
 
 ## Workaround END
 
