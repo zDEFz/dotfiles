@@ -155,4 +155,14 @@ set {
 }
 output $TAIKO disable
 
+output { 
+    $LL     disable
+    $L      disable
+    $M      disable
+    $R      disable
+    $RR     disable
+    $TAIKO  disable
+    $MON_KB position 0 0
+}
+
 include ~/.config/sway/conf.d/*
