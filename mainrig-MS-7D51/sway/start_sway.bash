@@ -5,6 +5,10 @@
 # export XWAYLAND_NO_GLAMOR=1
 
 #export WINE_WAYLAND_DISPLAY_INDEX=4
+
+# Try to disable at spi2 service start 
+export NO_AT_BRIDGE=1
+
 export WLR_SCENE_DISABLE_DIRECT_SCANOUT=1 
 export ELECTRON_OZONE_PLATFORM_HINT=wayland
 export GTK_THEME=Breeze:dark
