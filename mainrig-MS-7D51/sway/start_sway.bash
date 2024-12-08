@@ -19,6 +19,9 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 # AMD 6950XT as main renderer W7500 Pro / RX 6400 as secondary
 export WLR_DRM_DEVICES=/dev/dri/by-name/AMD_6950XT:/dev/dri/by-name/AMD_Pro_W7500
 
+# Try using vulkan
+export WLR_RENDERER=vulkan
+
 # Start sway
 exec sway -c /home/blu/.config/sway/config
 #exec sway -c /home/blu/.config/sway/config --debug 2>> /home/blu/sway2.log
