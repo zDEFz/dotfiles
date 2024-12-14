@@ -87,12 +87,12 @@ output {
 
 # Display positions
 output {
-    $LL     position 0 380 
+    $LL     position 0 355 
     $L      position 1080 350
     $M      position 2160 464
     $MON_KB position 2160 1544
-    $R      position 4080 354
-    $RR     position 5160 384
+    $R      position 4080 364
+    $RR     position 5160 370
     $TAIKO  position 6240 384
 }
 
