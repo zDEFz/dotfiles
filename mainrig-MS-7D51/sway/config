@@ -56,12 +56,13 @@ focus_on_window_activation none
 
 # PS4 controller disable touchpad / mouse
 input {
-    '1356:2508:Sony_Interactive_Entertainment_Wireless_Controller_Touchpad' events disabled
-    type:keyboard xkb_numlock enabled
-    '0:0:wlr_virtual_keyboard_v1' events disabled
-    '0:0:antimicrox_Mouse_Emulation' events disabled
     '0:0:antimicrox_Abs_Mouse_Emulation' events disabled
+    '0:0:antimicrox_Mouse_Emulation' events disabled
+    '0:0:wlr_virtual_keyboard_v1' events disabled
+    '1003:8258:Keyboard' events disabled
+    '1356:2508:Sony_Interactive_Entertainment_Wireless_Controller_Touchpad' events disabled
     '9456:320:Metadot_-_Das_Keyboard_Das_Keyboard_System_Control' events disabled
+    type:keyboard xkb_numlock enabled
 }
 
 # Displays
@@ -165,8 +166,5 @@ bindsym $meta+F2 $ensi ~/.config/sway/scripts/xwayland-workaround.sh workaround
 #focus_follows_mouse yes
 
 ## Workaround END
-
-
-
 
 include ~/.config/sway/conf.d/*
