@@ -63,21 +63,10 @@ for ((i = 0; i < GROUP_SIZE; i++)); do
     fi
 done
 
-# Debugging output to confirm which workspaces are being switched to
-echo "Switching to workspaces: $WORKSPACE_LIST"
-
-# Echo the exact swaymsg command being executed
-echo "Executing: swaymsg workspace $WORKSPACE_LIST"
-
 # Switch to the specified workspaces
-swaymsg "workspace $WORKSPACE_LIST"
+swaymsg "$WORKSPACE_LIST"
 
-# Check if swaymsg reported any errors or warnings
-if [ $? -ne 0 ]; then
-    echo "Error executing swaymsg. Please check the command and your Sway configuration."
-fi
-
-# Focus the specific output 'BNQ ZOWIE XL LCD EBF2R02370SL0'
+# Focus the specific output 'BNQ ZOWIE XL LCD EBF2R02905SL0'
 swaymsg "focus output 'BNQ ZOWIE XL LCD EBF2R02370SL0'"
 
 # Output the workspace list
