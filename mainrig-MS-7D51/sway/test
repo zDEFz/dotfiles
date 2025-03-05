@@ -1,12 +1,18 @@
-# Set a delay between key presses
-keydelay 10
-
 # Opposite sides
-key 1 0 q [ a semicolon z .
+keydelay 5
+key enter 1 0 q  a semicolon z dot k:26
 
-# Sequential
-key 1 2 3 4 5 6 7 8 9 0
-key q w e r t y u i o p [
-key a s w d f g h j k l semicolon
-key z x c v b n m , . /
+# Sequential # PASS at 80
+keydelay 80
+key enter 1 2 3 4 5 6 7 8 9 0
+
+
+keydelay 125
+key enter q w e r t y u i o p [
+
+keydelay 80
+key enter a s w d f g h j k l semicolon
+
+keydelay 125
+key enter z x c v b n m , . / z x c v b n m , . /
 

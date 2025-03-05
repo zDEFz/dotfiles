@@ -1,0 +1,8 @@
+# Set a delay between key presses
+keydelay 0
+
+# Sequential
+key q w e r t y
+key q [
+key a semicolon
+key z .
