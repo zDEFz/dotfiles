@@ -1,0 +1,12 @@
+# Set a delay between key presses
+keydelay 10
+
+# Opposite sides
+key 1 0 q [ a semicolon z .
+
+# Sequential
+key 1 2 3 4 5 6 7 8 9 0
+key q w e r t y u i o p [
+key a s w d f g h j k l semicolon
+key z x c v b n m , . /
+
