@@ -13,6 +13,6 @@ key enter q w e r t y u i o p [
 keydelay 80
 key enter a s w d f g h j k l semicolon
 
-keydelay 125
-key enter z x c v b n m , . / z x c v b n m , . /
+keydelay 200
+key enter z x c v b n m comma dot backslash z x c v b n m comma dot backslash
 
