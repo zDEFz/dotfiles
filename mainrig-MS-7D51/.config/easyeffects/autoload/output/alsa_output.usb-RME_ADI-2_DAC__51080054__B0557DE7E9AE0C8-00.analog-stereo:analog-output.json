@@ -1,0 +1,6 @@
+{
+    "device": "alsa_output.usb-RME_ADI-2_DAC__51080054__B0557DE7E9AE0C8-00.analog-stereo",
+    "device-description": "ADI-2 DAC (51080054) Analog Stereo",
+    "device-profile": "analog-output",
+    "preset-name": "[crinacle] GRAS 43AG-7 Sennheiser HD 800 S"
+}

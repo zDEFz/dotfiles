@@ -1,0 +1,100 @@
+#!/bin/bash
+
+# Define log file and screenshot directory
+LOG_FILE=~/Downloads/c2/debug_log.txt
+SCREENSHOT_DIR=~/Downloads/c2
+mkdir -p "$SCREENSHOT_DIR"
+echo "Debug Log - $(date)" > "$LOG_FILE"
+
+# Parse arguments
+PREVIEW=false
+if [[ "$1" == "--preview" ]]; then
+    PREVIEW=true
+    echo "Preview mode enabled. Images will be displayed using swayimg if they differ." | tee -a "$LOG_FILE"
+fi
+
+# Clean up temporary files on exit or error
+#trap 'rm -f "$SCREENSHOT_DIR"/temp_*.png' EXIT
+
+# Get the Cultris II window geometry (now using fixed coordinates)
+TETRIS_X=2940
+TETRIS_Y=800
+TETRIS_WIDTH=240
+TETRIS_HEIGHT=430
+
+echo "Using fixed coordinates for Tetris field: X=$TETRIS_X, Y=$TETRIS_Y, Width=$TETRIS_WIDTH, Height=$TETRIS_HEIGHT" | tee -a "$LOG_FILE"
+
+# Capture and compare screenshots (only after input, not after ESC)
+IDENTICAL=true
+FIRST_IMAGE=""
+THRESHOLD=500  # RMSE threshold for minor differences
+DELAY=0.5      # Delay between captures (adjust if needed)
+
+for i in {1..4}; do
+# Send Enter key 
+    echo "Sending Enter key to start" | tee -a "$LOG_FILE"
+    if ! echo "key enter" | dotool 2>>"$LOG_FILE"; then
+        echo "Error: Failed to send enter key!" | tee -a "$LOG_FILE"
+        exit 1
+    fi
+
+    echo "Iteration $i: Running wl-paste | dotool" | tee -a "$LOG_FILE"
+    
+    # Execute the input sequence
+    if ! wl-paste | dotool 2>>"$LOG_FILE"; then
+        echo "Error: wl-paste or dotool failed!" | tee -a "$LOG_FILE"
+        exit 1
+    fi
+
+    sleep 2
+    # Capture screenshot immediately AFTER input sequence (BEFORE ESC)
+    TEMP_IMAGE="$SCREENSHOT_DIR/temp_$(date +%Y%m%d_%H%M%S)_${i}_input.png"
+    echo "Capturing screenshot AFTER INPUT: $TEMP_IMAGE" | tee -a "$LOG_FILE"
+    if ! grim -g "${TETRIS_X},${TETRIS_Y} ${TETRIS_WIDTH}x${TETRIS_HEIGHT}" "$TEMP_IMAGE" 2>>"$LOG_FILE"; then
+        echo "Error: Failed to capture screenshot!" | tee -a "$LOG_FILE"
+        exit 1
+    fi
+
+    # Send ESC key (but do not save screenshots after this)
+    echo "Sending ESC key to reset state" | tee -a "$LOG_FILE"
+    if ! echo "key esc" | dotool 2>>"$LOG_FILE"; then
+        echo "Error: Failed to send ESC key!" | tee -a "$LOG_FILE"
+        exit 1
+    fi
+
+    # Compare screenshots taken immediately AFTER input (BEFORE ESC)
+    if [ -z "$FIRST_IMAGE" ]; then
+        FIRST_IMAGE="$TEMP_IMAGE"
+    else
+        echo "Comparing screenshots: $FIRST_IMAGE vs $TEMP_IMAGE" | tee -a "$LOG_FILE"
+        DIFF=$(compare -metric AE "$FIRST_IMAGE" "$TEMP_IMAGE" /dev/null 2>&1)
+        RMSE=$(compare -metric RMSE "$FIRST_IMAGE" "$TEMP_IMAGE" /dev/null 2>&1 | awk '{print $1}')
+
+        echo "AE: $DIFF, RMSE: $RMSE" | tee -a "$LOG_FILE"
+
+        # Show images in preview mode if they differ
+        if [[ "$PREVIEW" == true && ( "$DIFF" -gt 0 || "${RMSE%.*}" -gt $THRESHOLD ) ]]; then
+            echo "Previewing images with swayimg..." | tee -a "$LOG_FILE"
+            swayimg "$FIRST_IMAGE" "$TEMP_IMAGE" &
+        fi
+
+        # Check if images are identical based on AE and RMSE threshold
+        if [[ "$DIFF" -gt 0 || "${RMSE%.*}" -gt $THRESHOLD ]]; then
+            IDENTICAL=false
+            echo "Images differ. Cleaning up temporary files." | tee -a "$LOG_FILE"
+            #rm "$FIRST_IMAGE" "$TEMP_IMAGE"
+            exit 0
+        fi
+
+        # Clean up temporary images if identical
+        #rm "$TEMP_IMAGE"
+    fi
+
+    sleep $DELAY  # Configurable delay between captures
+done
+
+if $IDENTICAL; then
+    SAVED_IMAGE="$SCREENSHOT_DIR/c2_$(date +%Y%m%d_%H%M%S)_input.png"
+    mv "$FIRST_IMAGE" "$SAVED_IMAGE"
+    echo "All screenshots are identical. Screenshot saved as $SAVED_IMAGE" | tee -a "$LOG_FILE"
+fi

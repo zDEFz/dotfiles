@@ -1,0 +1,24 @@
+# Blue Colorscheme
+
+# Background and General Appearance
+color-link color-column "#2a3748,#2a3748"       # Dark shade for the color column background
+color-link cursor-line "#4b6881"                # Soft blue-gray for the cursor line
+color-link divider "#2a3748,#7c8389"            # Dark shade and accent color for dividers
+
+# statusline
+color-link statusline "#ffffff,#4b6881"
+
+
+color-link tabbar "#2a3748,#7c8389"             # Dark shade and accent color for tab bar
+
+# Line Numbers
+color-link line-number "#c1d1e7,#4b6881"        # Light blue for line numbers, soft blue-gray for background
+color-link current-line-number "bold #00aaff,#4b6881" # Bold bright blue for current line number, soft blue-gray for background
+
+# Code Elements
+color-link default "#ffffff,#4b6881"            # Light gray for default code color, soft blue-gray background
+color-link identifier "#66D9EF"
+
+
+# Custom Keywords
+color-link special "#FF00FF,#4b6881"  # Bright magenta for special keywords (e.g., Include, Avoid, etc.)
