@@ -54,16 +54,22 @@ mouse_warping none
 # No urgency marks focus_on_window_activation smart|urgent|focus|none
 focus_on_window_activation none
 
-# PS4 controller disable touchpad / mouse
+# Input Device Configurations
 input {
+    # Disable PS4 controller touchpad
+    '1356:2508:Sony_Interactive_Entertainment_Wireless_Controller_Touchpad' events disabled
+
+    # Disable unwanted mouse emulations
     '0:0:antimicrox_Abs_Mouse_Emulation' events disabled
     '0:0:antimicrox_Mouse_Emulation' events disabled
     '0:0:wlr_virtual_keyboard_v1' events disabled
     '1003:8258:Keyboard' events disabled
-    '1356:2508:Sony_Interactive_Entertainment_Wireless_Controller_Touchpad' events disabled
     '9456:320:Metadot_-_Das_Keyboard_Das_Keyboard_System_Control' events disabled
+    
+    # Enable numlock for the keyboard
     type:keyboard xkb_numlock enabled
 }
+
 
 # Displays
 set { 
@@ -118,7 +124,6 @@ output {
 include /home/blu/.config/sway/conf.d/workspaces/workspace-definitions.conf
 
 # Theming
-
 font pango: Noto Mono Nerd Font Complete 11, Hack 11, IPAPGothic 11, Noto Sans Mono CJK JP 11, FontAwesome 11, Hack Nerd Font Mono 11
 
 # Color shemes for windows
