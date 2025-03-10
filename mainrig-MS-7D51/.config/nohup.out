@@ -1,0 +1,23 @@
+[660630:0504/034346.913808:ERROR:object_proxy.cc(577)] Failed to call method: org.freedesktop.DBus.Properties.Get: object_path= /org/freedesktop/portal/desktop: org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.FileChooser”
+[660630:0504/034346.913890:ERROR:select_file_dialog_linux_portal.cc(285)] Failed to read portal version property
+[660630:0504/034347.032962:ERROR:object_proxy.cc(577)] Failed to call method: org.kde.KWallet.isEnabled: object_path= /modules/kwalletd: org.freedesktop.DBus.Error.ServiceUnknown: The name is not activatable
+[660630:0504/034347.032981:ERROR:kwallet_dbus.cc(112)] Error contacting kwalletd (isEnabled)
+[660630:0504/034347.033030:ERROR:object_proxy.cc(577)] Failed to call method: org.kde.KLauncher.start_service_by_desktop_name: object_path= /KLauncher: org.freedesktop.DBus.Error.ServiceUnknown: The name is not activatable
+[660630:0504/034347.033034:ERROR:kwallet_dbus.cc(81)] Error contacting klauncher to start kwalletd
+[660630:0504/034347.033091:ERROR:object_proxy.cc(577)] Failed to call method: org.kde.KWallet.close: object_path= /modules/kwalletd: org.freedesktop.DBus.Error.ServiceUnknown: The name is not activatable
+[660630:0504/034347.033095:ERROR:kwallet_dbus.cc(503)] Error contacting kwalletd (close)
+03:43:47.172 › Checking for update
+03:43:48.306 › Update for version 24.2.5 is not available (latest version: 24.2.5, downgrade is disallowed).
+[661378:0504/034352.688352:ERROR:object_proxy.cc(577)] Failed to call method: org.freedesktop.DBus.Properties.Get: object_path= /org/freedesktop/portal/desktop: org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.FileChooser”
+[661378:0504/034352.688471:ERROR:select_file_dialog_linux_portal.cc(285)] Failed to read portal version property
+[661378:0504/034352.805401:ERROR:object_proxy.cc(577)] Failed to call method: org.kde.KWallet.isEnabled: object_path= /modules/kwalletd: org.freedesktop.DBus.Error.ServiceUnknown: The name is not activatable
+[661378:0504/034352.805418:ERROR:kwallet_dbus.cc(112)] Error contacting kwalletd (isEnabled)
+[661378:0504/034352.805483:ERROR:object_proxy.cc(577)] Failed to call method: org.kde.KLauncher.start_service_by_desktop_name: object_path= /KLauncher: org.freedesktop.DBus.Error.ServiceUnknown: The name is not activatable
+[661378:0504/034352.805489:ERROR:kwallet_dbus.cc(81)] Error contacting klauncher to start kwalletd
+[661378:0504/034352.805588:ERROR:object_proxy.cc(577)] Failed to call method: org.kde.KWallet.close: object_path= /modules/kwalletd: org.freedesktop.DBus.Error.ServiceUnknown: The name is not activatable
+[661378:0504/034352.805593:ERROR:kwallet_dbus.cc(503)] Error contacting kwalletd (close)
+03:43:52.943 › Checking for update
+03:43:53.599 › Update for version 24.2.5 is not available (latest version: 24.2.5, downgrade is disallowed).
+Warning: terminator_CreateInstance: Failed to CreateInstance in ICD 0.  Skipping ICD.
+[661378:0504/034758.653528:ERROR:browser_main_loop.cc(276)] GLib-GObject: invalid cast from 'GtkFileChooserNative' to 'GtkWidget'
+[661378:0504/034828.635245:ERROR:browser_main_loop.cc(276)] GLib-GObject: ../glib/gobject/gsignal.c:2685: instance '0x3eb000052120' has no handler with id '5706'
