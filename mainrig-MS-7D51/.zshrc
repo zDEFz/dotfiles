@@ -17,7 +17,6 @@ setopt HIST_IGNORE_ALL_DUPS
 #
 # Input/output
 #
-
 # Set editor default keymap to emacs (`-e`) or vi (`-v`)
 bindkey -e
 
@@ -125,41 +124,70 @@ zmodload -F zsh/terminfo +p:terminfo
 #for key ('^[[B' '^N' ${terminfo[kcud1]}) bindkey ${key} history-substring-search-down
 #for key ('k') bindkey -M vicmd ${key} history-substring-search-up
 #for key ('j') bindkey -M vicmd ${key} history-substring-search-down
+bindkey -r '^[[A'  # Unbind Up arrow for history search
+bindkey -r '^[[B'  # Unbind Down arrow for history search
+
 unset key
 # }}} End configuration added by Zim install
 
 bindkey '`' autosuggest-accept
 
-export XDG_DATA_DIRS="$XDG_DATA_DIRS:/var/lib/flatpak/exports/share:/home/$USER/.local/share/flatpak/exports/share"
+# Helper function to add directories to PATH without duplication
+path_append() {
+  if [[ ":$PATH:" != *":$1:"* ]]; then
+    export PATH="$PATH:$1"
+  fi
+}
 
-# for crontab
+path_prepend() {
+  if [[ ":$PATH:" != *":$1:"* ]]; then
+    export PATH="$1:$PATH"
+  fi
+}
+
+# Sanitize XDG_DATA_DIRS to avoid duplication
+if [[ -z "$XDG_DATA_DIRS" ]]; then
+  export XDG_DATA_DIRS="/usr/local/share:/usr/share"
+fi
+
+# Add Flatpak directories if not already included
+if [[ "$XDG_DATA_DIRS" != *"/var/lib/flatpak/exports/share"* ]]; then
+  export XDG_DATA_DIRS="$XDG_DATA_DIRS:/var/lib/flatpak/exports/share"
+fi
+
+if [[ "$XDG_DATA_DIRS" != *"$HOME/.local/share/flatpak/exports/share"* ]]; then
+  export XDG_DATA_DIRS="$XDG_DATA_DIRS:$HOME/.local/share/flatpak/exports/share"
+fi
+
+# Set editors based on user
 if [ "$(id -u)" != "0" ]; then
     export VISUAL="vscodium --wait"
 else
     export VISUAL="nano"
 fi
 
-source /home/blu/.aliases
-source /home/blu/scripts/functions/modtracker
-source /home/blu/scripts/functions/convert
-source /home/blu/scripts/functions/video
-export PATH="$PATH:/home/blu/.cargo/bin"
-
-PATH="/home/blu/perl5/bin${PATH:+:${PATH}}"; export PATH;
-PERL5LIB="/home/blu/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
-PERL_LOCAL_LIB_ROOT="/home/blu/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
-PERL_MB_OPT="--install_base \"/home/blu/perl5\""; export PERL_MB_OPT;
-PERL_MM_OPT="INSTALL_BASE=/home/blu/perl5"; export PERL_MM_OPT;
-
-# Created by `pipx` on 2024-01-23 05:37:32
-export PATH="$PATH:/home/blu/.local/bin"
-#export PATH="$PATH:/usr/local/ups/sbin"
-#export PATH="$PATH:/usr/local/ups/bin"
-
-export BORG_RELOCATED_REPO_ACCESS_IS_OK='yes'
-export BORG_PASSCOMMAND="cat $HOME/.borg-passphrase"
-
 export EDITOR=nano
+
+# Source additional configuration files
+[[ -f "$HOME"/.secure_env ]] && source "$HOME"/.secure_env
+[[ -f /home/blu/.aliases ]] && source /home/blu/.aliases
+[[ -f /home/blu/scripts/functions/convert ]] && source /home/blu/scripts/functions/convert
+[[ -f /home/blu/scripts/functions/video ]] && source /home/blu/scripts/functions/video
+
+# Add directories to PATH
+path_append "/home/blu/.cargo/bin"
+path_prepend "/home/blu/perl5/bin"
+path_append "/home/blu/.local/bin"
+
+# Set up Perl environment - without duplication
+export PERL5LIB="/home/blu/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"
+export PERL_LOCAL_LIB_ROOT="/home/blu/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"
+export PERL_MB_OPT="--install_base \"/home/blu/perl5\""
+export PERL_MM_OPT="INSTALL_BASE=/home/blu/perl5"
+
+# Unset unwanted variables
+unset PAM_KWALLET5_LOGIN
+
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"

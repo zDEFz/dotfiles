@@ -1,0 +1,14 @@
+#!/bin/bash
+export BORG_PASSCOMMAND="cat /root/.borg-passphrase"
+export BORG_RELOCATED_REPO_ACCESS_IS_OK='yes'
+# Define base media directory with fallback to default
+export MEDIA_DIR=${MEDIA_DIR:-"/mnt/storage"}
+# Define audio directory which can be separate or part of media dir
+export AUDIO_DIR=${AUDIO_DIR:-"$MEDIA_DIR/audio"}
+# Fix: Using correct variable name for AUDIO_FX_DIR
+export AUDIO_FX_DIR=${AUDIO_FX_DIR:-"$AUDIO_DIR/FX"}
+# Fix: Using correct variable name for iOS guide
+export IOS_GUIDE=${IOS_GUIDE:-"$MEDIA_DIR/iOSGuide"}
+# Fix: Using correct variable names for anime directories
+export ANIME_SHOWS_DIR=${ANIME_SHOWS_DIR:-"$MEDIA_DIR/anime/shows"}
+export ANIME_MOVIES_DIR=${ANIME_MOVIES_DIR:-"$MEDIA_DIR/anime/movies"}
