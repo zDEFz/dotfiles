@@ -1,0 +1,15 @@
+channel_threads: 1
+check_tables: true
+feed_threads: 1
+db:
+  user: kemal
+  password: kemal
+  host: srv-captain--invidious-db
+  port: 5432
+  dbname: invidious
+full_refresh: false
+https_only: false
+domain:
+visitor_data: Cgs5NExlQi01eVNKUSjxy8m-BjIKCgJERRIEEgAgIQ
+po_token: MnTrbyzPY48tDOtXVjeJ2wc4XbJ-qy2lg2MBFrxLSDiHIRYL3xPQT7pujX03jzt3YjdhPW6BARkJSnhO1EqHBIkwgJ3KQdvuqruafErjMRdspUOd9yszShJQ7-6bTRIRyyoqFdq7fYTbTUv0q-mKV06rKyn6jw==
+hmac_key : f75afef61f598fcd45a073da91266930f7256cc5
