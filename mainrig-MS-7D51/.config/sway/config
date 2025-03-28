@@ -2,28 +2,15 @@
 set { 
     $a app_id
     $alt Mod1
-    $as assign
     $bc bindcode
     $bm bindsym
     $bp0 border pixel 0
     $c class
     $ctrl Mod2
-    $e exec
-    $ea exec_always
     $ensi exec --no-startup-id
-    $f focus
-    $fd focus down
-    $fe floating enable
-    $fl focus left
-    $fr focus right
-    $fs fullscreen enable
-    $fst fullscreen toggle
-    $fu focus up
     $fw for_window
     $i instance
     $map move absolute position
-    $mctw move container to workspace
-    $md move down
     $meta Mod4
     $ml move left
     $mp move position
@@ -38,7 +25,6 @@ set {
     $mts move to scratchpad
     $mtw move to workspace
     $mu move up
-    $rs resize set
     $t title
     $ws workspace
 }
