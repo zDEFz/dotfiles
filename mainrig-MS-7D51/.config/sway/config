@@ -38,10 +38,8 @@ set {
     $mts move to scratchpad
     $mtw move to workspace
     $mu move up
-    $n name
     $rs resize set
     $t title
-    $ubin /usr/bin
     $ws workspace
 }
 
@@ -115,7 +113,7 @@ output {
     $RR     transform 270
 }
 
-include /home/blu/.config/sway/conf.d/workspaces/workspace-definitions.conf
+include /home/blu/.config/sway/conf.d/workspaces/workspace-definitions
 
 # Theming
 
