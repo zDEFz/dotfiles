@@ -1,0 +1,40 @@
+[
+    {
+        "input_combination": [
+            {
+                "type": 1,
+                "code": 314,
+                "origin_hash": "eb7dd9f8f5366ecb356deaff3f42b9f8"
+            }
+        ],
+        "target_uinput": "keyboard",
+        "output_symbol": "KEY_F24",
+        "mapping_type": "key_macro"
+    },
+    {
+        "input_combination": [
+            {
+                "type": 3,
+                "code": 16,
+                "origin_hash": "eb7dd9f8f5366ecb356deaff3f42b9f8",
+                "analog_threshold": -1
+            }
+        ],
+        "target_uinput": "keyboard",
+        "output_symbol": "XF86AudioPrev",
+        "mapping_type": "key_macro"
+    },
+    {
+        "input_combination": [
+            {
+                "type": 3,
+                "code": 16,
+                "origin_hash": "eb7dd9f8f5366ecb356deaff3f42b9f8",
+                "analog_threshold": 1
+            }
+        ],
+        "target_uinput": "keyboard",
+        "output_symbol": "XF86AudioNext",
+        "mapping_type": "key_macro"
+    }
+]
