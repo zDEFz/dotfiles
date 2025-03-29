@@ -10,15 +10,15 @@ YEAR=$(date +%Y)
 
 # Define holidays for the current year in an associative array
 declare -A holidays=(
-    ["$YEAR-01-01"]="🎉 Neujahr"
-    ["$YEAR-01-06"]="👑 Heilige Drei Könige"
-    ["$YEAR-03-29"]="✝️ Karfreitag"
-    ["$YEAR-04-01"]="🐣 Ostermontag"
-    ["$YEAR-05-01"]="💼 Tag der Arbeit"
-    ["$YEAR-10-03"]="🇩🇪 Tag der Deutschen Einheit"
-    ["$YEAR-11-01"]="🕊️ Allerheiligen"
-    ["$YEAR-12-25"]="🎄 Erster Weihnachtstag"
-    ["$YEAR-12-26"]="🎁 Zweiter Weihnachtstag"
+    ["2025-01-01"]="🎉 Neujahr"
+    ["2025-01-06"]="👑 Heilige Drei Könige"
+    ["2025-04-18"]="✝️ Karfreitag"      # Good Friday (2 days before Easter Sunday on April 20, 2025)
+    ["2025-04-21"]="🐣 Ostermontag"    # Easter Monday (1 day after Easter Sunday on April 20, 2025)
+    ["2025-05-01"]="💼 Tag der Arbeit"
+    ["2025-10-03"]="🇩🇪 Tag der Deutschen Einheit"
+    ["2025-11-01"]="🕊️ Allerheiligen"
+    ["2025-12-25"]="🎄 Erster Weihnachtstag"
+    ["2025-12-26"]="🎁 Zweiter Weihnachtstag"
 )
 
 # Get today's holiday if it exists, otherwise check for the next one in the next 365 days
