@@ -16,4 +16,4 @@ done
 
 # Play the audio in the background
 echo "Playing audio: Pokemon - 156 - Quilava..."
-pw-play '/mnt/storage/audio/MusicLibrary/FX/Pokemon/156 - quilava.mp3' &
+pw-play '/home/blu/audio/FX/Pokemon/156 - quilava.mp3' &
