@@ -45,3 +45,4 @@ done < <(sar -P ALL 1 1 | grep -E 'Average:\s+[0-9]+')
 
 # Output a single line for i3blocks
 echo "$output"
+
