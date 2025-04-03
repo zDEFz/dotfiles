@@ -52,12 +52,11 @@ input {
 # Displays
 set { 
     $LL     'Iiyama North America PL2590HS 1219241201677'
-    $L      'BNQ ZOWIE XL LCD EBX7M01214SL0'
+    $L  'Iiyama North America PL2590HS 1219241201616'
     $M      'BNQ ZOWIE XL LCD EBF2R02370SL0'
     $MON_KB 'Iiyama North America PL2590HS 1219241201302'
     $R      'BNQ ZOWIE XL LCD EBMCM01300SL0'
     $RR     'Iiyama North America PL2590HS 1219241201699'
-    $TAIKO  'Iiyama North America PL2590HS 1219241201616'
 }
 
 # Display modes
@@ -68,7 +67,6 @@ output {
     $MON_KB mode 1920x1080@240Hz
     $R      mode 1920x1080@240Hz
     $RR     mode 1920x1080@240Hz
-    $TAIKO  mode 1920x1080@240Hz
 }
 
 # Display positions
@@ -79,7 +77,7 @@ output {
     $MON_KB position 2160 1544
     $R      position 4080 364
     $RR     position 5160 370
-    $TAIKO  position 6240 384
+    # $TAIKO  position 6240 384
 }
 
 # Display backgrounds
@@ -87,7 +85,7 @@ output {
     *       background /home/blu/.config/sway/wallpaper/9x16-Portrait.png fill
     $M      background /home/blu/.config/sway/wallpaper/16x9-Landscape.png fill
     $MON_KB background /home/blu/.config/sway/wallpaper/16x9-Landscape.png fill
-    $TAIKO  background /home/blu/.config/sway/wallpaper/16x9-Landscape.png fill
+    # $TAIKO  background /home/blu/.config/sway/wallpaper/16x9-Landscape.png fill
 }
 
 # Display transforms
