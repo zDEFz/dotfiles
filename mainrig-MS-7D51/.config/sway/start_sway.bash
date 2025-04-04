@@ -17,7 +17,7 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CURRENT_DESKTOP=sway
 export _JAVA_AWT_WM_NONREPARENTING=1
 # W7500 Pro as primary / W7500_2 as secondary
-export WLR_DRM_DEVICES=/dev/dri/by-name/AMD_Pro_W7500:/dev/dri/by-name/AMD_Pro_W7500_2
+export WLR_DRM_DEVICES=/dev/dri/by-name/AMD_Pro_W7500_1:/dev/dri/by-name/AMD_Pro_W7500_2
 
 # Try using vulkan
 export WLR_RENDERER=vulkan
