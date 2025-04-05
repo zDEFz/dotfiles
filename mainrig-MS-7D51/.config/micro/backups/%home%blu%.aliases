@@ -1,0 +1,714 @@
+#!/bin/bash
+
+###########################################
+# DIRECTORY NAVIGATION
+###########################################
+
+# Basic directory navigation shortcuts
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+
+alias oh='thunar .'
+
+# Change to parent directory of specified file
+cdb() { cd "$(dirname "$1")" || exit ; }
+
+###########################################
+# SYSTEM UTILITIES
+###########################################
+
+# Fix f_lowercase function
+f_lowercase() { 
+    find . -maxdepth 1 -type f ! -name 'SUMMARY.md' -exec sh -c 'for file do mv "$file" "$(echo "$file" | tr "[:upper:]" "[:lower:]")"; done' sh {} +
+}
+
+# Filesize
+filesize() {
+  if [ $# -gt 0 ]; then 
+    du -h "$@" | sort -h
+  else 
+    xargs du -h | sort -h
+  fi
+}
+
+# Process management
+alias ka='killall'
+
+killwine() {
+    killall -9 wineserver.exe
+    for pid in $(pgrep -f winedevice.exe); do 
+        kill -9 "$pid"
+    done
+}
+# Download utilities
+alias download-gpartedlive='wget -O gparted-live-latest.iso https://sourceforge.net/projects/gparted/files/latest/download'
+
+# Copy Date to clipboard
+alias datecopy='date --iso-8601 | wl-copy'
+
+# Display information
+lshz() { 
+    xrandr | awk '/ connected/{disp=$1} /\*/{print disp ": " int($2+0.5) " Hz"}'
+}
+
+# WebDAV utilities
+alias countwebdav="mount | grep -c /webdav"
+
+micro() {
+    command micro "$@"
+    exec zsh
+}
+
+nano() {
+    command nano "$@"
+    exec zsh
+}
+
+# Clipboard operations
+alias clip="xclip -selection clipboard"
+alias pwdc="pwd | clip"
+alias typeclipboard='echo "type $(wl-paste)" | dotool'
+
+# Remote access
+nas() {
+  local user=${1:-${NAS_USER:-$(whoami)}}
+  ssh -t "${user}@nas.local" "cd $HOME/git/nas/backup; zsh --login"
+}
+# Get public IP address
+alias myip="curl -s icanhazip.com | tr -d '\n'"
+
+# Truncate file to zero size
+alias tr0='truncate -s 0'
+
+# Simple HTTP server
+alias httpserver='python3 -m http.server'
+
+# List USB devices with detailed info
+alias list-usb='lsblk -o NAME,TRAN,SERIAL,MODEL'
+
+# Remind how to redirect output to /dev/null
+alias how-to-dev-null='echo "code >/dev/null 2>&1 &"'
+
+# Mullvad VPN shortcuts
+alias mc='mullvad connect'
+alias mdc='mullvad disconnect'
+alias ms='mullvad status'
+
+# Show information about currently focused Sway window
+alias sample_sway_props='swaymsg -t get_tree | jq -r '\''recurse(.nodes[]?; .nodes) | select(.focused == true) | {type, app_id, name, title}'\'
+
+# Monitor app IDs in Sway
+alias monitor_app_id='swaymsg -t subscribe -m '\''[ "window" ]'\'' | jq -r '\''.container.app_id // empty'\'
+
+# Exit i3 window manager
+alias i3exit='i3-msg exit'
+
+# List processes using XTest fake events
+alias listxfake="sudo lsof -Fn -nPd txt | sed -n '/^n\/proc/!s/^n//p' | sort -u | xargs -d '\n' grep -l XTestFakeKeyEvent"
+
+# Monitor CPU-intensive processes
+#!/usr/bin/bash
+
+# Function to log messages
+log_message() {
+    local LOG_FILE="/home/blu/cron_logs/process_monitor.log"
+    local TIMESTAMP=$(date +'%Y-%m-%d %H:%M:%S')
+    echo "$TIMESTAMP $1" | tee -a "$LOG_FILE"
+}
+
+alias list_processes_amount="watch -n 1 'ps aux --no-headers | wc -l'"
+
+investigate_processes () {
+    watch -n1 -c 'echo -e "\033[1;34mTop 80 CPU-consuming processes:\033[0m"; echo -e "\033[1;32mPID      COMMAND                                             %CPU\033[0m"; ps -eo pid,cmd:500,%cpu --sort=-%cpu | awk -v cmd_limit=100 '"'"'NR>1 { 
+        if (NF>=3) { 
+            cmd=""; 
+            for(i=2; i<=NF-1; i++) { 
+                cmd = cmd " " $i; 
+            } 
+            cpu_usage = $NF / 100;  # Divide by 100 to convert to actual percentage (0.1 instead of 10)
+            printf "\033[1;31m%-8s\033[0m \033[1;36m%-*s\033[0m \033[1;33m%5.2f\033[0m\n", $1, cmd_limit, substr(cmd,2,cmd_limit), cpu_usage; 
+        } 
+    }'"'"' | head -n 80'
+}
+
+# Get screen coordinates using slurp
+screen_coordinates() { 
+    declare coordinate
+    coordinate=$(slurp -b 00000000 -p | awk "{print $1}")
+    [[ -z "$coordinate" ]] && { echo "Error: Failed to get screen coordinates"; return 1; }
+    local x_cord=${coordinate%%,*} y_cord=${coordinate##*,}
+    echo "$x_cord" "$y_cord"
+}
+
+###########################################
+# FILE OPERATIONS
+###########################################
+
+# Batch convert HEIC images to PNG format
+convert-heic-to-png() { 
+    for i in *.HEIC; do 
+        heif-convert "$i" "${i%.HEIC}.png" &
+    done
+}
+
+# Extract zip files with Japanese encoding
+alias unzip-japanese='unzip -O shift-jis'
+
+# Recursive wget with nice directory structure
+wgetrecursive() { 
+    [ -z "$1" ] && echo "Usage: wgetrecursive <URL>" && echo "Example: wgetrecursive http://example.com" && return 1
+    wget -r -np -nH --cut-dirs=1 "$1"
+}
+
+# Convert MP4 videos to lossless format
+losslessmp4() { 
+    for file in *.mp4; do 
+        ffmpeg -i "$file" -c:v libx264 -preset veryslow -crf 18 -c:a copy "${file%.*}_lossless.mp4"
+    done
+}
+
+###########################################
+# GIT OPERATIONS
+###########################################
+
+alias ga='git add -A'
+alias gc='git commit -m'
+alias gp='git push'
+alias gpms='git push secondary main'
+#alias gs='git status'
+alias gs='git status | sed -e "$(git diff --stat --color | sed -e '\''s#/#\\/#g'\'' | awk '\''/\|/ {print "s/" $1 "/" $0 "/;"}'\'')"'
+
+###########################################
+# APPLICATION LAUNCHERS
+###########################################
+
+alias md='mdbook serve "/mnt/n/iOS-Accessibility-Guide" -p 3000 -n 0.0.0.0 > /dev/null 2>&1 &'
+alias startup_microstickies='sh $HOME/.config/sway/alacritty-micro-stickies/startup.bash'
+
+# Start Firefox with sound effect
+firefox_startup() { 
+    pw-play "$AUDIO_FX_DIR"/Pokemon/156 - quilava.mp3 & 
+    "$HOME"/scripts/autostart/start_firefox.bash
+}
+
+# Start Cachy with sound effect
+cachy_startup(){ 
+    pw-play "$AUDIO_FX_DIR/Pokemon/156 - quilava.mp3" & 
+    "$HOME"/scripts/autostart/start_cachy.bash
+}
+
+###########################################
+# BROWSER PROFILE MANAGEMENT
+###########################################
+
+# List browser profiles
+list-firefox-profiles() {  awk -F= "/Name=/{print \$2}" $HOME/.mozilla/firefox/profiles.ini | sort; }
+list-cachy-profiles() {  awk -F= "/Name=/{print \$2}" $HOME/.cachy/profiles.ini | sort; }
+
+# Generate desktop files for browser profiles
+alias generate-firefox-desktopfiles='$HOME/scripts/cronjobs/generate-firefox-profiles-desktopfiles.bash'
+alias generate-cachy-brower-desktopfiles='$HOME/scripts/cronjobs/generate-cachy-profiles.desktopfiles.bash'
+alias generate-chrome-browser-desktopfiles='$HOME/git/mainrig-MS-7D51/scripts/cronjobs/generate-chrome-profiles.desktopfiles.bash'
+alias generate-mullvad-browser-desktopfiles='$HOME/scripts/cronjobs/generate-mullvad-browser-profiles-desktopfiles.bash'
+
+###########################################
+# MEDIA & CAPTURE UTILITIES
+###########################################
+
+# Wayland/X11 utilities
+alias get_cursor_pos='slurp -b 00000000'
+
+# Dual display capture card setup with rotation and framerate adjustment
+capturecard () { 
+    ffplay -f v4l2 -video_size 1920x1080 -framerate 60 --untimed -i /dev/video0 -vf "transpose=1,setpts=PTS/2" > /dev/null 2>&1 & 
+    ffplay -f v4l2 -video_size 1920x1080 -framerate 60 --untimed -i /dev/video1 -vf "setpts=PTS/2" > /dev/null 2>&1 &
+}
+
+# MPV player variants
+alias mpvloop='mpv --loop'
+
+# mpvl
+for i in $(seq 1 10); do
+    eval "mpvl$i() { \
+        id='mpvfloattopright$i'; \
+        if ps aux | grep -- '--wayland-app-id='\"\$id\" | grep -v grep > /dev/null; then \
+            echo \"mpvl$i with app_id \$id is already running. Skipping...\" \
+            return 0; \
+        fi; \
+        mpv --directory-filter-types=video,audio -autofit-larger=192x108 --geometry=192x108 --x11-name=\$id --wayland-app-id=\$id \"\$@\" > /dev/null 2>&1 & \
+    }" >/dev/null 2>&1
+done
+
+
+
+# Specialized MPV instance for monitoring
+mpvmonkb() {
+    mpv -autofit-larger=192x108 --geometry=192x108 --x11-name=mpv_mon_kb --wayland-app-id=mpv_mon_kb --profile=fast "$@" > /dev/null 2>&1 &
+}
+
+# MPV with playlist from stdin
+mpvp() { 
+    mpvl --playlist=- "$1"
+}
+
+# MPV with playlist from stdin and looping
+mpvpl() { 
+    mpvl --loop --playlist=- "$1"
+}
+
+# MPV with media watch
+mpvm () {
+    local SLOT_ID=1 
+    local ACTION
+    if [[ "$1" =~ ^[0-9]+$ ]]
+    then
+        SLOT_ID="$1" 
+        shift
+    fi
+    ACTION="$1" 
+    shift
+    local WATCH_DIR="$HOME/media-watch" 
+    local SLOT_DIR="$WATCH_DIR/slot-$SLOT_ID" 
+    local LOG_FILE="$SLOT_DIR/last_watched.log"
+    local HISTORY_LOG="$WATCH_DIR/watch_history.log"
+    # Ensure watch directory exists
+    if [ ! -d "$WATCH_DIR" ]; then
+        mkdir -p "$WATCH_DIR" || {
+            echo "Error: Failed to create watch directory: $WATCH_DIR"
+            return 1
+        }
+    fi
+    
+    # Ensure slot directory exists
+    if [ ! -d "$SLOT_DIR" ]; then
+        mkdir -p "$SLOT_DIR" || {
+            echo "Error: Failed to create slot directory: $SLOT_DIR"
+            return 1
+        }
+    fi
+    
+    # Initialize history log if it doesn't exist
+    if [ ! -f "$HISTORY_LOG" ]; then
+        echo "# Media Watch History Log" > "$HISTORY_LOG" || {
+            echo "Error: Failed to create history log: $HISTORY_LOG"
+            return 1
+        }
+        echo "# Format: [TIMESTAMP] [SLOT] [FILEPATH]" >> "$HISTORY_LOG"
+        echo "-------------------------------------------" >> "$HISTORY_LOG"
+    fi
+    
+    update_log_file () {
+        local media_path="$1" 
+        local media_dir
+        media_dir="$(dirname "$media_path")" 
+        local media_filename
+        media_filename="$(basename "$media_path")" 
+        if [ -e "$LOG_FILE" ]
+        then
+            mv "$LOG_FILE" "$LOG_FILE.bak"
+        fi
+        {
+            echo "$media_dir"
+            echo "$media_filename"
+        } > "$LOG_FILE" || {
+            echo "Error writing to $LOG_FILE"
+            return 1
+        }
+        [ -e "$LOG_FILE.bak" ] && rm "$LOG_FILE.bak"
+        
+        # Add to history log
+        local timestamp
+        timestamp=$(date "+%Y-%m-%d %H:%M:%S")
+        echo "[$timestamp] [Slot-$SLOT_ID] $media_path" >> "$HISTORY_LOG" || {
+            echo "Warning: Failed to update history log"
+        }
+    }
+    
+    case "$ACTION" in
+        (play) 
+            if [ -z "$1" ]
+            then
+                echo "Error: No media file specified."
+                return 1
+            fi
+            local media_path="$1" 
+            if [ ! -f "$media_path" ]
+            then
+                echo "Error: File not found: $media_path"
+                return 1
+            fi
+            local abs_media_path
+            abs_media_path=$(realpath "$media_path") || {
+                echo "Error: Failed to resolve absolute path for: $media_path"
+                return 1
+            }
+            echo "Absolute path of media file: $abs_media_path"
+            update_log_file "$abs_media_path" || {
+                echo "Error: Failed to update log file"
+                return 1
+            }
+            echo "Playing media file with mpv: $abs_media_path"
+            if ! command -v mpv &> /dev/null; then
+                echo "Error: mpv is not installed or not in PATH"
+                return 1
+            fi
+            mpv --x11-name="mpvmiddle" --wayland-app-id="mpvmiddle" "$abs_media_path" > /dev/null 2>&1 & 
+            ;;
+        (cd) 
+            if [ ! -s "$LOG_FILE" ]
+            then
+                echo "No last watched folder found for slot $SLOT_ID."
+                return 1
+            fi
+            
+            local last_dir
+            last_dir=$(sed -n '1p' "$LOG_FILE") 
+            local last_file
+            last_file=$(sed -n '2p' "$LOG_FILE") 
+            
+            if [ -z "$last_dir" ]; then
+                echo "Error: Invalid log file format - missing directory entry"
+                return 1
+            fi
+            
+            if [ ! -d "$last_dir" ]; then
+                echo "Error: Last watched directory no longer exists: $last_dir"
+                return 1
+            fi
+            
+            echo "Changing directory to last watched folder (slot $SLOT_ID): $last_dir"
+            if cd "$last_dir"
+            then
+                echo "Last played file: $last_file"
+            else
+                echo "Error: Could not cd to $last_dir"
+                return 1
+            fi 
+            ;;
+        (history)
+            if [ ! -f "$HISTORY_LOG" ]; then
+                echo "No watch history available yet."
+                return 1
+            fi
+            
+            local lines=$1
+            if [ -z "$lines" ]; then
+                # Default to 10 lines if not specified
+                lines=10
+            fi
+            
+            echo "Last $lines entries from watch history:"
+            tail -n "$lines" "$HISTORY_LOG"
+            ;;
+        (search)
+            if [ ! -f "$HISTORY_LOG" ]; then
+                echo "No watch history available yet."
+                return 1
+            fi
+            
+            if [ -z "$1" ]; then
+                echo "Error: No search term provided."
+                echo "Usage: mpvm search <term>"
+                return 1
+            fi
+            
+            local search_term="$1"
+            echo "Searching watch history for: $search_term"
+            grep -i "$search_term" "$HISTORY_LOG" || {
+                echo "No matches found for: $search_term"
+            }
+            ;;
+        (*) 
+            echo "Usage: mpvm [slot_id] <action> [arguments]"
+            echo "Actions:"
+            echo "  play <file>    - Play a media file"
+            echo "  cd             - Change to directory of last played file"
+            echo "  history [n]    - Show last n entries (default: 10)" 
+            echo "  search <term>  - Search watch history"
+            return 1
+            ;;
+    esac
+    return 0
+}
+
+###########################################
+# CUSTOM SCRIPTS & FUNCTIONS
+###########################################
+
+# File management
+alias kdbxrevisions='$HOME/scripts/cronjobs/kdbx-revisions-pomf.bash'
+
+# Compile Sway from source
+compile_sway() { 
+	cd $HOME/git/sway-git-wlroots-git || return 1
+	rm -f $HOME/git/sway-git-wlroots-git/*.zst
+    makepkg -si
+}
+
+
+# 0x0 wlclip
+0x0wlclip() {
+wl-paste | curl -F "file=@-" -F "expires=1" https://0x0.st | wl-copy && echo "Success" || echo "Error"
+  }
+
+# File sharing function - Uploads clipboard content to 0x0.st via SSH
+0x0pipe() { 
+    # Paste from clipboard and upload to 0x0.st file sharing service via SSH
+    wl-paste | ssh $TAIL_WS "curl -s -F 'file=@-' https://0x0.st"
+}
+
+archive-ytchannel() {
+    yt-dlp -o "%(uploader)s/%(upload_date)s %(title)s - %(id)s.%(ext)s" \
+    --retries 30 \
+    --fragment-retries 30 \
+    --write-info-json \
+    --write-annotation \
+    --write-sub \
+    --sub-lang "en,live_chat" \
+    --sub-format "vtt/json/best" \
+    --write-thumbnail \
+    --download-archive "downloaded.txt" \
+    --continue \
+    --ignore-errors \
+    --cookies "cookies.txt" \
+    -f bestvideo+bestaudio \
+    --merge-output-format mkv \
+    "$1"
+}
+
+
+desktop_folders() {
+    echo "$HOME/.local/share/applications" || return 1
+    echo "/usr/local/share/applications" || return 1
+    echo "$HOME/.config/autostart" || return 1
+}
+cpmpv() {
+    if [ -z "$1" ]; then
+        echo "Usage: copympvfile <destination_path>"
+        return 1
+    fi
+    
+    current_file=$(cat /var/tmp/current_mpv_file 2>/dev/null)
+    if [ -z "$current_file" ]; then
+        echo "Error: No file path found."
+        return 1
+    fi
+    if [ ! -r "$current_file" ]; then
+        echo "Error: File '$current_file' does not exist or is not readable."
+        return 1
+    fi
+    if [ ! -w "$(dirname "$1")" ]; then
+        echo "Error: Destination directory is not writable."
+        return 1
+    fi
+    
+    if cp "$current_file" "$1"; then
+        echo "File '$current_file' copied successfully to '$1'"
+    else
+        echo "Error: Failed to copy the file."
+        return 1
+    fi
+}
+
+generate-thumbnails() {
+    local format=""
+    local path=""
+    
+    # Parse arguments
+    for arg in "$@"; do
+        case "$arg" in
+            format=*) format="${arg#*=}"; ;;
+            path=*) path="${arg#*=}"; ;;
+        esac
+    done
+    
+    if [ -z "$format" ] || [ -z "$path" ]; then
+        echo "Usage: generate-thumbnails format=<webm/mp4> path=<path_to_folder>"
+        return 1
+    fi
+    
+    # Check if path exists
+    if [ ! -d "$path" ]; then
+        echo "Error: Directory not found: $path"
+        return 1
+    fi
+    
+    # Check if ffmpeg is installed using command
+    if ! command -v ffmpeg &> /dev/null; then
+        echo "Error: ffmpeg not found. Please install ffmpeg before running this script."
+        return 1
+    fi
+    
+    # Check if any matching files exist
+    if ! ls "$path"/*."$format" &>/dev/null; then
+        echo "No .$format files found in $path"
+        return 1
+    fi
+    
+    for file in "$path"/*."$format"; do
+        output_file="${file%.*}.png"
+        echo "Generating thumbnail for $file"
+        ffmpeg -i "$file" -ss 00:00:05 -vframes 1 "$output_file"
+    done
+    
+    echo "All thumbnails generated successfully"
+}
+
+identify_app_id() { 
+    # Check if an app_id is provided
+    local app_id="$1"
+    if [ -z "$app_id" ]; then
+        echo "Error: No app_id provided."
+        return 1
+    fi
+
+    # Retrieve all app_ids from the Sway tree
+    local all_app_ids
+    all_app_ids=$(swaymsg -t get_tree | jq -r '.. | .app_id? // empty' | sort | uniq)
+
+    # Check for exact matches
+    local exact_matches
+    exact_matches=$(echo "$all_app_ids" | grep -x "^$app_id")
+
+    if [ -n "$exact_matches" ]; then
+        echo "Exact match found for app_id '$app_id':"
+        echo -e "\t$exact_matches"
+    else
+        echo "No exact match found for app_id: $app_id"
+    fi
+
+    # Check for partial matches
+    local partial_matches
+    partial_matches=$(echo "$all_app_ids" | grep "$app_id")
+
+    if [ -n "$partial_matches" ]; then
+        echo "Partial matches found for app_id containing '$app_id':"
+        # Indent each line of the partial matches
+        echo "$partial_matches" | while IFS= read -r line; do
+            echo -e "\t$line"
+        done
+    else
+        echo "No matches found for app_id: $app_id (exact or partial)."
+    fi
+}
+
+snap () {
+        if [[ $# -eq 0 ]]
+        then
+                echo "Usage: snap <disk or path>"
+                exit 1
+        fi
+        
+        # If a full path is provided, use it; otherwise, assume it's a subdirectory of /mnt
+        disk="$1"
+        if [[ "$disk" != /* ]]; then
+                disk="/mnt/$disk"
+        fi
+
+        snapshot_dir="$disk/.snapshots"
+        date_suffix="$(date --iso-8601)"
+        snapshot_path="$snapshot_dir/$date_suffix"
+        
+        # Ensure snapshot directory exists
+        if [ ! -d "$snapshot_dir" ]; then
+                sudo mkdir -p "$snapshot_dir"
+        fi
+
+        # Check if a snapshot already exists for today
+        if [ -e "$snapshot_path" ]; then
+                date_suffix="$(date --iso-8601=seconds)"
+                snapshot_path="$snapshot_dir/$date_suffix"
+                echo "Snapshot already exists, saving instead at $snapshot_path"
+        fi
+        
+        # Create a read-only snapshot
+        sudo btrfs subvolume snapshot -r "$disk" "$snapshot_path"
+}
+
+uptail() {
+    local category="$1"
+    local file="$2"
+    local destination=""
+    
+    # Check for required environment variables with correct names
+    if [ -z "$UPTAIL_USER" ] || [ -z "$UPTAIL_UPLOAD_PASS" ]; then
+        echo "Error: Missing upload credentials"
+        echo "Please set UPTAIL_USER and UPTAIL_UPLOAD_PASS environment variables"
+        return 1
+    fi
+    
+    # Build credentials string with correct variable names
+    local credentials="${UPTAIL_USER}:${UPTAIL_UPLOAD_PASS}"
+    
+    case "$category" in
+        audio) destination="audio" ;;
+        appimage) destination="appimage" ;;
+        config) destination="config" ;;
+        flac) destination="flac" ;;
+        game) destination="game" ;;
+        game-protected) destination="game-protected" ;;
+        images) destination="images" ;;
+        key) destination="key" ;;
+        md) destination="md" ;;
+        nix) destination="nix/nix" ;;
+        pdf) destination="pdf" ;;
+        scripts) destination="scripts" ;;
+        txt) destination="txt" ;;
+        html) destination="html" ;;
+        video) destination="video" ;;
+        *) echo "Invalid category"; return 1 ;;
+    esac
+    
+    # Upload endpoint
+    local endpoint="${UPTAIL_SERVER}"
+    
+    # Use curl exactly as you had it before, with correct error handling
+    http_code=$(curl -s -o /dev/null -w "%{http_code}" -T "${file}" -u "$credentials" "${endpoint}/${destination}/${file##*/}")
+    
+    # Check if the upload was successful based on the HTTP status code
+    if [ "$http_code" -eq 200 ] || [ "$http_code" -lt 210 ]; then
+        echo "Uploaded successfully to ${endpoint}/${destination}/${file##*/}"
+    else
+        echo "Failed to upload. HTTP status code: $http_code"
+    fi
+}
+
+# Define completion for uptail
+_uptail_completion() {
+    local state ret=0
+    # shellcheck disable=SC2034
+    local -a categories=(
+        'audio:Upload audio files'
+        'appimage:Upload AppImage'
+        'config:Upload configuration files'
+        'flac:Upload FLAC files'
+        'game:Upload game files'
+        'game-protected:Upload protected game files'
+        'images:Upload image files'
+        'key:Upload key files'
+        'md:Upload Markdown files'
+        'nix:Upload Nix files'
+        'pdf:Upload PDF files'
+        'scripts:Upload script files'
+        'txt:Upload text files'
+        'html:Upload html files'
+        'video:Upload video files'
+    )
+    
+    _arguments \
+    '1: :->category' \
+    '2: :_files'
+    
+    case $state in
+        category)
+            _describe 'category' categories && ret=0
+        ;;
+    esac
+    
+    return $ret
+}
+
+compdef _cd_into_completion cd_into
+compdef _uptail_completion uptail
