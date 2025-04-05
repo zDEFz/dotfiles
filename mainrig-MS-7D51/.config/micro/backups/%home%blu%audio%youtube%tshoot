@@ -1,0 +1,3 @@
+#!/bin/bash
+mkdir {source,tar}
+wget up.tail.ws/key/DB.kdbx -O ./key/DB.kdbx
