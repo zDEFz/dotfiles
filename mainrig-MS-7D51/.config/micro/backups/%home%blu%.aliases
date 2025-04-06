@@ -1,5 +1,7 @@
 #!/bin/bash
 
+alias wol-nas='wol 7C:C2:55:77:E2:1F'
+
 ###########################################
 # DIRECTORY NAVIGATION
 ###########################################
@@ -72,6 +74,8 @@ alias pwdc="pwd | clip"
 alias typeclipboard='echo "type $(wl-paste)" | dotool'
 
 # Remote access
+nas_pre() { ssh ${NAS_PRE_USER}@${NAS_PRE_IP}; } 
+
 nas() {
   local user=${1:-${NAS_USER:-$(whoami)}}
   ssh -t "${user}@nas.local" "cd $HOME/git/nas/backup; zsh --login"
@@ -234,7 +238,7 @@ for i in $(seq 1 10); do
     eval "mpvl$i() { \
         id='mpvfloattopright$i'; \
         if ps aux | grep -- '--wayland-app-id='\"\$id\" | grep -v grep > /dev/null; then \
-            echo \"mpvl$i with app_id \$id is already running. Skipping...\" \
+            echo \"mpvl$i with app_id \$id is already running. Skipping...\"; \
             return 0; \
         fi; \
         mpv --directory-filter-types=video,audio -autofit-larger=192x108 --geometry=192x108 --x11-name=\$id --wayland-app-id=\$id \"\$@\" > /dev/null 2>&1 & \
