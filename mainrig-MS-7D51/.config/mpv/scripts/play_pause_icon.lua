@@ -1,4 +1,4 @@
--- Define overlay ID
+ -- Define overlay ID
 local overlay_id = 1
 
 -- Locate the pause icon file
