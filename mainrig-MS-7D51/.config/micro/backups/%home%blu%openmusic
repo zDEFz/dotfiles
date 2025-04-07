@@ -1,0 +1,30 @@
+#!/bin/bash
+[[ -f /home/blu/.aliases ]] && source /home/blu/.aliases
+
+# Define directories to play
+dirs=(
+  "/home/blu/audio/youtube/touhou-playlist4" 
+  "/home/blu/audio/youtube/SilvaGunner"
+  "/home/blu/audio/youtube/touhou-playlist3"
+  "/home/blu/audio/youtube/mix-ぬぬぬぬ"
+  "/home/blu/audio/youtube/kashiimoimi/香椎モイミ"
+  "/home/blu/audio/youtube/extracts" 
+  "/home/blu/audio/youtube/Dragonball"
+)
+
+# Launch mpv players
+for i in "${!dirs[@]}"; do
+  cmd="mpvl$((i+1))"
+  base_x=1205
+  base_y=350
+  x_step=192
+  y_step=108
+  swaymsg '[app_id="^mpvfloattopright((i+1))$"] floating enable, $map 1965px 350px, border none, sticky enable, opacity 1'
+  # Launch in background with disowned process
+  "$cmd" --pause "${dirs[i]}" >/dev/null 2>&1 & disown
+done
+
+
+
+# Exit cleanly without waiting
+exit 0
