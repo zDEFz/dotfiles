@@ -2,5 +2,6 @@
     "ruler": false,
     "softwrap": true,
     "statusline": false,
-    "wordwrap": true
+    "wordwrap": true,
+    "autoclose": false
 }
