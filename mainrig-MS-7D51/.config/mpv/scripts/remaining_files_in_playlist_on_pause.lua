@@ -1,7 +1,3 @@
--- Debug message to check if script is loaded
-mp.msg.info("remaining_files.lua script loaded")
-
--- Function to show the remaining files message while paused
 function show_remaining_files_message()
     local current_pos = mp.get_property("playlist-pos")
     local total_files = mp.get_property("playlist-count")
@@ -16,13 +12,13 @@ function show_remaining_files_message()
     local remaining_message = "Remaining Files: " .. remaining_files
 
     -- Set the font size to a larger value
-    mp.set_property("osd-font-size", 100)  -- Larger font for visibility
+    mp.set_property("osd-font-size", 150)  -- Larger font for visibility
 
-    -- Clear any existing overlays (pause icon)
-    mp.commandv("overlay-remove", 1)  -- Remove the pause icon overlay
+    -- Remove any previous overlay if any
+    mp.commandv("overlay-remove", 1)
 
-    -- Display the message at the top-left of the screen
-    mp.osd_message(remaining_message, 10)  -- Display for 10 seconds, you can adjust as needed
+    -- Display the message without the black background
+    mp.osd_message(remaining_message, 999999)  -- Display message for 10 seconds (you can adjust the duration)
 end
 
 -- React to pause property changes
