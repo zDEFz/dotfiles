@@ -1,0 +1,76 @@
+The format is:
+">(key code):(sequence of inputs)"
+
+This is a mapping
+
+
+List of key codes: 
+https://gist.github.com/Mumfrey/5cfc3b7e14fef91b6fa56470dc05218a
+
+If you're not using key codes but rather key names - use the ones in the above list but removing "KEY_" from the name
+
+
+The inputs are
+L - Left
+R - Right
+1 - CCW rotation
+2 - 180 rotation
+3 - CW rotation
+H - Harddrop
+
+
+Home row ASDFGHJKL; (no rotation)
+
+>a:LLLL
+>s:LLLLR
+>d:LLLLRR
+>f:LLLLRRR
+>g:LLLLRRRR
+>h:RRRRLLLL
+>j:RRRRLLL
+>k:RRRRLL
+>l:RRRRL
+>semicolon:RRRR
+
+
+Bottom row ZXCVBNM,./ (CW rotation)
+
+>z:3LLLLL
+>x:3LLLLLR
+>c:3LLLLLRR
+>v:3LLLLLRRR
+>b:3LLLLLRRRR
+>n:3RRRRLLLL
+>m:3RRRRLLL
+>comma:3RRRRLL
+>period:3RRRRL
+>slash:3RRRR
+///
+
+
+Top row QWERTYUIOP (CCW rotation)
+
+>q:1LLLL
+>w:1LLLLR
+>e:1LLLLRR
+>r:1LLLLRRR
+>t:1LLLLRRRR
+>y:1RRRRRLLLL
+>u:1RRRRRLLL
+>i:1RRRRRLL
+>o:1RRRRRL
+>p:1RRRRR
+
+
+Number row 1234567890 (180 rotation)
+
+>1:2LLLL
+>2:2LLLLR
+>3:2LLLLRR
+>4:2LLLLRRR
+>5:2LLLLRRRR
+>6:2RRRRLLLL
+>7:2RRRRLLL
+>8:2RRRRLL
+>9:2RRRRL
+>0:2RRRR
