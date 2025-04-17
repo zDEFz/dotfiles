@@ -22,6 +22,9 @@ export WLR_DRM_DEVICES=/dev/dri/by-name/AMD_Pro_W7500_1:/dev/dri/by-name/AMD_Pro
 # Try using vulkan
 export WLR_RENDERER=vulkan
 
+# Better video decoding - mpv
+export RADV_PERFTEST=video_decode
+
 # Start sway
 exec sway -c /home/blu/.config/sway/config
 #exec sway -c /home/blu/.config/sway/config --debug 2>> /home/blu/sway2.log
