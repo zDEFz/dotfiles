@@ -1,73 +1,65 @@
 #!/bin/bash
 
-# Define paths and file locations
-TEMPLATE_FILE="/home/blu/.config/sway/conf.d/workspaces/template-assignfile"
+# ——— configure your active outputs here ———
+monitors=(LL L M R RR MON_KB)
+# monitors=(LL L M R RR TAIKO MON_KB)  # ← add/comment to include TAIKO
 
-# Group settings
-GROUP_SIZE=7  # Adjusted to 7 workspaces per group (LL, L, M, R, RR, TAIKO, MON_KB)
+GROUP_SIZE=${#monitors[@]}
 
-# Focused workspace retrieval
-CURRENT_WORKSPACE=$(swaymsg -t get_workspaces | jq -r '.[] | select(.focused == true) | .name | tonumber')
+# Path to your template file
+TEMPLATE_FILE="$HOME/.config/sway/conf.d/workspaces/template-assignfile"
 
-# Function to count the total number of workspaces (based on how many IDs we have in the file)
-count_total_workspaces() {
-    local file_path=$1
-    # Extract workspace numbers (using regex to match ws<number>-<type>) and count unique workspace IDs
-    total_workspaces=$(grep -oP 'ws\d+' "$file_path" | sort -u | wc -l)
-    
-    if [ "$total_workspaces" -le 0 ]; then
-        echo "No workspaces found in $file_path."
-        exit 1
-    fi
-
-    echo "$total_workspaces"
-}
-
-# Get the total number of workspaces from the template file
-TOTAL_WORKSPACES=$(count_total_workspaces "$TEMPLATE_FILE")
-echo "Total workspaces: $TOTAL_WORKSPACES"
-
-# Calculate the current group based on the current workspace number
-CURRENT_GROUP=$(( (CURRENT_WORKSPACE - 1) / GROUP_SIZE ))
-
-# Determine the next or previous group based on the argument
-if [ "$1" == "next" ]; then
-    NEXT_GROUP=$((CURRENT_GROUP + 1))
+# 1) figure out which numeric workspace you're on now
+current_name=$(swaymsg -t get_workspaces \
+    | jq -r '.[] | select(.focused) | .name')
+if [[ $current_name =~ ^ws([0-9]+)- ]]; then
+    CURRENT_WS_NUM=$((10#${BASH_REMATCH[1]}))
 else
-    NEXT_GROUP=$((CURRENT_GROUP - 1))
-fi
-
-# Calculate the starting workspace for the next or previous group
-START_WORKSPACE=$((NEXT_GROUP * GROUP_SIZE + 1))
-
-# Check if the start workspace is out of bounds
-if [ "$START_WORKSPACE" -le 0 ]; then
-    echo "You are already at the first group."
+    echo "ERROR: couldn't parse current workspace name: $current_name"
     exit 1
 fi
 
-if [ "$START_WORKSPACE" -gt "$TOTAL_WORKSPACES" ]; then
-    echo "No more workspaces available."
+# 2) count how many distinct ws IDs are in your template file
+TOTAL_WORKSPACES=$(grep -oP 'ws\K[0-9]+' "$TEMPLATE_FILE" \
+    | sort -u | wc -l)
+echo "Total workspaces defined: $TOTAL_WORKSPACES"
+
+# 3) which group are we in? (0‑indexed)
+CURRENT_GROUP=$(( (CURRENT_WS_NUM - 1) / GROUP_SIZE ))
+
+# 4) decide next or prev
+case "$1" in
+  next) NEW_GROUP=$(( CURRENT_GROUP + 1 )) ;;
+  prev) NEW_GROUP=$(( CURRENT_GROUP - 1 )) ;;
+  *)
+    echo "Usage: $0 next|prev"
+    exit 1
+    ;;
+esac
+
+# 5) compute the first workspace number of that new group
+START_WS_NUM=$(( NEW_GROUP * GROUP_SIZE + 1 ))
+
+# 6) bounds check
+if (( START_WS_NUM < 1 )); then
+    echo "Already at the first group."
+    exit 1
+elif (( START_WS_NUM > TOTAL_WORKSPACES )); then
+    echo "No more workspaces beyond group $NEW_GROUP."
     exit 1
 fi
 
-# Create the list of workspaces to switch to
-WORKSPACE_LIST=""
-for ((i = 0; i < GROUP_SIZE; i++)); do
-    WORKSPACE_NUM=$((START_WORKSPACE + i))
-    if [ "$WORKSPACE_NUM" -le "$TOTAL_WORKSPACES" ]; then
-        if [ -n "$WORKSPACE_LIST" ]; then
-            WORKSPACE_LIST+=", "
-        fi
-        WORKSPACE_LIST+="workspace $WORKSPACE_NUM"
-    fi
+# 7) build and send the swaymsg commands
+for (( i = 0; i < GROUP_SIZE; i++ )); do
+    ws_num=$(( START_WS_NUM + i ))
+    # pad to two digits:
+    ws_prefix=$(printf "ws%02d" "$ws_num")
+    for mon in "${monitors[@]}"; do
+        swaymsg workspace "${ws_prefix}-${mon}"
+    done
 done
 
-# Switch to the specified workspaces
-swaymsg "$WORKSPACE_LIST"
+# 8) (optional) focus a particular output if you want:
+# swaymsg "focus output 'BNQ ZOWIE XL LCD EBF2R02370SL0'"
 
-# Focus the specific output 'BNQ ZOWIE XL LCD EBF2R02905SL0'
-swaymsg "focus output 'BNQ ZOWIE XL LCD EBF2R02370SL0'"
-
-# Output the workspace list
-echo "Switched to: $WORKSPACE_LIST"
+echo "Switched to group #$NEW_GROUP (workspaces ${START_WS_NUM}–$((START_WS_NUM+GROUP_SIZE-1)))."

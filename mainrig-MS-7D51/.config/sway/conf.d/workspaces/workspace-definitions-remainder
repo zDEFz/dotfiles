@@ -824,3 +824,4 @@ set $ws70-TAIKO "489"
 	workspace $ws70-TAIKO output $TAIKO
 set $ws70-MON_KB "490"
 	workspace $ws70-MON_KB output $MON_KB
+

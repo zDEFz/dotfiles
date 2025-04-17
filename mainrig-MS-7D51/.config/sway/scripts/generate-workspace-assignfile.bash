@@ -1,44 +1,23 @@
 #!/bin/bash
 
-# Define the starting values
+# Define the workspace range
 start_num=1
-end_num=100
-counter=1  # Add a counter to track the values
+end_num=13
 
-# Loop to generate the sequence for 7 outputs (LL, L, M, R, RR, TAIKO, MON_KB)
-for ((i = "$start_num"; i <= "$end_num"; i++)); do
-    # LL
-    echo "### ws$(printf "%02d" $i)-LL ($counter)"
-    echo -e "\t"
-    ((counter++))
+# List your active outputs here (in display order)
+monitors=(LL L M R RR MON_KB)
+# monitors=(LL L M R RR TAIKO MON_KB)  # ← add/comment to include TAIKO
 
-    # L
-    echo "### ws$(printf "%02d" $i)-L ($counter)"
-    echo -e "\t"
-    ((counter++))
+# Initialize the counter
+counter=1
 
-    # M
-    echo "### ws$(printf "%02d" $i)-M ($counter)"
-    echo -e "\t"
-    ((counter++))
-
-    # R
-    echo "### ws$(printf "%02d" $i)-R ($counter)"
-    echo -e "\t"
-    ((counter++))
-
-    # RR
-    echo "### ws$(printf "%02d" $i)-RR ($counter)"
-    echo -e "\t"
-    ((counter++))
-
-    # TAIKO
-    echo "### ws$(printf "%02d" $i)-TAIKO ($counter)"
-    echo -e "\t"
-    ((counter++))
-
-    # MON_KB
-    echo "### ws$(printf "%02d" $i)-MON_KB ($counter)"
-    echo -e "\t"
-    ((counter++))
+# Loop through each workspace index
+for (( i = start_num; i <= end_num; i++ )); do
+    ws=$(printf "ws%02d" "$i")
+    # Loop through each monitor
+    for m in "${monitors[@]}"; do
+        echo "### ${ws}-${m} (${counter})"
+        echo -e "\t"
+        ((counter++))
+    done
 done
