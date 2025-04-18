@@ -1,30 +1,124 @@
 #!/bin/bash
+
+# Load aliases if they exist
 [[ -f /home/blu/.aliases ]] && source /home/blu/.aliases
 
-# Define directories to play
+# Music directory paths configuration
 dirs=(
-  "/home/blu/audio/youtube/touhou-playlist4" 
-  "/home/blu/audio/youtube/SilvaGunner"
-  "/home/blu/audio/youtube/touhou-playlist3"
-  "/home/blu/audio/youtube/mix-ぬぬぬぬ"
-  "/home/blu/audio/youtube/kashiimoimi/香椎モイミ"
-  "/home/blu/audio/youtube/extracts" 
+  "/home/blu/audio/MusicLibrary/Game/N64/The Legend of Zelda - Ocarina of Time"
+  "/home/blu/audio/youtube/crusader kings III - northern lords"
   "/home/blu/audio/youtube/Dragonball"
+  "/home/blu/audio/youtube/extracts"
+  "/home/blu/audio/youtube/GilvaSunner"
+  "/home/blu/audio/youtube/kashiimoimi"
+  "/home/blu/audio/youtube/minusT"
+  "/home/blu/audio/youtube/mix-ぬぬぬぬ"
+  "/home/blu/audio/youtube/playlist4"
+  "/home/blu/audio/youtube/playlist5"
+  "/home/blu/audio/youtube/playlist6"
+  "/home/blu/audio/youtube/royalty-free"
+  "/home/blu/audio/youtube/SilvaGunner"
+  "/home/blu/audio/youtube/touhou-playlist1"
+  "/home/blu/audio/youtube/touhou-playlist2"
+  "/home/blu/audio/youtube/touhou-playlist3"
+  "/home/blu/audio/youtube/touhou-playlist-3-extracts"
+  "/home/blu/audio/youtube/touhou-playlist4"
 )
 
-# Launch mpv players
+# Window layout configuration
+base_x=2160
+base_y=1620
+x_step=192
+y_step=108
+
+# Create a position lookup table
+declare -A expected_pos
+
+# Initial window tree fetch for startup
+initial_tree=$(swaymsg -t get_tree)
+
+# Start required windows and build position table
 for i in "${!dirs[@]}"; do
-  cmd="mpvl$((i+1))"
-  base_x=1205
-  base_y=350
-  x_step=192
-  y_step=108
-  swaymsg '[app_id="^mpvfloattopright((i+1))$"] floating enable, $map 1965px 350px, border none, sticky enable, opacity 1'
-  # Launch in background with disowned process
-  "$cmd" --pause "${dirs[i]}" >/dev/null 2>&1 & disown
+  idx=$(( i + 1 ))
+  id="mpvfloat$idx"
+  
+  # Calculate position for 10 items per row
+  row=$(( i / 10 ))    
+  col=$(( i % 10 ))    
+
+  # Calculate the x and y positions
+  x=$(( base_x + col * x_step ))
+  y=$(( base_y + row * y_step ))
+  
+  expected_pos["$id"]="$x $y"
+  
+  # Debugging output
+  echo "id=$id, row=$row, col=$col, x=$x, y=$y"
+
+  # Only launch if not already running
+  if ! echo "$initial_tree" | grep -q "$id"; then
+    echo "Launching mpv instance for $id at ${dirs[i]}"
+   
+    mpvl$idx "${dirs[i]}" &
+    
+    # Wait until the window appears in the sway tree
+    for attempt in {1..20}; do
+      if swaymsg -t get_tree | grep -q "$id"; then
+        break
+      fi
+      sleep 0.01
+    done
+    
+    swaymsg '[app_id="^mpvfloat[0-9]+$"] move to workspace 18' &
+  else
+    echo "$id is already running"
+  fi
+done
+
+# Initial positioning for all windows
+for id in "${!expected_pos[@]}"; do
+  read x y <<< "${expected_pos[$id]}"
+  swaymsg "[app_id=\"^${id}$\"] move absolute position ${x}px ${y}px" >/dev/null 2>&1
 done
 
 
+  # Read the changed content of the file
+  changed_id=$(cat /tmp/wayland_app_id.txt)
+  echo "Detected app_id change: $changed_id"
 
-# Exit cleanly without waiting
-exit 0
+  # Check if the changed_id is non-empty
+  if [ -n "$changed_id" ]; then
+    # If the changed_id is different from the previous one
+    if [ "$changed_id" != "$previous_id" ]; then
+      # Revert the border for the previous app_id if it exists
+      if [ -n "$previous_id" ]; then
+        echo "Reverting border for previous app_id: $previous_id"
+        swaymsg "[app_id=\"$previous_id\"] border pixel none" &
+      fi
+
+      # Apply border to the new app_id
+      echo "Setting border for new app_id: $changed_id"
+      swaymsg "[app_id=\"$changed_id\"] border normal, focus" &
+
+      # Update previous_id to the new one
+      previous_id="$changed_id"
+    fi
+  else
+    # If changed_id is empty, revert the border for the last known app_id
+    if [ -n "$previous_id" ]; then
+      echo "Reverting border for last known app_id: $previous_id"
+      swaymsg "[app_id=\"$previous_id\"] border pixel none"
+      previous_id=""
+    fi
+  fi
+done
+
+
+  
+  # Adaptive sleep
+  if [[ $reposition_count -eq 0 ]]; then
+    sleep 30  # Longer sleep if no repositioning needed
+  else
+    sleep 15  # Shorter sleep if repositioning occurred
+  fi
+done
