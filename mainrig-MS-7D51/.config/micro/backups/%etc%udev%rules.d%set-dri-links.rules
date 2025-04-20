@@ -5,6 +5,8 @@ KERNEL=="card*", SUBSYSTEM=="drm", ATTRS{vendor}=="0x1002", ATTRS{device}=="0x73
 # AMD Radeon Pro W7500 - Slot Top (PCI slot 2f:00.0) # currently used for main screens
 KERNEL=="card*", SUBSYSTEM=="drm", ENV{ID_PATH}=="pci-0000:2f:00.0", SYMLINK+="dri/by-name/AMD_Pro_W7500_1"
 
+
+# To be replaced ... maybe by my 6950XT!
 # AMD Radeon Pro W7500 - Slot Bottom (PCI slot 24:00.0)
 KERNEL=="card*", SUBSYSTEM=="drm", ENV{ID_PATH}=="pci-0000:24:00.0", SYMLINK+="dri/by-name/AMD_Pro_W7500_2"
 
