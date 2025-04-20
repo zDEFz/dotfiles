@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Listen for workspace change events
+echo "Starting workspace change listener..."
+
+swaymsg -t subscribe '["workspace"]' | while read -r event; do
+    echo "Received workspace event: $event"
+    
+    # Extract the current focused workspace ID from the event
+    cur_workspace_id=$(echo "$event" | jq '.current.id')
+
+    # Debugging output to show current workspace ID
+    echo "Current workspace ID: $cur_workspace_id"
+
+    pause='xargs -r kill -STOP'
+    cont='xargs -r kill -CONT'
+    # Check if the workspace ID is 18
+    if [ "$cur_workspace_id" -eq 18 ]; then
+     
+        echo "Workspace ID is 18 - issuing $cmd"
+        pgrep -f -- '--wayland-app-id=mpvfloat'  xargs 
+        
+    else
+        echo "Workspace ID is not 18"
+    fi
+done
