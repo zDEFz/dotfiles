@@ -43,7 +43,7 @@ input {
     '0:0:antimicrox_Abs_Mouse_Emulation' events disabled
     '0:0:antimicrox_Mouse_Emulation' events disabled
     '0:0:wlr_virtual_keyboard_v1' events disabled
-    '1003:8258:Keyboard' events disabled
+    
     '1356:2508:Sony_Interactive_Entertainment_Wireless_Controller_Touchpad' events disabled
     '9456:320:Metadot_-_Das_Keyboard_Das_Keyboard_System_Control' events disabled
     type:keyboard xkb_numlock enabled
@@ -57,6 +57,7 @@ set {
     $MON_KB 'Iiyama North America PL2590HS 1219241201302'
     $R      'BNQ ZOWIE XL LCD EBMCM01300SL0'
     $RR     'Iiyama North America PL2590HS 1219241201699'
+    $TAIKO  'LG Electronics 24GM79G 0x0008042C'
 }
 
 # Display modes
@@ -67,6 +68,7 @@ output {
     $MON_KB mode 1920x1080@240Hz
     $R      mode 1920x1080@240Hz
     $RR     mode 1920x1080@240Hz
+    $TAIKO  mode 1920x1080@140Hz
 }
 
 # Display positions
@@ -77,6 +79,7 @@ output {
     $MON_KB position 2160 1544
     $R      position 4080 364
     $RR     position 5160 370
+    $TAIKO  position 6240 320
 }
 
 # Display backgrounds
@@ -136,5 +139,6 @@ set {
     $white        #ebdbb2
 }
 
+output $TAIKO disable
 
 include ~/.config/sway/conf.d/*
