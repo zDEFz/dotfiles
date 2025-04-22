@@ -63,13 +63,13 @@ set {
 
 # Display modes
 output {
-    $LL     mode 1920x1080@60Hz
-    $L      mode 1920x1080@60Hz
-    $M      mode 1920x1080@60Hz
-    $MON_KB mode 1920x1080@60Hz
-    $R      mode 1920x1080@60Hz
-    $RR     mode 1920x1080@60Hz
-    $TAIKO  mode 1920x1080@60Hz
+    $LL     mode 1920x1080@240Hz
+    $L      mode 1920x1080@240Hz
+    $M      mode 1920x1080@360Hz
+    $MON_KB mode 1920x1080@240Hz
+    $R      mode 1920x1080@240Hz
+    $RR     mode 1920x1080@240Hz
+    $TAIKO  mode 1920x1080@144Hz
 }
 
 # Display positions
@@ -140,6 +140,6 @@ set {
     $white        #ebdbb2
 }
 
-# output $TAIKO disable
+ output $TAIKO disable
 
 include ~/.config/sway/conf.d/*
