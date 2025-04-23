@@ -75,6 +75,6 @@ end
 mp.observe_property("pause", "bool", on_pause_change)
 
 -- Periodically check if we need to enforce the playback lock (pause others)
-mp.add_periodic_timer(0.5, enforce_playback_lock)
+mp.add_periodic_timer(0.8, enforce_playback_lock)
 
 mp.msg.info("[wayland-control] Script loaded for app_id: " .. current_id)
