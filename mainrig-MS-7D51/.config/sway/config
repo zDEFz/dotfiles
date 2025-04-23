@@ -79,7 +79,7 @@ output {
     $M      position 2160 570
     $MON_KB position 2160 1650
     $R      position 4080 470
-    $RR     position 5160 470
+    $RR     position 5160 480
     $TAIKO  position 6240 320
 }
 
