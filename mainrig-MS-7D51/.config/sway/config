@@ -25,6 +25,7 @@ set {
     $mts move to scratchpad
     $mtw move to workspace
     $mu move up
+    $sh shell
     $t title
     $ws workspace
 }
