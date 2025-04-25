@@ -1,32 +1,26 @@
 #!/bin/bash
 
-# export WLR_DRM_NO_MODIFIERS=1
-# export WLR_NO_HARDWARE_CURSORS=1
-# export XWAYLAND_NO_GLAMOR=1
+# Environment Variables for Wayland and Sway
+export NO_AT_BRIDGE=1                          # Disable AT-SPI2 service
+export WLR_SCENE_DISABLE_DIRECT_SCANOUT=1     # Disable direct scanout for WLR scene
+export ELECTRON_OZONE_PLATFORM_HINT=wayland   # Use Wayland for Electron apps
+export GTK_THEME=Breeze:dark                  # Set GTK theme
+export QT_QPA_PLATFORMTHEME=qt5ct             # Set QT platform theme
+export XDG_CONFIG_HOME="$HOME/.config"        # Set XDG config home
+export XDG_CURRENT_DESKTOP=sway               # Set current desktop environment
+export _JAVA_AWT_WM_NONREPARENTING=1          # Fix Java AWT issues on Wayland
 
-#export WINE_WAYLAND_DISPLAY_INDEX=4
+# GPU Configuration
+export WLR_DRM_DEVICES=/dev/dri/by-name/AMD_6950XT:/dev/dri/by-name/AMD_Pro_W7500  # Set primary and secondary GPUs
+export WLR_RENDERER=vulkan                    # Use Vulkan renderer for better performance
+export RADV_PERFTEST=video_decode             # Enable better video decoding for MPV
 
-# Try to disable at spi2 service start 
-export NO_AT_BRIDGE=1
+# Uncomment if needed for specific hardware or software issues
+# export WLR_DRM_NO_MODIFIERS=1               # Disable DRM modifiers
+# export WLR_NO_HARDWARE_CURSORS=1            # Disable hardware cursors
+# export XWAYLAND_NO_GLAMOR=1                 # Disable glamor for XWayland
+# export WINE_WAYLAND_DISPLAY_INDEX=4         # Set Wayland display index for Wine
 
-export WLR_SCENE_DISABLE_DIRECT_SCANOUT=1 
-export ELECTRON_OZONE_PLATFORM_HINT=wayland
-export GTK_THEME=Breeze:dark
-export QT_QPA_PLATFORMTHEME=qt5ct
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_CURRENT_DESKTOP=sway
-export _JAVA_AWT_WM_NONREPARENTING=1
-
-# 6950XT primary, w7500 secondary
-export WLR_DRM_DEVICES=/dev/dri/by-name/AMD_6950XT:/dev/dri/by-name/AMD_Pro_W7500
-
-
-# Try using vulkan
-export WLR_RENDERER=vulkan
-
-# Better video decoding - mpv
-export RADV_PERFTEST=video_decode
-
-# Start sway
-exec sway -c /home/blu/.config/sway/config
-#exec sway -c /home/blu/.config/sway/config --debug 2>> /home/blu/sway2.log
+# Start Sway
+exec sway -c "$HOME/.config/sway/config"      # Start Sway with the specified config
+# exec sway -c "$HOME/.config/sway/config" --debug 2>> "$HOME/sway2.log"  # Debug mode (uncomment if needed)

@@ -14,7 +14,7 @@ set {
     $meta Mod4
     $ml move left
     $mp move position
-    $mpc move position center
+    $mpcenter move position center
     $mr move right
     $mto move to output
     $mtod move to output down
@@ -22,11 +22,12 @@ set {
     $mtor move to output right
     $mtou move to output up
     $mtp move to position
-    $mts move to scratchpad
+    $mtscratch move to scratchpad
     $mtw move to workspace
     $mu move up
     $sh shell
     $t title
+    $term alacritty
     $ws workspace
 }
 
@@ -54,12 +55,11 @@ input {
 # Displays
 set { 
     $LL     'Iiyama North America PL2590HS 1219241201677'
-    $L  'Iiyama North America PL2590HS 1219241201616'
+    $L      'Iiyama North America PL2590HS 1219241201616'
     $M      'BNQ ZOWIE XL LCD EBF2R02370SL0'
     $MON_KB 'Iiyama North America PL2590HS 1219241201302'
     $R      'BNQ ZOWIE XL LCD EBMCM01300SL0'
     $RR     'Iiyama North America PL2590HS 1219241201699'
-    $TAIKO  'LG Electronics 24GM79G 0x0008042C'
 }
 
 # Display modes
@@ -69,8 +69,7 @@ output {
     $M      mode 1920x1080@360Hz
     $MON_KB mode 1920x1080@240Hz
     $R      mode 1920x1080@240Hz
-    $RR     mode 1920x1080@240Hz
-    $TAIKO  mode 1920x1080@144Hz
+    $RR     mode 1920x1080@240Hz   
 }
 
 # Display positions
@@ -81,7 +80,6 @@ output {
     $MON_KB position 2160 1650
     $R      position 4080 470
     $RR     position 5160 480
-    $TAIKO  position 6240 320
 }
 
 # Display backgrounds
@@ -140,7 +138,5 @@ set {
     $cyan         #8ec07c
     $white        #ebdbb2
 }
-
- output $TAIKO disable
 
 include ~/.config/sway/conf.d/*

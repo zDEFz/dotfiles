@@ -1,10 +1,23 @@
 #!/bin/bash
+
+# Sleep if the --sleep flag is provided
 if [[ "$1" == "--sleep" ]]; then
     sleep 15
 fi
 
+# Define variables
 script=~/.config/sway/scripts/alacritty-micro-stickies/micro-stickies.bash
-p="/home/blu/notes"
-$script "blue ${p}/ws-31/wanikani-cheat" --startup & sleep .24
-$script "transparent ${p}/ws-04/intake" --startup & sleep .24
-$script "transparent ${p}/ws-04/wellbeing" --startup & sleep .24
+notes_dir="/home/blu/notes"
+
+# Array of stickies to launch
+declare -a stickies=(
+    "blue ${notes_dir}/ws-31/wanikani-cheat"
+    "transparent ${notes_dir}/ws-04/intake"
+    "transparent ${notes_dir}/ws-04/wellbeing"
+)
+
+# Launch each sticky note with a slight delay
+for sticky in "${stickies[@]}"; do
+    $script "$sticky" --startup &
+    sleep 0.24
+done

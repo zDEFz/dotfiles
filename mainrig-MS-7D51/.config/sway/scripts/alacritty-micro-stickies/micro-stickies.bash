@@ -18,71 +18,64 @@ workspace="$3"
 position="$4"
 name=""
 
-# Function to generate a fixed unique ID from the filename only
+# Function to generate a fixed unique ID from the filename
 generate_fixed_id() {
     local fullpath="$1"
-    local filename=$(basename "$fullpath")  # Extract the filename from the path only
-    # Replace spaces with underscores (optional)
-    echo "${filename// /_}"  
+    local filename=$(basename "$fullpath")
+    echo "${filename// /_}"  # Replace spaces with underscores
 }
 
-# Check for mode and set name and class based on it
+# Function to measure and log execution time
+measure_time() {
+    local start_time=$1
+    local end_time=$(date +%s.%N)
+    local elapsed_time=$(echo "$end_time - $start_time" | bc)
+    echo -e "${CYAN}${BOLD}[INFO]${RESET} $2: $elapsed_time seconds"
+}
+
+# Handle startup mode
 if [[ $mode == "--startup" ]]; then
     name="alacritty-micro-startup-"
-    
-    # Focus output and switch workspace in a single command
+
     echo -e "${CYAN}${BOLD}[INFO]${RESET} Focusing output and switching workspace..."
     swaymsg "focus output 'BNQ ZOWIE XL LCD EBMCM01300SL0'" &
 
-    if [[ ! -z "$workspace" ]]; then
+    if [[ -n "$workspace" ]]; then
         echo -e "${CYAN}${BOLD}[INFO]${RESET} Switching to workspace $workspace"
         swaymsg "workspace $workspace" &
     else
         echo -e "${YELLOW}${BOLD}[WARNING]${RESET} No workspace provided. Assuming set by sway config."
     fi
 
-    # Start time measurement for launching Alacritty
-    alacritty_start_time=$(date +%s.%N)
+    # Measure startup time
+    start_time=$(date +%s.%N)
 
-    # Generate the fixed unique ID based on the filename
+    # Generate unique ID and check if already running
     fixed_id=$(generate_fixed_id "$1")
-
-    # Check if any app_id starting with 'alacritty-micro-startup-' matches the generated fixed_id
     if ! swaymsg -t get_tree | jq -r '.. | .app_id? // empty' | grep -q "^alacritty-micro-startup-${fixed_id}$"; then
         echo -e "${GREEN}${BOLD}[LAUNCHING]${RESET} Launching Alacritty with profile: $fixed_id"
-        # Launch Alacritty with the fixed unique ID as part of the class name and disown the process
         alacritty --class="${name}${fixed_id}" -e micro $micro_args 2>> "$log_file" &
     else
         echo -e "${CYAN}${BOLD}[INFO]${RESET} '$fixed_id' is already running. Not launching."
     fi
 
-    # End time measurement for startup
-    alacritty_end_time=$(date +%s.%N)
-    alacritty_elapsed_time=$(echo "$alacritty_end_time - $alacritty_start_time" | bc)
-    echo -e "${CYAN}${BOLD}[INFO]${RESET} Alacritty startup time: $alacritty_elapsed_time seconds"
-
+    # Log elapsed time
+    measure_time "$start_time" "Alacritty startup time"
 fi
 
+# Handle cursor mode
 if [[ $mode == "--cursor" ]]; then
     name="alacritty-micro-cursor-"
-    
-    # Start time measurement for launching Alacritty in cursor mode
-    cursor_start_time=$(date +%s.%N)
-    
-    p="/home/blu/notes/custom/"
+    start_time=$(date +%s.%N)
 
     echo -e "${CYAN}${BOLD}[INFO]${RESET} Launching Alacritty in cursor mode..."
     alacritty \
-    --working-directory=${p} \
-    --class="${name}${unique_id}" \
-    -e micro $micro_args 2>> "$log_file" &
+        --working-directory="/home/blu/notes/custom/" \
+        --class="${name}${unique_id}" \
+        -e micro $micro_args 2>> "$log_file" &
 
-    # End time measurement for cursor mode
-    cursor_end_time=$(date +%s.%N)
-    cursor_elapsed_time=$(echo "$cursor_end_time - $cursor_start_time" | bc)
-
-    # Output cursor mode launch time
-    echo -e "${CYAN}${BOLD}[INFO]${RESET} Cursor mode Alacritty launch time: $cursor_elapsed_time seconds"
+    # Log elapsed time
+    measure_time "$start_time" "Cursor mode Alacritty launch time"
 fi
 
 # End Message
