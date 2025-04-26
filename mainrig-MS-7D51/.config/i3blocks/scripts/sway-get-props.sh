@@ -9,10 +9,10 @@ while true; do
 
       . as $e |
 
-      # Determine shell type: Wayland or XWayland
+      # Determine shell type: Wayland or xwayland
       (
-        if $e.container.app_id then "Shell: Wayland"
-        elif $e.container.window_properties then "Shell: XWayland"
+        if $e.container.app_id then "Shell: xdg_shell"
+        elif $e.container.window_properties then "Shell: xwayland"
         else "Shell: Unknown"
         end
       ) as $shell_type |
