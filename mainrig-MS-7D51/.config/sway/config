@@ -64,7 +64,7 @@ set {
 
 # Display modes
 output {
-    $LL     mode 1920x1080@240Hz
+#    $LL     mode 1920x1080@240Hz
     $L      mode 1920x1080@240Hz
     $M      mode 1920x1080@360Hz
     $MON_KB mode 1920x1080@240Hz

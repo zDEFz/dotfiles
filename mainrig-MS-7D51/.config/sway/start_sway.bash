@@ -11,7 +11,8 @@ export XDG_CURRENT_DESKTOP=sway               # Set current desktop environment
 export _JAVA_AWT_WM_NONREPARENTING=1          # Fix Java AWT issues on Wayland
 
 # GPU Configuration
-export WLR_DRM_DEVICES=/dev/dri/by-name/AMD_6950XT:/dev/dri/by-name/AMD_Pro_W7500  # Set primary and secondary GPUs
+#export WLR_DRM_DEVICES=/dev/dri/by-name/AMD_6950XT:/dev/dri/by-name/AMD_Pro_W7500  # Set primary and secondary GPUs
+export WLR_DRM_DEVICES=/dev/dri/by-name/AMD_6950XT
 export WLR_RENDERER=vulkan                    # Use Vulkan renderer for better performance
 export RADV_PERFTEST=video_decode             # Enable better video decoding for MPV
 

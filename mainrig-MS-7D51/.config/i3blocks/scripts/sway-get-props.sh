@@ -26,6 +26,3 @@ swaymsg -t subscribe '["window"]' |
     | map(select(length > 0))
     | join(", ")
   '
-
-
-
