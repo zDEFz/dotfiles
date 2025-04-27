@@ -40,9 +40,13 @@ local function wrap_text(text, max_width)
         wrap_pos = max_width
     end
     
+    -- Debugging: Print the wrapped text for inspection
+    print("Wrapped Text: " .. text:sub(1, wrap_pos) .. "\\N" .. text:sub(wrap_pos + 1))
+    
     -- Insert newline and continue with the rest
     return text:sub(1, wrap_pos) .. "\\N" .. wrap_text(text:sub(wrap_pos + 1), max_width)
 end
+
 
 -- Update top overlay with folder and filename on separate lines (with filename wrapping)
 -- Helper: remove file extension
