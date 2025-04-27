@@ -276,7 +276,7 @@ the binding `f cycle pause; script-binding progressbar/toggle-inactive-bar`, it
 is possible to have the bar be persistently present only in windowed or
 fullscreen contexts, depending on the default setting.
 ]]
-settings['bar-height-inactive'] = 3
+settings['bar-height-inactive'] = 0
 helpText['bar-height-inactive'] = [[Sets the height of the bar display when the mouse is not in the active zone and
 there is no request-display active. A value of 0 or less will cause bar-hide-
 inactive to be set to true and the bar height to be set to 1. This should result

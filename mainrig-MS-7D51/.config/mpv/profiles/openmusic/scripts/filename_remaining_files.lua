@@ -1,4 +1,4 @@
-local mp = require 'mp'
+ local mp = require 'mp'
 -- create two ASS overlays (false = playback_only)
 local top_overlay        = mp.create_osd_overlay("ass-events", false)  -- File info (top)
 local bottom_overlay     = mp.create_osd_overlay("ass-events", false)  -- Remaining count (bottom)
@@ -65,7 +65,7 @@ local function update_file_info()
     
     -- Create ASS markup with folder and wrapped filename
     local ass_text = string.format(
-        "{\\an8\\bord3\\shad0\\fs%d\\b1\\q2\\3c&H%s&\\3a&H00&}{\\1c&H%s&}%s\\N{\\1c&H%s&}%s", 
+        "{\\an7\\bord3\\shad0\\fs%d\\b1\\q2\\3c&H%s&\\3a&H00&}{\\1c&H%s&}%s\\N{\\1c&H%s&}%s", 
         font_size, bg_color, 
         folder_color, folder,
         filename_color, wrapped_filename
