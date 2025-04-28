@@ -1,10 +1,20 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# Load aliases if they exist
+# =============================================================================
+# mpvfloat.sh
+# Modular, maintainable tiling script for mpv wrappers on Sway
+# =============================================================================
 [[ -f /home/blu/.aliases ]] && source /home/blu/.aliases
+# --- Configuration ----------------------------------------------------------
+LOGFILE="${DEBUG_LOG:-/tmp/mpvfloat.log}"  # logfile (default /tmp/mpvfloat.log)
+: > "$LOGFILE"
+VERBOSE=${VERBOSE:-0}                        # DEBUG if nonzero
+WORKSPACE=18                                 # target workspace
+CELL_W=192                                   # tile width step
+CELL_H=108                                   # tile height step
 
-# Music directory paths configuration
-dirs=(
+# Directories to play
+PLAY_DIRS=(
   "/home/blu/audio/MusicLibrary/Game/N64/The Legend of Zelda - Ocarina of Time"
   "/home/blu/audio/youtube/crusader kings III - northern lords"
   "/home/blu/audio/youtube/Dragonball"
@@ -23,102 +33,126 @@ dirs=(
   "/home/blu/audio/youtube/touhou-playlist3"
   "/home/blu/audio/youtube/touhou-playlist-3-extracts"
   "/home/blu/audio/youtube/touhou-playlist4"
+  "/home/blu/audio/MusicLibrary/j-ost/Shingeki no Kyojin (進撃の巨人)"
 )
 
-# Window layout configuration
-base_x=2160
-base_y=1620
-x_step=192
-y_step=108
+# --- Logging utilities ------------------------------------------------------
+log_debug() { (( VERBOSE )) && echo "[DEBUG] $*" | tee -a "$LOGFILE"; }
+log_info()  { echo "[INFO]  $*" | tee -a "$LOGFILE"; }
+log_warn()  { echo "[WARN]  $*" | tee -a "$LOGFILE"; }
 
-# Create a position lookup table
-declare -A expected_pos
+# --- Workspace & grid setup ------------------------------------------------
+init_workspace() {
+	# Set workspace geometry directly
+	WS_X=2160
+	WS_Y=1677
+	WS_W=1920
+	WS_H=1053
 
-# Initial window tree fetch for startup
-initial_tree=$(swaymsg -t get_tree)
+	log_debug "Workspace: origin=($WS_X,$WS_Y) size=(${WS_W}x${WS_H})"
 
-# Start required windows and build position table
-for i in "${!dirs[@]}"; do
-  idx=$(( i + 1 ))
-  id="mpvfloat$idx"
-  
-  # Calculate position for 10 items per row
-  row=$(( i / 10 ))    
-  col=$(( i % 10 ))    
+	# Grid parameters
+	CELL_W=192
+	CELL_H=108
+	MAX_COLS=10
+	MAX_ROWS=9
 
-  # Calculate the x and y positions
-  x=$(( base_x + col * x_step ))
-  y=$(( base_y + row * y_step ))
-  
-  expected_pos["$id"]="$x $y"
-  
-  # Debugging output
-  echo "id=$id, row=$row, col=$col, x=$x, y=$y"
+	log_debug "Grid: cols=$MAX_COLS rows=$MAX_ROWS cell=(${CELL_W}x${CELL_H})"
 
-  # Only launch if not already running
-  if ! echo "$initial_tree" | grep -q "$id"; then
-    echo "Launching mpv instance for $id at ${dirs[i]}"
-   
-    mpvl$idx "${dirs[i]}" &
+}
+
+# --- Initial launch & placement ---------------------------------------------
+launch_initial() {
+  local initial_tree; initial_tree=$(swaymsg -t get_tree)
+  declare -gA EXPECTED
+  BASE_X=$WS_X
+  BASE_Y=$WS_Y
+
+  log_info "[startup] Placing ${#PLAY_DIRS[@]} mpv windows"
+  for idx in "${!PLAY_DIRS[@]}"; do
+    local id="mpvfloat$((idx+1))"
+    # calculate tile coords
+    local row=$(((idx) / MAX_COLS))
+    local col=$(((idx) % MAX_COLS))
+    local x=$(( BASE_X + col * CELL_W ))
+    local y=$(( BASE_Y + row * CELL_H ))
+    EXPECTED[$id]="$x $y"
+
+    log_debug "Launching $id"
+    mpvl$((idx+1)) "${PLAY_DIRS[idx]}" &
     
-    # Wait until the window appears in the sway tree
-    for attempt in {1..20}; do
-      if swaymsg -t get_tree | grep -q "$id"; then
-        break
+    log_info "[startup] Moving $id to position (${x}, ${y})" & 
+    swaymsg "[app_id=\"^${id}$\"] move absolute position ${x}px ${y}px"  &
+    log_info "[startup] $id @ (${x},${y})" &
+  done    
+}
+
+# --- Monitoring loop --------------------------------------------------------
+monitor() {
+  trap "log_info 'Exiting'; exit" SIGINT SIGTERM
+  log_info "Entering monitor loop (verbose=$VERBOSE)"
+  while :; do
+    swaymsg '[app_id="^mpvfloat\d+$"] floating enable, border none, move to workspace 18' 
+    log_info "[startup] Moving all to workspace $WORKSPACE"
+
+    local tree; tree=$(swaymsg -t get_tree)
+    # A: detect new windows
+    mapfile -t apps < <(
+      jq -r '..|objects|.app_id? // empty' <<<"$tree" \
+        | grep '^mpvfloat' | sort -u
+    )
+    for app in "${apps[@]}"; do
+      if [[ -z "${EXPECTED[$app]}" ]]; then
+        # compute slot
+        local idx=${app#mpvfloat}
+        local row=$(((idx-1)/MAX_COLS))
+        local col=$(((idx-1)%MAX_COLS))
+        local x=$(( BASE_X + col * CELL_W ))
+        local y=$(( BASE_Y + row * CELL_H ))
+        EXPECTED[$app]="$x $y"
+        swaymsg "[app_id=\"^${app}$\"] move to workspace $WORKSPACE"
+       # swaymsg "[app_id=\"^${app}$\"] move absolute position ${x}px ${y}px"
+        log_info "[new] $app → slot($row,$col) @(${x},${y})"
       fi
-      sleep 0.01
     done
-    
-    swaymsg '[app_id="^mpvfloat[0-9]+$"] move to workspace 18' &
-  else
-    echo "$id is already running"
-  fi
-done
+    # B: enforce positions
+    for app in "${!EXPECTED[@]}"; do
+      read exp_x exp_y <<<"${EXPECTED[$app]}"
+      local cur; cur=$(jq -r \
+        '..|objects | select(.app_id=="'"$app"'") | "\(.rect.x) \(.rect.y) \(.fullscreen_mode)"' \
+        <<<"$tree"
+      )
+      if [[ -n "$cur" ]]; then
+        read cur_x cur_y fullscreen_mode <<<"$cur"
 
-# Initial positioning for all windows
-for id in "${!expected_pos[@]}"; do
-  read x y <<< "${expected_pos[$id]}"
-  swaymsg "[app_id=\"^${id}$\"] move absolute position ${x}px ${y}px" >/dev/null 2>&1
-done
+        log_debug "$app current=(${cur_x},${cur_y}) expected=(${exp_x},${exp_y}) fullscreen_mode=$fullscreen_mode"
 
+        if (( fullscreen_mode != 0 )); then
+          log_info "[skip] $app is fullscreen (fullscreen_mode=$fullscreen_mode), not moving."
+          continue
+        fi
 
-  # Read the changed content of the file
-  changed_id=$(cat /tmp/wayland_app_id.txt)
-  echo "Detected app_id change: $changed_id"
-
-  # Check if the changed_id is non-empty
-  if [ -n "$changed_id" ]; then
-    # If the changed_id is different from the previous one
-    if [ "$changed_id" != "$previous_id" ]; then
-      # Revert the border for the previous app_id if it exists
-      if [ -n "$previous_id" ]; then
-        echo "Reverting border for previous app_id: $previous_id"
-        swaymsg "[app_id=\"$previous_id\"] border pixel none" &
+        if (( cur_x != exp_x || cur_y != exp_y )); then
+          log_info "[mismatch] $app needs reposition: current=(${cur_x},${cur_y}) → expected=(${exp_x},${exp_y})"
+          swaymsg "[app_id=\"^${app}$\"] move absolute position ${exp_x}px ${exp_y}px"
+          log_info "[moved] $app repositioned to (${exp_x},${exp_y})"
+        else
+          log_debug "[ok] $app already correctly positioned."
+        fi
+      else
+        log_warn "[missing] $app disappeared from tree"
       fi
-
-      # Apply border to the new app_id
-      echo "Setting border for new app_id: $changed_id"
-      swaymsg "[app_id=\"$changed_id\"] border normal, focus" &
-
-      # Update previous_id to the new one
-      previous_id="$changed_id"
-    fi
-  else
-    # If changed_id is empty, revert the border for the last known app_id
-    if [ -n "$previous_id" ]; then
-      echo "Reverting border for last known app_id: $previous_id"
-      swaymsg "[app_id=\"$previous_id\"] border pixel none"
-      previous_id=""
-    fi
-  fi
-done
+    done  
+    sleep 0.5
+  done
+}
 
 
-  
-  # Adaptive sleep
-  if [[ $reposition_count -eq 0 ]]; then
-    sleep 30  # Longer sleep if no repositioning needed
-  else
-    sleep 15  # Shorter sleep if repositioning occurred
-  fi
-done
+# --- Main -------------------------------------------------------------------
+main() {
+  init_workspace
+  launch_initial
+  monitor
+}
+
+main "$@"
