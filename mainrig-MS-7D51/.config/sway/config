@@ -60,6 +60,7 @@ set {
     $MON_KB 'Iiyama North America PL2590HS 1219241201302'
     $R      'BNQ ZOWIE XL LCD EBMCM01300SL0'
     $RR     'Iiyama North America PL2590HS 1219241201699'
+    $TAIKO 'BNQ ZOWIE XL LCD EBX7M01214SL0'
 }
 
 # Display modes
@@ -69,7 +70,8 @@ output {
     $M      mode 1920x1080@360Hz
     $MON_KB mode 1920x1080@240Hz
     $R      mode 1920x1080@240Hz
-    $RR     mode 1920x1080@240Hz   
+    $RR     mode 1920x1080@240Hz
+    $Taiko  mode 1920x1080@240Hz
 }
 
 # Display positions
