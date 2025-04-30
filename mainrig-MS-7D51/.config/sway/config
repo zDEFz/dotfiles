@@ -143,4 +143,7 @@ set {
     $white        #ebdbb2
 }
 
+output $TAIKO disable
+
+
 include ~/.config/sway/conf.d/*
