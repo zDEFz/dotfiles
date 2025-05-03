@@ -1,8 +1,62 @@
 #!/bin/bash
 
+browse_anime
+
+alias vm-win11-digiface='xfreerdp /size:1920x996 /u:00 /p:00 /v:vm-win11-digiface >/dev/null 2>&1 &'
+
+alias vm-win11-opentaiko='xfreerdp /size:1920x996 /u:00 /p:00 /v:vm-win11-opentaiko >/dev/null 2>&1 &'
+
+disable-opentaiko() {
+    killall "OpenTaiko.exe"
+    swaymsg 'output "BNQ ZOWIE XL LCD EBX7M01214SL0" disable'
+}
+
+enable-opentaiko() {
+    swaymsg 'output "BNQ ZOWIE XL LCD EBX7M01214SL0" enable'
+}
+
+start-opentaiko() {
+  swaymsg 'output "BNQ ZOWIE XL LCD EBX7M01214SL0" enable'
+  	sleep 5
+    MANGOHUD_CONFIG=fps_limit=240 mangohud --dlsym wine /home/blu/OpenTaiko/OpenTaiko.exe
+}
+
+
+
+
 ###########################################
 # DIRECTORY NAVIGATION
 ###########################################
+
+unbind-w7500-vfio() { 
+# gpu
+	sudo driverctl set-override 0000:24:00.0 amdgpu
+# audio
+	sudo driverctl set-override 0000:24:00.1 amdgpu
+}
+
+bind-w7500-vfio() { 
+# gpu
+	sudo driverctl set-override 0000:24:00.0 vfio-pci
+# audio
+	sudo driverctl set-override 0000:24:00.1 vfio-pci
+}
+
+alias normalize-homeaudio='cd ~/audio;fd -t d -x dirname {} | sort -u | while read -r dir; do rsgain easy -m16 --skip-existing "$dir"; done'
+
+gpretry() { 
+while true; do
+	  git commit -am 'add helpful' && git push && break || echo "Push failed, retrying..."
+	  sleep 1
+	done
+
+}
+
+
+stfu() {
+  "$@" &>/dev/null &
+}
+
 
 opengl_renderer() { 
 	glxinfo | grep "OpenGL renderer"
@@ -49,7 +103,7 @@ gpu_pci_address()
             AUDIO_MODULES=$(lspci -k -s "$AUDIO_PCI" | grep "Kernel modules" | sed 's/Kernel modules: //')
             if [ -z "$AUDIO_MODULES" ]; then
                 AUDIO_MODULES="None available"
-            fiw
+            fi
         else
             AUDIO_PCI="Not found"
             AUDIO_VENDOR="N/A"
@@ -148,12 +202,17 @@ alias pwdc="pwd | clip"
 alias typeclipboard='echo "type $(wl-paste)" | dotool'
 
 # Remote access
-nas_pre() { ssh ${NAS_PRE_USER}@${NAS_PRE_IP}; } 
-
 nas() {
-  local user=${1:-${NAS_USER:-$(whoami)}}
-  ssh -t "${user}@nas.local" "cd $HOME/git/nas/backup; zsh --login"
+  local user="${1:-${NAS_USER:-$(whoami)}}"
+  ssh -t "${user}@nas.local" 'cd "$HOME/git/nas/backup" && exec zsh --login'
 }
+
+nas_auth() { 
+  ssh "${NAS_PRE_USER}@${NAS_PRE_IP}" || return
+  sleep 5
+  nas
+}
+
 # Get public IP address
 alias myip="curl -s icanhazip.com | tr -d '\n'"
 
@@ -167,7 +226,7 @@ alias httpserver='python3 -m http.server'
 alias list-usb='lsblk -o NAME,TRAN,SERIAL,MODEL'
 
 # Remind how to redirect output to /dev/null
-alias how-to-dev-null='echo "code >/dev/null 2>&1 &"'
+alias how-to-dev-null='echo "code >/dev/null 2>&1 &" or "code &>/dev/null &"'
 
 # Mullvad VPN shortcuts
 alias mc='mullvad connect'
@@ -329,12 +388,13 @@ for i in $(seq 1 99); do
             fi
         done
 
-        cmd=(mpv --force-window=yes --loop-file)
+        cmd=(mpv --force-window=yes)
         (( pause_flag )) && cmd+=(--pause)
         cmd+=(--keep-open \\
               --directory-mode=recursive \\
               --directory-filter-types=video,audio \\
               --autofit-larger=192x108 --geometry=192x108 \\
+              --config-dir=/home/blu/.config/mpv/profiles/openmusic \\
               --x11-name=\"\$id\" --wayland-app-id=\"\$id\")
         cmd+=(\"\${args[@]}\")
         \"\${cmd[@]}\" > /dev/null 2>&1 &
