@@ -49,7 +49,7 @@ input {
     '9456:320:Metadot_-_Das_Keyboard_Das_Keyboard_System_Control' events disabled
     type:keyboard xkb_numlock enabled
     # '1003:8258:Keyboard' events disabled # disabled usually cause random keystroke issue
-    '1003:8258:Keyboard' events enabled # disabled usually cause random keystroke issue
+    '1003:8258:Keyboard' events enabled
 }
 
 

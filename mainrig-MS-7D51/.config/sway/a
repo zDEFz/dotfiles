@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Map full “make model serial” → tag
+declare -A Displays=(
+  ["Iiyama North America PL2590HS 1219241201616"]="L"
+  ["Iiyama North America PL2590HS 1219241201677"]="LL"
+  ["BNQ ZOWIE XL LCD EBF2R02370SL0"]="M"
+  ["Iiyama North America PL2590HS 1219241201302"]="MON_KB"
+  ["BNQ ZOWIE XL LCD EBMCM01300SL0"]="R"
+  ["Iiyama North America PL2590HS 1219241201699"]="RR"
+  ["BNQ ZOWIE XL LCD EBX7M01214SL0"]="TAIKO"
+)
+
+# Ensure jq is installed
+if ! command -v jq &>/dev/null; then
+  echo "Please install jq: sudo pacman -S jq" >&2
+  exit 1
+fi
+
+# Gather active outputs in "name<TAB>make model serial"
+mapfile -t outputs < <(
+  swaymsg -t get_outputs |
+    jq -r '.[] | select(.active) | "\(.name)\t\(.make) \(.model) \(.serial)"'
+)
+
+# Print header
+printf "%-6s | %-32s | %-6s | %s\n" "Output" "GPU" "Tag" "Monitor"
+echo "-------|----------------------------------|--------|----------------------------------------"
+
+for entry in "${outputs[@]}"; do
+  IFS=$'\t' read -r name fullid <<< "$entry"
+
+  # 1) Find which card this connector lives on
+  #    (e.g. /sys/class/drm/card0-DP-1 → card0)
+  cardpath=$(readlink -f /sys/class/drm/*-"$name" 2>/dev/null || true)
+  card=$(basename "$(dirname "$cardpath")")
+
+  # 2) From the card, get its PCI address and human GPU name
+  pci=$(readlink -f "/sys/class/drm/$card/device" | awk -F/ '{print $NF}')
+  gpu=$(lspci -s "$pci" | cut -d' ' -f3-)
+
+  # 3) Lookup tag for this monitor
+  tag=${Displays["$fullid"]:-UNKNOWN}
+
+  # 4) Print the row
+  printf "%-6s | %-32s | %-6s | %s\n" \
+    "$name" "$gpu" "$tag" "$fullid"
+done
