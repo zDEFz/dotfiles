@@ -1,0 +1,121 @@
+#!/bin/bash
+
+# Paths
+MPV_CONF_DIR="/home/blu/.config/mpv/profiles"
+MPV_CONF="$MPV_CONF_DIR/openmusic"
+BACKUP_CONF="$MPV_CONF_DIR/openmusic.backup"
+LOG_FILE="gpu_test_results.txt"
+ALIASES="/home/blu/.aliases"
+
+# Load aliases (for killmusic)
+source $ALIASES
+
+# Backup the original config
+cp "$MPV_CONF" "$BACKUP_CONF"
+
+# Define test cases (as heredocs)
+declare -A TEST_CASES
+
+# Test 1: baseline
+TEST_CASES["Baseline"]="
+# === Audio ===
+af=lavfi=[loudnorm=I=-18:TP=-3:LRA=4]
+audio-format=source
+audio-samplerate=0
+
+# === File Types ===
+directory-filter-types=audio,video
+
+# === Video ===
+gpu-api=vulkan
+gpu-context=waylandvk
+hwdec=vulkan
+vo=gpu-next
+
+# === OSD ===
+osd-level=2
+osd-scale=4
+
+# === Misc ===
+profile-desc=\"Normalize audio volume\"
+save-position-on-quit
+
+vd-lavc-threads=auto
+cache=yes
+cache-pause=yes
+video-sync=audio
+"
+
+# Test 2: add interpolation
+TEST_CASES["Interpolation On"]="
+# Same as baseline but with interpolation
+af=lavfi=[loudnorm=I=-18:TP=-3:LRA=4]
+audio-format=source
+audio-samplerate=0
+directory-filter-types=audio,video
+gpu-api=vulkan
+gpu-context=waylandvk
+hwdec=vulkan
+vo=gpu-next
+osd-level=2
+osd-scale=4
+profile-desc=\"Normalize audio volume\"
+save-position-on-quit
+vd-lavc-threads=auto
+cache=yes
+cache-pause=yes
+video-sync=display-desync
+interpolation=yes
+"
+
+# Test 3: display-desync without interpolation
+TEST_CASES["Display-Desync No Interpolation"]="
+af=lavfi=[loudnorm=I=-18:TP=-3:LRA=4]
+audio-format=source
+audio-samplerate=0
+directory-filter-types=audio,video
+gpu-api=vulkan
+gpu-context=waylandvk
+hwdec=vulkan
+vo=gpu-next
+osd-level=2
+osd-scale=4
+profile-desc=\"Normalize audio volume\"
+save-position-on-quit
+vd-lavc-threads=auto
+cache=yes
+cache-pause=yes
+video-sync=display-desync
+"
+
+# Clear previous log
+echo "GPU Load Test Results" > "$LOG_FILE"
+echo "=====================" >> "$LOG_FILE"
+
+# Loop through tests
+for TEST_NAME in "${!TEST_CASES[@]}"; do
+    echo "Running test: $TEST_NAME"
+    echo "${TEST_CASES[$TEST_NAME]}" > "$MPV_CONF"
+
+    # Start openmusic
+    bash ~/openmusic &
+
+    # Wait for mpv to settle
+    sleep 25
+    
+    # Measure GPU load
+    GPU_LOAD=$(radeontop -d - -l 1 | grep -oP 'gpu \K[0-9.]+')
+
+    echo "$TEST_NAME: GPU Load = $GPU_LOAD%" | tee -a "$LOG_FILE"
+
+    # Kill mpv
+    killmusic
+
+    # Give it a moment to fully exit
+    sleep 15
+done
+
+# Restore the original mpv.conf
+mv "$BACKUP_CONF" "$MPV_CONF"
+
+echo "All tests complete. Results saved to $LOG_FILE."

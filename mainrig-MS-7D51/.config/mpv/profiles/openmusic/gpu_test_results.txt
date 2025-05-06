@@ -1,0 +1,5 @@
+GPU Load Test Results
+=====================
+Display-Desync No Interpolation: GPU Load = 72.50%
+Baseline: GPU Load = 72.50%
+Interpolation On: GPU Load = 73.33%
