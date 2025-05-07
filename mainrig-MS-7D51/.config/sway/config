@@ -123,6 +123,6 @@ client.unfocused        $in-bgcolor     $in-bgcolor     $in-text        $in-bgco
 client.focused_inactive $in-bgcolor     $in-bgcolor     $in-text        $in-bgcolor
 # client.urgent           $bgcolor        $bgcolor        $in-text        $bgcolor
 
-output $TAIKO disable
+#output $TAIKO disable
 
 include ~/.config/sway/conf.d/*
