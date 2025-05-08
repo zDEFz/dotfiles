@@ -14,7 +14,7 @@ set {
     $meta Mod4
     $ml move left
     $mp move position
-    $mpc move position center
+    $mpcenter move position center
     $mr move right
     $mto move to output
     $mtod move to output down
@@ -22,10 +22,12 @@ set {
     $mtor move to output right
     $mtou move to output up
     $mtp move to position
-    $mts move to scratchpad
+    $mtscratch move to scratchpad
     $mtw move to workspace
     $mu move up
+    $sh shell
     $t title
+    $term alacritty
     $ws workspace
 }
 
@@ -33,7 +35,7 @@ set {
 # Use Mouse+$meta to drag floating windows to their wanted position
 floating_modifier $meta 
 focus_follows_mouse no
-# mouse_warping none
+mouse_warping none
 
 # No urgency marks focus_on_window_activation smart|urgent|focus|none
 focus_on_window_activation none
@@ -43,22 +45,23 @@ input {
     '0:0:antimicrox_Abs_Mouse_Emulation' events disabled
     '0:0:antimicrox_Mouse_Emulation' events disabled
     '0:0:wlr_virtual_keyboard_v1' events disabled
-    
     '1356:2508:Sony_Interactive_Entertainment_Wireless_Controller_Touchpad' events disabled
     '9456:320:Metadot_-_Das_Keyboard_Das_Keyboard_System_Control' events disabled
     type:keyboard xkb_numlock enabled
-    '1003:8258:Keyboard' events disabled
+    # '1003:8258:Keyboard' events disabled # disabled usually cause random keystroke issue
+    '1003:8258:Keyboard' events enabled
 }
+
 
 # Displays
 set { 
+    $L      'Iiyama North America PL2590HS 1219241201616'
     $LL     'Iiyama North America PL2590HS 1219241201677'
-    $L  'Iiyama North America PL2590HS 1219241201616'
     $M      'BNQ ZOWIE XL LCD EBF2R02370SL0'
     $MON_KB 'Iiyama North America PL2590HS 1219241201302'
     $R      'BNQ ZOWIE XL LCD EBMCM01300SL0'
     $RR     'Iiyama North America PL2590HS 1219241201699'
-    $TAIKO  'LG Electronics 24GM79G 0x0008042C'
+    $TAIKO  'BNQ ZOWIE XL LCD EBX7M01214SL0'
 }
 
 # Display modes
@@ -69,18 +72,17 @@ output {
     $MON_KB mode 1920x1080@240Hz
     $R      mode 1920x1080@240Hz
     $RR     mode 1920x1080@240Hz
-    $TAIKO  mode 1920x1080@140Hz
+    $TAIKO  mode 1920x1080@240Hz
 }
 
 # Display positions
 output {
-    $LL     position 0 355 
-    $L      position 1080 350
-    $M      position 2160 464
-    $MON_KB position 2160 1544
-    $R      position 4080 364
-    $RR     position 5160 370
-    $TAIKO  position 6240 320
+    $LL     position 0 460
+    $L      position 1080 460
+    $MON_KB position 2160 1650
+    $M      position 2160 570
+    $R      position 4080 470
+    $RR     position 5160 480
 }
 
 # Display backgrounds
@@ -121,25 +123,6 @@ client.unfocused        $in-bgcolor     $in-bgcolor     $in-text        $in-bgco
 client.focused_inactive $in-bgcolor     $in-bgcolor     $in-text        $in-bgcolor
 # client.urgent           $bgcolor        $bgcolor        $in-text        $bgcolor
 
-set {
-    $black        #282828
-    $darkred      #cc241d
-    $darkgreen    #98971a
-    $darkyellow   #d79921
-    $darkblue     #458588
-    $darkmagenta  #b16286
-    $darkcyan     #689d6a
-    $lightgray    #a89984
-    $darkgray     #928374
-    $red          #fb4934
-    $green        #b8bb26
-    $yellow       #fabd2f
-    $blue         #83a598
-    $magenta      #d3869b
-    $cyan         #8ec07c
-    $white        #ebdbb2
-}
-
-# output $TAIKO disable
+#output $TAIKO disable
 
 include ~/.config/sway/conf.d/*
