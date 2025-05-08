@@ -16,7 +16,7 @@ local opts = {
     -- showcqtbar
     -- showwaves
 
-    quality = "medium",
+    quality = "high",
     -- verylow
     -- low
     -- medium
@@ -159,7 +159,7 @@ local function get_visualizer(name, quality, vtrack)
         fps = 60
     elseif quality == "high" then
         w = 1920
-        fps = 144
+        fps = 240
     elseif quality == "veryhigh" then
         w = 2560
         fps = 144
