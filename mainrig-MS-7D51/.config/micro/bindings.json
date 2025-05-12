@@ -1,0 +1,18 @@
+{
+    "Alt-d": "command:textfilter date '+%a %Y-%m-%d'",
+    "Alt-/": "lua:comment.comment",
+    "Alt-z": "command:set wordwrap off,command:set softwrap off",
+    "Alt-Z": "command:set wordwrap on,command:set softwrap on",
+    "Backtab": "CommandMode",
+    "CtrlC": "Copy",
+    "Ctrl-f": "FindLiteral",
+    "CtrlJ": "command:textfilter sed '/ICONST_1/{N;/DUP/{N;/POP2/d;}}'",
+    "CtrlS": "Save",
+    "CtrlT": "command:textfilter sort -fu",
+    "CtrlUnderscore": "lua:comment.comment",
+    "CtrlV": "Paste",
+    "CtrlW": "Quit",
+    "CtrlX": "Cut",
+    "CtrlY": "Redo",
+    "CtrlZ": "Undo"
+}

@@ -1,0 +1,12 @@
+# Gray, Teal, and Earth Tone Color Scheme
+
+# Background and General Appearance
+color-link color-column "#4b8b8b,#4b8b8b"       # Vibrant teal for the color column background
+color-link cursor-line "#4b8b8b"                 # Cursor line matches the background for a clean look
+color-link divider "#4b8b8b,#00796b"             # Dividers in a darker teal for contrast
+color-link statusline "#ffffff,#00796b"          # White text on dark teal for the status line
+color-link tabbar "#4b8b8b,#00796b"              # Tab bar in darker teal for consistency
+
+# Line Numbers
+color-link line-number "#b2dfdb,#4b8b8b"         # Light teal for line numbers, vibrant teal background
+color-link current-line-number "bold #ffffff,#4b8b8b"  # Bold white for current line number on t
