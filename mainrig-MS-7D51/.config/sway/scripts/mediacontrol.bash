@@ -2,6 +2,7 @@
 
 case "$1" in
     next)
+    echo '{ "command": ["playlist_next"] }' | socat - /tmp/mpvsockets/$(cat /tmp/wayland_app_id.txt)
       playerctl next
         ;;
     play-pause)
@@ -10,6 +11,7 @@ case "$1" in
       
         ;;
     prev)
+    echo '{ "command": ["playlist_prev"] }' | socat - /tmp/mpvsockets/$(cat /tmp/wayland_app_id.txt)
       playerctl previous
         ;;
     stop)
