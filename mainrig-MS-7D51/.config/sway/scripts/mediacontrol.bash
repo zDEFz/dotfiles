@@ -5,7 +5,9 @@ case "$1" in
       playerctl next
         ;;
     play-pause)
+    echo '{ "command": ["cycle", "pause"] }' | socat - /tmp/mpvsockets/$(cat /tmp/wayland_app_id.txt)
       playerctl play-pause
+      
         ;;
     prev)
       playerctl previous
