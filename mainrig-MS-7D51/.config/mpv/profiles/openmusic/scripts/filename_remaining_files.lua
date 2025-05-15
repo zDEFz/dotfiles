@@ -97,6 +97,12 @@ end)
 
 -- === Event-based updating ===
 
+-- Allow manual refresh via IPC
+mp.register_script_message("refresh-osd", function()
+    update_file_info()
+    update_remaining()
+end)
+
 -- Update file info when a new file is loaded
 mp.register_event("file-loaded", update_file_info)
 
