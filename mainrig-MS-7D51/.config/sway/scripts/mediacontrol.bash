@@ -5,11 +5,6 @@ case "$1" in
     echo '{ "command": ["playlist_next"] }' | socat - /tmp/mpvsockets/$(cat /tmp/wayland_app_id.txt)
       playerctl next
         ;;
-    play-pause)
-    echo '{ "command": ["cycle", "pause"] }' | socat - /tmp/mpvsockets/$(cat /tmp/wayland_app_id.txt)
-      playerctl play-pause
-      
-        ;;
     prev)
     echo '{ "command": ["playlist_prev"] }' | socat - /tmp/mpvsockets/$(cat /tmp/wayland_app_id.txt)
       playerctl previous
