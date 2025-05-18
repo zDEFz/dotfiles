@@ -1,6 +1,6 @@
 # sway config main file
 set { 
-    $a app_id
+        $a app_id
     $alt Mod1
     $bc bindcode
     $bm bindsym
@@ -10,15 +10,16 @@ set {
     $ensi exec --no-startup-id
     $fw for_window
     $i instance
+$lhs layout horizontal split
     $map move absolute position
     $meta Mod4
     $ml move left
-    $mp move position
     $mpcenter move position center
+    $mp move position
     $mr move right
-    $mto move to output
     $mtod move to output down
     $mtol move to output left
+    $mto move to output
     $mtor move to output right
     $mtou move to output up
     $mtp move to position
@@ -26,8 +27,8 @@ set {
     $mtw move to workspace
     $mu move up
     $sh shell
-    $t title
     $term alacritty
+    $t title
     $ws workspace
 }
 
