@@ -98,8 +98,6 @@ done
 
 #!/bin/bash
 
-#!/bin/bash
-
 SOCKET_DIR="/tmp/mpvsockets"
 
 # Make sure socat is installed
