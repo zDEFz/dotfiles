@@ -1,6 +1,6 @@
 # sway config main file
 set { 
-        $a app_id
+    $a app_id
     $alt Mod1
     $bc bindcode
     $bm bindsym
