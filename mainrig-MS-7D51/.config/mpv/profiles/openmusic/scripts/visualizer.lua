@@ -159,7 +159,7 @@ local function get_visualizer(name, quality, vtrack)
         fps = 60
     elseif quality == "high" then
         w = 1920
-        fps = 240
+        fps = 120
     elseif quality == "veryhigh" then
         w = 2560
         fps = 144
