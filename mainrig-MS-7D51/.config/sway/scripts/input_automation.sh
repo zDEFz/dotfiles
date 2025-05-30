@@ -1,6 +1,7 @@
 #!/bin/bash
+[ -z "$(pgrep -x dotoold)" ] && { dotoold & sleep 1; }
 
-CHOICE=$(echo -e "Type clipboard\nType vmpwd\nType date\nCancel" | wofi --dmenu --prompt "" --hide-scroll)
+CHOICE=$(echo -e "Type clipboard\nType vmpwd\nType date\nCancel" | wofi --dmenu --hide-scroll -Dlayer=overlay)
 
 # Exit immediately if ESC or nothing selected
 [ -z "$CHOICE" ] && exit 0
