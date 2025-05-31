@@ -26,6 +26,32 @@ export RADV_PERFTEST=video_decode             # Enable better video decoding for
 # export XWAYLAND_NO_GLAMOR=1                 # Disable glamor for XWayland
 # export WINE_WAYLAND_DISPLAY_INDEX=4         # Set Wayland display index for Wine
 
-# Start Sway
-exec sway -c "$HOME/.config/sway/config"      # Start Sway with the specified config
-# exec sway -c "$HOME/.config/sway/config" --debug 2>> "$HOME/sway2.log"  # Debug mode (uncomment if needed)
+#!/bin/bash
+
+CONFIG="$HOME/.config/sway/config"
+LOG="$HOME/sway_debug.log"
+DEBUG=true  # set to true for debug mode
+
+if ! command -v sway >/dev/null; then
+  echo "Error: sway not found" >&2
+  exit 1
+fi
+
+if [ ! -r "$CONFIG" ]; then
+  echo "Error: config file not found or unreadable: $CONFIG" >&2
+  exit 1
+fi
+
+if "$DEBUG"; then
+  if [ -e "$LOG" ] && [ ! -w "$LOG" ]; then
+    echo "Warning: $LOG not writable, logging to stderr" >&2
+    sway -c "$CONFIG" --debug
+  elif touch "$LOG" 2>/dev/null; then
+    sway -c "$CONFIG" --debug 2>>"$LOG"
+  else
+    echo "Warning: can't create $LOG, logging to stderr" >&2
+    sway -c "$CONFIG" --debug
+  fi
+else
+  sway -c "$CONFIG"
+fi
