@@ -1,5 +1,6 @@
 #!/bin/bash
 # If 'dotoold' is not running, start it in the background with nohup (to ignore hangups) and discard all output
+[[ -f /home/blu/.secure_env ]] && source /home/blu/.secure_env
 ! pgrep -x dotoold > /dev/null && nohup dotoold > /dev/null 2>&1 &
 
 CHOICE=$(echo -e "Type clipboard\nType vmpwd\nType date\nCancel" | wofi --dmenu --hide-scroll -Dlayer=overlay)
@@ -18,7 +19,7 @@ case "$CHOICE" in
     "Type vmpwd")
        { 
           RELEASE_CTRL
-          echo "type W50zyOgGmdY9DZbuvRHy";  
+          echo "type ${vmpwd}";  
        }  | dotoolc       
         ;;
     "Type date")
