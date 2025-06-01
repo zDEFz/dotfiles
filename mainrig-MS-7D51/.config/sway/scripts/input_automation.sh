@@ -1,34 +1,20 @@
 #!/bin/bash
-# If 'dotoold' is not running, start it in the background with nohup (to ignore hangups) and discard all output
-! pgrep -x dotoold > /dev/null && nohup dotoold > /dev/null 2>&1 &
-[ -f "$USER_HOME/.secure_env" ] && source "$USER_HOME/.secure_env"
-
-CHOICE=$(echo -e "Type clipboard\nType vmpwd\nType date\nCancel" | wofi --dmenu --hide-scroll -Dlayer=overlay)
-
-RELEASE_CTRL() { echo "key leftctrl" | dotoolc;  } 
-# Exit immediately if ESC or nothing selected
-[ -z "$CHOICE" ] && exit 0
-
+NON_ROOT_USER="blu"
+USER_HOME="/home/$NON_ROOT_USER"
+MENU_OPTIONS="Type clipboard\nType vmpwd\nType date"
+# Start dotoold if not running
+! pgrep -x dotoold >/dev/null && nohup dotoold >/dev/null 2>&1 &
+# Load environment variables
+[ -f "$USER_HOME/.secure_env" ] && . "$USER_HOME/.secure_env"
+# Get user selection
+CHOICE=$(echo -e "$MENU_OPTIONS" | wofi --dmenu --hide-scroll -Dlayer=overlay)
+[ "$CHOICE" ] || exit
+# Set text based on choice
 case "$CHOICE" in
-    "Type clipboard")
-       { 
-          RELEASE_CTRL
-          echo type "$(wl-paste)"
-       } | dotoolc
-        ;;
-    "Type vmpwd")
-       { 
-          RELEASE_CTRL
-          echo "type ${vmpwd}";  
-       }  | dotoolc       
-        ;;
-    "Type date")
-    {
-      RELEASE_CTRL
-      echo "type $(date --iso-8601)"
-    } | dotoolc
-        ;;
-    *)
-        notify-send "No valid selection"
-        ;;
+    "Type clipboard") TEXT=$(wl-paste) ;;
+    "Type vmpwd") TEXT=${vmpwd} ;;
+    "Type date") TEXT=$(date --iso-8601) ;;
+    *) notify-send "No valid selection"; exit ;;
 esac
+# Type the text
+{ echo "key leftctrl"; echo "type $TEXT"; } | dotoolc
