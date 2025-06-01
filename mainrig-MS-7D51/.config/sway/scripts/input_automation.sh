@@ -1,6 +1,7 @@
 #!/bin/bash
 # If 'dotoold' is not running, start it in the background with nohup (to ignore hangups) and discard all output
-[[ -f /home/blu/.secure_env ]] && source /home/blu/.secure_env
+[ -f "$USER_HOME/.secure_env" ] && source "$USER_HOME/.secure_env"
+
 ! pgrep -x dotoold > /dev/null && nohup dotoold > /dev/null 2>&1 &
 
 CHOICE=$(echo -e "Type clipboard\nType vmpwd\nType date\nCancel" | wofi --dmenu --hide-scroll -Dlayer=overlay)

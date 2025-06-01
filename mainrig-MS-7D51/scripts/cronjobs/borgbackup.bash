@@ -94,6 +94,3 @@ perform_backup "NAS Home Backup mainrig-MS-7D51-home" "ssh://blu@nas.local:22/mn
 else
     log_message "/mnt/storage is not mounted. Skipping NAS backups."
 fi
- 
-
-
