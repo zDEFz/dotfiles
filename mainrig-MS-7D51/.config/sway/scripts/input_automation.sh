@@ -1,5 +1,5 @@
 #!/bin/bash
-[ -z "$(pgrep -x dotoold)" ] && { dotoold & sleep 1; }
+[ -z "$(pgrep -x dotoold)" ] && { dotoold; } # start dotoold if not running
 
 CHOICE=$(echo -e "Type clipboard\nType vmpwd\nType date\nCancel" | wofi --dmenu --hide-scroll -Dlayer=overlay)
 
