@@ -1,7 +1,7 @@
 #!/bin/bash
 NON_ROOT_USER="blu"
 USER_HOME="/home/$NON_ROOT_USER"
-MENU_OPTIONS="Type clipboard\nType vmpwd\nType date"
+MENU_OPTIONS="Type clipboard\nType date\nType vmpwd"
 # Start dotoold if not running
 ! pgrep -x dotoold >/dev/null && nohup dotoold >/dev/null 2>&1 &
 # Load environment variables
@@ -12,8 +12,8 @@ CHOICE=$(echo -e "$MENU_OPTIONS" | wofi --dmenu --hide-scroll -Dlayer=overlay)
 # Set text based on choice
 case "$CHOICE" in
     "Type clipboard") TEXT=$(wl-paste) ;;
-    "Type vmpwd") TEXT=${vmpwd} ;;
     "Type date") TEXT=$(date --iso-8601) ;;
+    "Type vmpwd") TEXT=${vmpwd} ;;
     *) notify-send "No valid selection"; exit ;;
 esac
 # Type the text
