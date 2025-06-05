@@ -66,6 +66,10 @@ disable_main_support_displays_and_taiko_screen() {
     done
 }
 
+focus_opentaiko () {
+	swaymsg '[class="^opentaiko.exe$"] focus'
+}
+
 # Menu entries in desired order
 read -r -d '' MENU_OPTIONS << 'EOF'
 --- Typing Tools ---
@@ -80,6 +84,8 @@ Disable Support Displays
 Enable Opt Support Displays
 Disable Opt Support Displays
 Disable Main Support Displays And Taiko Screen
+--- Focus Controls ---
+Focus OpenTaiko
 EOF
 
 # Show menu with history disabled to maintain order
@@ -133,6 +139,9 @@ case "$CLEAN_CHOICE" in
     "Disable Main Support Displays And Taiko Screen")
         disable_main_support_displays_and_taiko_screen
         ;;
+    "Focus OpenTaiko")
+        focus_opentaiko
+        ;;        
     "--- Typing Tools ---" | "--- Display Controls ---")
         # Do nothing for section headers
         exit 0
