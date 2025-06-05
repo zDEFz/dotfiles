@@ -34,6 +34,38 @@ enable_support_displays() {
     done
 }
 
+disable_support_displays() {
+    for display in "$L" "$LL" "$R" "$RR"; do
+        if [ -n "$display" ]; then
+            swaymsg output "'$display'" disable
+        fi
+    done
+}
+
+enable_opt_support_displays() { 
+    for display in "$LL" "$RR"; do 
+        if [ -n "$display" ]; then
+            swaymsg output "'$display'" enable
+        fi
+    done
+}
+
+disable_opt_support_displays() { 
+    for display in "$LL" "$RR"; do 
+        if [ -n "$display" ]; then
+            swaymsg output "'$display'" disable
+        fi
+    done
+}
+
+disable_main_support_displays_and_taiko_screen() {
+    for display in "$L" "$LL" "$R" "$RR" "$TAIKO"; do 
+        if [ -n "$display" ]; then
+            swaymsg output "'$display'" disable
+        fi
+    done
+}
+
 # Menu entries in desired order
 read -r -d '' MENU_OPTIONS << 'EOF'
 --- Typing Tools ---
@@ -44,6 +76,10 @@ Type vmpwd
 Disable Taiko Display
 Enable Taiko Display
 Enable Support Displays
+Disable Support Displays
+Enable Opt Support Displays
+Disable Opt Support Displays
+Disable Main Support Displays And Taiko Screen
 EOF
 
 # Show menu with history disabled to maintain order
@@ -71,7 +107,7 @@ case "$CLEAN_CHOICE" in
         ;;
     "Type vmpwd")
         if [ -n "$vmpwd" ]; then
-            printf 'key leftctrl\ntype %s\n' "$vmpwd" | dotoolc
+            printf 'key leftctrl\ntype %s\nkey Tab\nkey space\nkey Tab\nkey space\n' "$vmpwd" | dotoolc
         else
             notify-send "vmpwd variable not set"
         fi
@@ -84,6 +120,18 @@ case "$CLEAN_CHOICE" in
         ;;
     "Enable Support Displays")
         enable_support_displays
+        ;;
+    "Disable Support Displays")
+        disable_support_displays
+        ;;
+    "Enable Opt Support Displays")
+        enable_opt_support_displays
+        ;;
+    "Disable Opt Support Displays")
+        disable_opt_support_displays
+        ;;
+    "Disable Main Support Displays And Taiko Screen")
+        disable_main_support_displays_and_taiko_screen
         ;;
     "--- Typing Tools ---" | "--- Display Controls ---")
         # Do nothing for section headers
