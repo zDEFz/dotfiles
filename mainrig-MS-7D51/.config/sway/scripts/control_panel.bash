@@ -1,5 +1,4 @@
 #!/bin/bash
-
 NON_ROOT_USER="blu"
 USER_HOME="/home/$NON_ROOT_USER"
 
@@ -70,6 +69,32 @@ focus_opentaiko () {
 	swaymsg '[class="^opentaiko.exe$"] focus'
 }
 
+realign_mpv_openmusic () {
+	base_x=2160 
+	base_y=1679 
+	x_step=192 
+	y_step=108 
+	per_row=10 
+	ids=$(ps aux \
+	    | grep -Eo 'mpvfloat[0-9]+' \
+	    | sort -u) 
+	total=$(printf "%s\n" "$ids" | wc -l) 
+	counter=0 
+	swaymsg workspace 18
+	swaymsg "[app_id=\"^mpvfloat\d+$\"] move to workspace 18" > /dev/null 2>&1
+	while IFS= read -r id
+	do
+		row=$(( counter / per_row )) 
+		col=$(( counter % per_row )) 
+		x=$(( base_x + col * x_step )) 
+		y=$(( base_y + row * y_step )) 
+		swaymsg "[app_id=\"^$id$\"] move to workspace 18, move absolute position ${x}px ${y}px" > /dev/null 2>&1
+		((counter++))
+	done <<< "$ids"
+	echo "Re-aligned $total mpv windows onto workspace 18."
+}
+
+
 # Menu entries in desired order
 read -r -d '' MENU_OPTIONS << 'EOF'
 --- Typing Tools ---
@@ -86,6 +111,8 @@ Disable Opt Support Displays
 Disable Main Support Displays And Taiko Screen
 --- Focus Controls ---
 Focus OpenTaiko
+--- Window Realignment ---
+Realign mpv Openmusic
 EOF
 
 # Show menu with history disabled to maintain order
@@ -141,7 +168,10 @@ case "$CLEAN_CHOICE" in
         ;;
     "Focus OpenTaiko")
         focus_opentaiko
-        ;;        
+        ;;
+    "Realign mpv Openmusic")        
+        realign_mpv_openmusic
+        ;;
     "--- Typing Tools ---" | "--- Display Controls ---")
         # Do nothing for section headers
         exit 0
