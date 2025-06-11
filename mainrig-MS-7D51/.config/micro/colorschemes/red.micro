@@ -1,0 +1,19 @@
+# Strong Red Colorscheme
+
+# Background and General Appearance
+color-link color-column "#4a0000,#4a0000"       # Deep rich red for the color column background
+color-link cursor-line "#ff4c4c"                # Bright, vibrant red for the cursor line
+color-link divider "#4a0000,#ff7d7d"            # Dark red and a soft coral for dividers
+
+# statusline
+color-link statusline "#ffffff,#ff4c4c"         # White text on bright red background
+
+color-link tabbar "#4a0000,#ff7d7d"             # Dark red and soft coral for the tab bar
+
+# Line Numbers
+color-link line-number "#ffffff,#ff4c4c"        # White for line numbers, bright red for background
+color-link current-line-number "bold #ff2b2b,#ff4c4c"  # Bold medium red for current line number, bright red for background
+
+# Code Elements
+color-link default "#ffffff,#ff4c4c"            # White for default code color, bright red background
+color-link identifier "#ff2b2b"                 # Strong medium red for identifiers

@@ -1,0 +1,261 @@
+#!/bin/bash
+NON_ROOT_USER="blu"
+USER_HOME="/home/$NON_ROOT_USER"
+TARGET_WORKSPACE=18
+
+# Function to launch mpv instances
+launch_mpv() {
+    local idx=$1
+    local dir=$2
+    local id="mpvfloat$idx"
+
+    # Check if mpv instance is already running
+    if pgrep -f -- "--wayland-app-id=$id" > /dev/null; then
+        echo "$id is already running. Skipping..."
+        return 0
+    fi
+
+    # Launch mpv with the necessary options
+    cmd=(mpv --force-window=yes)
+    cmd+=(--pause)
+    cmd+=(--keep-open)
+    cmd+=(--input-ipc-server=/tmp/mpvsockets/"$id")
+    cmd+=(--directory-mode=recursive)
+    cmd+=(--directory-filter-types=video,audio)
+    cmd+=(--autofit-larger=192x108 --geometry=192x108)
+    cmd+=(--config-dir=$USER_HOME/.config/mpv/profiles/openmusic)
+    cmd+=(--x11-name="$id" --wayland-app-id="$id")
+    cmd+=("$dir")
+
+    # Run the mpv command in the background
+    "${cmd[@]}" >/dev/null 2>&1 &
+}
+
+# Music directory paths configuration
+dirs=(
+
+)
+
+# Switch to workspace 18
+swaymsg "workspace '$TARGET_WORKSPACE'"
+
+# Window layout configuration
+base_x=2160
+base_y=1679
+x_step=192
+y_step=108
+
+# Create a position lookup table
+declare -A expected_pos
+
+# Fetch initial window tree once
+initial_tree=$(swaymsg -t get_tree)
+
+# Start mpv instances if needed
+for i in "${!dirs[@]}"; do
+  idx=$(( i + 1 ))
+  id="mpvfloat$idx"
+  
+  # Calculate position for 10 items per row
+  row=$(( i / 10 ))
+  col=$(( i % 10 ))
+  
+  x=$(( base_x + col * x_step ))
+  y=$(( base_y + row * y_step ))
+  
+  expected_pos["$id"]="$x $y"
+
+  if ! echo "$initial_tree" | grep -q "$id"; then
+    echo "Launching mpv instance for $id at ${dirs[i]}"
+    launch_mpv $idx "${dirs[i]}"
+  else
+    echo "$id is already running"
+  fi
+done
+
+# Wait for all mpv windows to appear (in batch)
+for attempt in {1..80}; do
+  all_ready=true
+  current_tree=$(swaymsg -t get_tree)
+  for id in "${!expected_pos[@]}"; do
+    if ! echo "$current_tree" | grep -q "$id"; then
+      all_ready=false
+      break
+    fi
+  done
+  if $all_ready; then
+    break
+  fi
+  sleep 0.05
+done
+
+# Move all windows to workspace 18 and position them
+for id in "${!expected_pos[@]}"; do
+  read x y <<< "${expected_pos[$id]}"
+  swaymsg "[app_id=\"^${id}$\"] move to workspace 18, move absolute position ${x}px ${y}px" >/dev/null 2>&1
+done
+
+
+#!/bin/bash
+
+SOCKET_DIR="/tmp/mpvsockets"
+
+# Make sure socat is installed
+command -v socat >/dev/null 2>&1 || {
+  echo "ERROR: socat not found. Please install it (e.g. apt install socat)." >&2
+  exit 1
+}
+
+# Function to get all valid mpv sockets
+get_all_sockets() {
+  local sockets=()
+  
+  for i in {1..99}; do
+    local socket_path="$SOCKET_DIR/mpvfloat$i"
+    if [[ -S "$socket_path" ]]; then
+      sockets+=("$socket_path")
+    fi
+  done
+  
+  echo "${sockets[@]}"
+}
+
+# Function to check if an mpv instance is playing or paused
+is_playing() {
+  local socket="$1"
+  local result=$(echo '{ "command": ["get_property", "pause"] }' | socat - "$socket" 2>/dev/null)
+  
+  if [[ "$result" == *"data"* ]]; then
+    local pause_status=$(echo "$result" | grep -o '"data":[a-z]*' | cut -d: -f2)
+    if [[ "$pause_status" == "false" ]]; then
+      return 0  # Playing
+    fi
+  fi
+  
+  return 1  # Not playing
+}
+
+# Function to get current playback time of an instance
+get_playback_time() {
+  local socket="$1"
+  local result=$(echo '{ "command": ["get_property", "time-pos"] }' | socat - "$socket" 2>/dev/null)
+  
+  if [[ "$result" == *"data"* ]]; then
+    local time=$(echo "$result" | grep -o '"data":[0-9.-]*' | cut -d: -f2)
+    echo "$time"
+  else
+    echo "-1"
+  fi
+}
+
+# Function to get the filename currently playing
+get_filename() {
+  local socket="$1"
+  local result=$(echo '{ "command": ["get_property", "filename"] }' | socat - "$socket" 2>/dev/null)
+  
+  if [[ "$result" == *"data"* ]]; then
+    local filename=$(echo "$result" | grep -o '"data":"[^"]*' | cut -d'"' -f4)
+    echo "$filename"
+  else
+    echo "unknown"
+  fi
+}
+
+# Function to detect newly playing instances by comparing timestamps
+detect_newly_playing() {
+  local prev_states="$1"
+  local sockets=($2)
+  local newly_playing=""
+  
+  for socket in "${sockets[@]}"; do
+    local socket_name=$(basename "$socket")
+    
+    # Check if it's playing
+    if is_playing "$socket"; then
+      local current_time=$(get_playback_time "$socket")
+      
+      # Get previous time from stored states
+      local prev_time=$(echo "$prev_states" | grep "^$socket_name:" | cut -d: -f2)
+      
+      # If no previous time or time has changed very little (just advanced naturally)
+      if [[ -z "$prev_time" ]]; then
+        # New playback detected
+        newly_playing="$socket"
+        break
+      elif (( $(echo "$current_time > 0 && ($current_time - $prev_time) < 1.5" | bc -l) )); then
+        # Natural progression, not newly started
+        continue
+      else
+        # Time jumped or was restarted
+        newly_playing="$socket"
+        break
+      fi
+    fi
+  done
+  
+  echo "$newly_playing"
+}
+
+# Function to pause all instances except the one specified
+pause_others() {
+  local active_socket="$1"
+  local sockets=($2)
+  
+  local active_name=$(basename "$active_socket")
+  local active_file=$(get_filename "$active_socket")
+  
+  echo "New playback detected: $active_name ($active_file)"
+  
+  for socket in "${sockets[@]}"; do
+    if [[ "$socket" != "$active_socket" && -S "$socket" ]]; then
+      local socket_name=$(basename "$socket")
+      if is_playing "$socket"; then
+        echo "Pausing: $socket_name"
+        echo '{ "command": ["set_property", "pause", true] }' | socat - "$socket" 2>/dev/null
+      fi
+    fi
+  done
+}
+
+# Main function
+main() {
+  echo "Monitoring mpv instances in $SOCKET_DIR... (press Ctrl+C to quit)"
+  
+  local playback_states=""
+  
+  while true; do
+    # Get all available sockets
+    local all_sockets=($(get_all_sockets))
+    
+    if [[ ${#all_sockets[@]} -eq 0 ]]; then
+      sleep 1
+      continue
+    fi
+    
+    # Update state for all sockets
+    local new_states=""
+    for socket in "${all_sockets[@]}"; do
+      local socket_name=$(basename "$socket")
+      if is_playing "$socket"; then
+        local current_time=$(get_playback_time "$socket")
+        new_states+="$socket_name:$current_time"$'\n'
+      fi
+    done
+    
+    # Check if any instance has started playing
+    local newly_playing=$(detect_newly_playing "$playback_states" "$(echo ${all_sockets[*]})")
+    
+    if [[ -n "$newly_playing" ]]; then
+      pause_others "$newly_playing" "$(echo ${all_sockets[*]})"
+    fi
+    
+    # Update the stored states
+    playback_states="$new_states"
+    
+    # Short sleep to avoid high CPU usage
+    sleep 0.25
+  done
+}
+
+# Run the main function
+main &>/dev/null &
