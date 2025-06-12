@@ -1,18 +1,15 @@
 #!/bin/bash
-
 [ -f /home/blu/.secure_env ] && source /home/blu/.secure_env
-
 # Current weather API call
 WEATHER_URL="https://api.openweathermap.org/data/2.5/weather?zip=${ZIP_CODE},${COUNTRY_CODE}&appid=${OPENWEATHERMAP_API_KEY}&units=metric"
-
 # Fetch weather data
 WEATHER_DATA=$(curl -s "$WEATHER_URL")
-
 # Check if API call was successful
 if echo "$WEATHER_DATA" | grep -q "\"cod\":200"; then
     # Parse JSON response
     TEMP=$(echo "$WEATHER_DATA" | grep -o '"temp":[^,]*' | cut -d':' -f2 | cut -d'.' -f1)
     DESCRIPTION=$(echo "$WEATHER_DATA" | grep -o '"description":"[^"]*' | cut -d'"' -f4)
+    HUMIDITY=$(echo "$WEATHER_DATA" | grep -o '"humidity":[0-9]*' | cut -d':' -f2)
     
     # Get coordinates for air quality - clean up the parsing
     LAT=$(echo "$WEATHER_DATA" | grep -o '"lat":[0-9.-]*' | cut -d':' -f2)
@@ -55,8 +52,8 @@ if echo "$WEATHER_DATA" | grep -q "\"cod\":200"; then
         *) ICON="🌤" ;;
     esac
     
-    # One line output for i3blocks
-    echo "$ICON ${TEMP}°C | $DESCRIPTION | $AQI_ICON Air: $AQI_TEXT"
+    # One line output for i3blocks with humidity
+    echo "$ICON ${TEMP}°C | $DESCRIPTION | 💧${HUMIDITY}% | $AQI_ICON Air: $AQI_TEXT"
     
 else
     echo "Weather N/A"
