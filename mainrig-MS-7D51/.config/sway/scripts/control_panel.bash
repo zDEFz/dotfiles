@@ -7,63 +7,13 @@ if ! pgrep -x dotoold >/dev/null; then
     nohup dotoold >/dev/null 2>&1 &
 fi
 
+[[ -f /home/blu/scripts/functions/displays ]] && source /home/blu/scripts/functions/displays
+
 # Load environment variables
 if [ -f "$USER_HOME/.secure_env" ]; then
     # shellcheck source=/dev/null
     . "$USER_HOME/.secure_env"
 fi
-
-# Display control functions
-disable_taiko_display() {
-    if pgrep -f "OpenTaiko.exe" >/dev/null; then
-        pkill -f "OpenTaiko.exe"
-    fi
-    swaymsg output "'$TAIKO'" disable
-}
-
-enable_taiko_display() {
-    swaymsg output "'$TAIKO'" enable
-}
-
-enable_support_displays() {
-    for display in "$L" "$LL" "$R" "$RR"; do
-        if [ -n "$display" ]; then
-            swaymsg output "'$display'" enable
-        fi
-    done
-}
-
-disable_support_displays() {
-    for display in "$L" "$LL" "$R" "$RR"; do
-        if [ -n "$display" ]; then
-            swaymsg output "'$display'" disable
-        fi
-    done
-}
-
-enable_opt_support_displays() { 
-    for display in "$LL" "$RR"; do 
-        if [ -n "$display" ]; then
-            swaymsg output "'$display'" enable
-        fi
-    done
-}
-
-disable_opt_support_displays() { 
-    for display in "$LL" "$RR"; do 
-        if [ -n "$display" ]; then
-            swaymsg output "'$display'" disable
-        fi
-    done
-}
-
-disable_main_support_displays_and_taiko_screen() {
-    for display in "$L" "$LL" "$R" "$RR" "$TAIKO"; do 
-        if [ -n "$display" ]; then
-            swaymsg output "'$display'" disable
-        fi
-    done
-}
 
 enable_all_seat_displays(){ 
 	for display in "$L" "$LL" "$M" "$MON_KB" "$R" "$RR" ; do 
@@ -109,14 +59,16 @@ Type clipboard
 Type date
 Type vmpwd
 --- Display Controls ---
-Enable all Seat Displays
-Disable Taiko Display
-Enable Taiko Display
-Enable Support Displays
-Disable Support Displays
-Enable Opt Support Displays
-Disable Opt Support Displays
 Disable Main Support Displays And Taiko Screen
+Disable MON_KB
+Disable Opt Support Displays
+Disable Support Displays
+Disable Taiko Display
+Enable all Seat Displays
+Enable MON_KB
+Enable Opt Support Displays
+Enable Support Displays
+Enable Taiko Display
 --- Focus Controls ---
 Focus OpenTaiko
 --- Window Realignment ---
@@ -157,25 +109,31 @@ case "$CLEAN_CHOICE" in
         enable_all_seat_displays
         ;;    
     "Disable Taiko Display")
-        disable_taiko_display
+        disable_TAIKO
         ;;
     "Enable Taiko Display")
-        enable_taiko_display
+        enable_TAIKO
         ;;
     "Enable Support Displays")
-        enable_support_displays
+        enable_support_all
         ;;
     "Disable Support Displays")
-        disable_support_displays
+        enable_support_all
         ;;
     "Enable Opt Support Displays")
-        enable_opt_support_displays
+        enable_opt_support
         ;;
     "Disable Opt Support Displays")
-        disable_opt_support_displays
+        disable_opt_support
         ;;
     "Disable Main Support Displays And Taiko Screen")
-        disable_main_support_displays_and_taiko_screen
+        disable_opt_support_and_taiko
+        ;;
+    "Enable MON_KB")
+        enable_MON_KB
+        ;;
+    "Disable MON_KB")
+        disable_MON_KB
         ;;
     "Focus OpenTaiko")
         focus_opentaiko
