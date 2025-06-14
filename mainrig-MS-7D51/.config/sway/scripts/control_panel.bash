@@ -1,4 +1,5 @@
 #!/bin/bash
+
 NON_ROOT_USER="blu"
 USER_HOME="/home/$NON_ROOT_USER"
 
@@ -59,16 +60,31 @@ Type clipboard
 Type date
 Type vmpwd
 --- Display Controls ---
-Disable Main Support Displays And Taiko Screen
+Disable L
+Disable LL
+Disable M
+Disable main support
+Disable main support and taiko
 Disable MON_KB
-Disable Opt Support Displays
-Disable Support Displays
-Disable Taiko Display
-Enable all Seat Displays
+Disable opt support
+Disable opt support and taiko
+Disable R
+Disable RR
+Disable support all
+Disable TAIKO
+Enable L
+Enable LL
+Enable M
+Enable main support
+Enable main support and taiko
 Enable MON_KB
-Enable Opt Support Displays
-Enable Support Displays
-Enable Taiko Display
+Enable opt support
+Enable opt support and taiko
+Enable R
+Enable RR
+Enable support all
+Enable TAIKO
+Enable all Seat Displays
 --- Focus Controls ---
 Focus OpenTaiko
 --- Window Realignment ---
@@ -105,35 +121,80 @@ case "$CLEAN_CHOICE" in
             notify-send "vmpwd variable not set"
         fi
         ;;
-    "Enable all Seat Displays")
-        enable_all_seat_displays
-        ;;    
-    "Disable Taiko Display")
-        disable_TAIKO
+    "Disable L")
+        disable_L
         ;;
-    "Enable Taiko Display")
-        enable_TAIKO
+    "Disable LL")
+        disable_LL
         ;;
-    "Enable Support Displays")
-        enable_support_all
+    "Disable M")
+        disable_M
         ;;
-    "Disable Support Displays")
-        enable_support_all
+    "Disable main support")
+        disable_main_support
         ;;
-    "Enable Opt Support Displays")
-        enable_opt_support
+    "Disable main support and taiko")
+        disable_main_support_and_taiko
         ;;
-    "Disable Opt Support Displays")
+    "Disable MON_KB")
+        disable_MON_KB
+        ;;
+    "Disable opt support")
         disable_opt_support
         ;;
-    "Disable Main Support Displays And Taiko Screen")
+    "Disable opt support and taiko")
         disable_opt_support_and_taiko
+        ;;
+    "Disable R")
+        disable_R
+        ;;
+    "Disable RR")
+        disable_RR
+        ;;
+    "Disable support all")
+        disable_support_all
+        ;;
+    "Disable TAIKO")
+        disable_TAIKO
+        ;;
+    "Enable L")
+        enable_L
+        ;;
+    "Enable LL")
+        enable_LL
+        ;;
+    "Enable M")
+        enable_M
+        ;;
+    "Enable main support")
+        enable_main_support
+        ;;
+    "Enable main support and taiko")
+        enable_main_support_and_taiko
         ;;
     "Enable MON_KB")
         enable_MON_KB
         ;;
-    "Disable MON_KB")
-        disable_MON_KB
+    "Enable opt support")
+        enable_opt_support
+        ;;
+    "Enable opt support and taiko")
+        enable_opt_support_and_taiko
+        ;;
+    "Enable R")
+        enable_R
+        ;;
+    "Enable RR")
+        enable_RR
+        ;;
+    "Enable support all")
+        enable_support_all
+        ;;
+    "Enable TAIKO")
+        enable_TAIKO
+        ;;
+    "Enable all Seat Displays")
+        enable_all_seat_displays
         ;;
     "Focus OpenTaiko")
         focus_opentaiko
@@ -141,7 +202,7 @@ case "$CLEAN_CHOICE" in
     "Realign mpv Openmusic")        
         realign_mpv_openmusic
         ;;
-    "--- Typing Tools ---" | "--- Display Controls ---")
+    "--- Typing Tools ---" | "--- Display Controls ---" | "--- Focus Controls ---" | "--- Window Realignment ---")
         # Do nothing for section headers
         exit 0
         ;;
