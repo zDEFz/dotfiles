@@ -11,6 +11,35 @@ if echo "$WEATHER_DATA" | grep -q "\"cod\":200"; then
     DESCRIPTION=$(echo "$WEATHER_DATA" | grep -o '"description":"[^"]*' | cut -d'"' -f4)
     HUMIDITY=$(echo "$WEATHER_DATA" | grep -o '"humidity":[0-9]*' | cut -d':' -f2)
     
+    # Parse wind data
+    WIND_SPEED=$(echo "$WEATHER_DATA" | grep -o '"speed":[0-9.]*' | cut -d':' -f2)
+    WIND_DEG=$(echo "$WEATHER_DATA" | grep -o '"deg":[0-9]*' | cut -d':' -f2)
+    
+    # Convert wind direction degrees to compass direction arrow
+    if [ -n "$WIND_DEG" ]; then
+        if [ "$WIND_DEG" -ge 0 ] && [ "$WIND_DEG" -lt 23 ]; then
+            WIND_DIR="↑"
+        elif [ "$WIND_DEG" -ge 23 ] && [ "$WIND_DEG" -lt 68 ]; then
+            WIND_DIR="↗"
+        elif [ "$WIND_DEG" -ge 68 ] && [ "$WIND_DEG" -lt 113 ]; then
+            WIND_DIR="→"
+        elif [ "$WIND_DEG" -ge 113 ] && [ "$WIND_DEG" -lt 158 ]; then
+            WIND_DIR="↘"
+        elif [ "$WIND_DEG" -ge 158 ] && [ "$WIND_DEG" -lt 203 ]; then
+            WIND_DIR="↓"
+        elif [ "$WIND_DEG" -ge 203 ] && [ "$WIND_DEG" -lt 248 ]; then
+            WIND_DIR="↙"
+        elif [ "$WIND_DEG" -ge 248 ] && [ "$WIND_DEG" -lt 293 ]; then
+            WIND_DIR="←"
+        elif [ "$WIND_DEG" -ge 293 ] && [ "$WIND_DEG" -lt 338 ]; then
+            WIND_DIR="↖"
+        else
+            WIND_DIR="↑"
+        fi
+    else
+        WIND_DIR="⚬"
+    fi
+
     # Get coordinates for air quality - clean up the parsing
     LAT=$(echo "$WEATHER_DATA" | grep -o '"lat":[0-9.-]*' | cut -d':' -f2)
     LON=$(echo "$WEATHER_DATA" | grep -o '"lon":[0-9.-]*' | cut -d':' -f2)
@@ -52,8 +81,8 @@ if echo "$WEATHER_DATA" | grep -q "\"cod\":200"; then
         *) ICON="🌤" ;;
     esac
     
-    # One line output for i3blocks with humidity
-    echo "$ICON ${TEMP}°C | $DESCRIPTION | 💧${HUMIDITY}% | $AQI_ICON Air: $AQI_TEXT"
+    # One line output for i3blocks with humidity and wind
+    echo "$ICON ${TEMP}°C | $DESCRIPTION | 💧${HUMIDITY}% | 🌬${WIND_SPEED}m/s $WIND_DIR | $AQI_ICON Air: $AQI_TEXT"
     
 else
     echo "Weather N/A"
