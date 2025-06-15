@@ -125,9 +125,9 @@ client.focused_inactive $in-bgcolor     $in-bgcolor     $in-text        $in-bgco
 # client.urgent           $bgcolor        $bgcolor        $in-text        $bgcolor
 
 output { 
-	$L disable
+#	$L disable
 	$LL disable
-	$R disable
+#	$R disable
 	$RR disable
 	$TAIKO disable
 }
