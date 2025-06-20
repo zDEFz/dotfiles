@@ -4,10 +4,10 @@
 
 # Configuration
 GATEWAY="fritz.box"
-INTERNET="8.8.8.8"  # Using IP instead of hostname for faster resolution
-PING_TIMEOUT=1      # Reduced from 2 seconds
+INTERNET="194.242.2.2"  # Mullvad DNS instead of Google DNS for privacy
+PING_TIMEOUT=1      # Keep original fast timeout
 MULLVAD_API_URL="https://am.i.mullvad.net/json"
-CACHE_FILE="/tmp/mullvad_status_$$"  # Per-process cache file
+CACHE_FILE="/tmp/mullvad_status_$(id -u)"  # User-specific instead of $$
 CACHE_DURATION=10   # Cache VPN status for 10 seconds
 
 # Colors
@@ -26,12 +26,23 @@ pango_color() {
     echo "<span color='$2'>$1</span>"
 }
 
+# Use unique temp files to avoid race conditions
+TEMP_SUFFIX="$(date +%s%N)_$$"
+GATEWAY_TEMP="/tmp/gateway_${TEMP_SUFFIX}"
+INTERNET_TEMP="/tmp/internet_${TEMP_SUFFIX}"
+
+# Cleanup function
+cleanup() {
+    rm -f "$GATEWAY_TEMP" "$INTERNET_TEMP" 2>/dev/null
+}
+trap cleanup EXIT
+
 # Check gateway and internet in parallel
 {
-    fast_ping "$GATEWAY" && echo "gateway_ok" > /tmp/gateway_$$
+    fast_ping "$GATEWAY" && echo "gateway_ok" > "$GATEWAY_TEMP"
 } &
 {
-    fast_ping "$INTERNET" && echo "internet_ok" > /tmp/internet_$$
+    fast_ping "$INTERNET" && echo "internet_ok" > "$INTERNET_TEMP"
 } &
 
 # Wait for both ping checks to complete
@@ -40,9 +51,8 @@ wait
 # Check results
 GATEWAY_OK=false
 INTERNET_OK=false
-
-[[ -f /tmp/gateway_$$ ]] && GATEWAY_OK=true && rm -f /tmp/gateway_$$
-[[ -f /tmp/internet_$$ ]] && INTERNET_OK=true && rm -f /tmp/internet_$$
+[[ -f "$GATEWAY_TEMP" ]] && GATEWAY_OK=true
+[[ -f "$INTERNET_TEMP" ]] && INTERNET_OK=true
 
 # Handle connection failures early
 if ! $GATEWAY_OK; then
@@ -74,7 +84,6 @@ fi
 
 # Parse VPN status
 MULLVAD_CONN=$(echo "$MULLVAD_JSON" | jq -r '.mullvad_exit_ip // false' 2>/dev/null)
-
 if [[ "$MULLVAD_CONN" == "true" ]]; then
     MULLVAD_HOST=$(echo "$MULLVAD_JSON" | jq -r '.mullvad_exit_ip_hostname // "Unknown"' 2>/dev/null)
     OUTPUT=$(pango_color "Gateway up, Internet up, VPN: $MULLVAD_HOST" "$COLOR_VPN_OK")
