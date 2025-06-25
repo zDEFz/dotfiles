@@ -5,7 +5,7 @@
 # Configuration
 GATEWAY="fritz.box"
 INTERNET="194.242.2.2"  # Mullvad DNS instead of Google DNS for privacy
-PING_TIMEOUT=1      # Keep original fast timeout
+PING_TIMEOUT=5      # Keep original fast timeout
 MULLVAD_API_URL="https://am.i.mullvad.net/json"
 CACHE_FILE="/tmp/mullvad_status_$(id -u)"  # User-specific instead of $$
 CACHE_DURATION=10   # Cache VPN status for 10 seconds
@@ -73,7 +73,7 @@ if [[ -f "$CACHE_FILE" ]] && [[ $(($(date +%s) - $(stat -c %Y "$CACHE_FILE" 2>/d
 fi
 
 # Fetch fresh VPN status with timeout
-MULLVAD_JSON=$(timeout 3 curl -s --connect-timeout 2 --max-time 3 "$MULLVAD_API_URL" 2>/dev/null)
+MULLVAD_JSON=$(timeout 5 curl -s --connect-timeout 5 --max-time 5 "$MULLVAD_API_URL" 2>/dev/null)
 
 if [[ -z "$MULLVAD_JSON" ]]; then
     OUTPUT=$(pango_color "Internet up, VPN status unknown" "$COLOR_WARNING")
