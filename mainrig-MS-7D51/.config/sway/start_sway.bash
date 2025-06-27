@@ -11,9 +11,7 @@ export XDG_CURRENT_DESKTOP=sway               # Set current desktop environment
 export _JAVA_AWT_WM_NONREPARENTING=1          # Fix Java AWT issues on Wayland
 
 # GPU Configuration
-#export WLR_DRM_DEVICES=/dev/dri/by-name/AMD_6950XT:/dev/dri/by-name/AMD_Pro_W7500  # Set primary and secondary GPUs
 
-# export WLR_DRM_DEVICES=/dev/dri/by-name/AMD_6950XT:/dev/dri/by-path/platform-evdi.0-card
 export WLR_DRM_DEVICES=/dev/dri/by-name/AMD_6950XT:/dev/dri/by-name/AMD_Pro_W7500
 # export WLR_DRM_DEVICES=/dev/dri/by-name/AMD_6950XT:/dev/dri/card1
 
