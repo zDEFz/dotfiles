@@ -53,7 +53,6 @@ input {
     '1003:8258:Keyboard' events enabled
 }
 
-
 # Displays
 set { 
     $L      'Iiyama North America PL2590HS 1219241201616'
