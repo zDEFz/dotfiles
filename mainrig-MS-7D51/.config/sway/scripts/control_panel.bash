@@ -8,7 +8,7 @@ if ! pgrep -x dotoold >/dev/null; then
     nohup dotoold >/dev/null 2>&1 &
 fi
 
-[[ -f /home/blu/scripts/functions/displays ]] && source /home/blu/scripts/functions/displays
+[[ -f /home/blu/scripts/functions/in_use/video ]] && source /home/blu/scripts/functions/in_use/video
 
 # Load environment variables
 if [ -f "$USER_HOME/.secure_env" ]; then
@@ -19,7 +19,7 @@ fi
 enable_all_seat_displays(){ 
 	for display in "$L" "$LL" "$M" "$MON_KB" "$R" "$RR" ; do 
 		if [ -n "$display" ]; then
-		            swaymsg output "'$display'" enable
+		   swaymsg output "'$display'" enable
 		fi
 	done
 }
