@@ -10,7 +10,6 @@ set {
     $ensi exec --no-startup-id
     $fw for_window
     $i instance
-$lhs layout horizontal split
     $map move absolute position
     $meta Mod4
     $ml move left
