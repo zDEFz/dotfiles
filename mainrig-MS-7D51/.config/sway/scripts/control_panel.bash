@@ -16,6 +16,10 @@ if [ -f "$USER_HOME/.secure_env" ]; then
     . "$USER_HOME/.secure_env"
 fi
 
+myanimelist_synopsis_clipboard() { 
+	$USER_HOME/.config/sway/scripts/myanimelist_coverart_search.sh "$(wl-paste)"
+}
+
 enable_all_seat_displays(){ 
 	for display in "$L" "$LL" "$M" "$MON_KB" "$R" "$RR" ; do 
 		if [ -n "$display" ]; then
@@ -59,6 +63,8 @@ read -r -d '' MENU_OPTIONS << 'EOF'
 Type clipboard
 Type date
 Type vmpwd
+--- MyAnimeList ---
+MAL Synopsis from clipboard
 --- Display Controls ---
 Disable L
 Disable LL
@@ -121,6 +127,9 @@ case "$CLEAN_CHOICE" in
             notify-send "vmpwd variable not set"
         fi
         ;;
+    "MAL Synopsis from clipboard")
+        myanimelist_synopsis_clipboard
+        ;;
     "Disable L")
         disable_L
         ;;
@@ -154,8 +163,7 @@ case "$CLEAN_CHOICE" in
     "Disable support all")
         disable_support_all
         ;;
-    "Disable TAIKO")
-        disable_TAIKO
+    "Disable TAIKO")        disable_TAIKO
         ;;
     "Enable L")
         enable_L
@@ -202,7 +210,7 @@ case "$CLEAN_CHOICE" in
     "Realign mpv Openmusic")        
         realign_mpv_openmusic
         ;;
-    "--- Typing Tools ---" | "--- Display Controls ---" | "--- Focus Controls ---" | "--- Window Realignment ---")
+    "--- Typing Tools ---" | "--- Display Controls ---" | "--- Focus Controls ---" | "--- Window Realignment ---" | "--- MyAnimeList ---")
         # Do nothing for section headers
         exit 0
         ;;
