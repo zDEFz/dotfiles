@@ -8,7 +8,7 @@ if ! pgrep -x dotoold >/dev/null; then
     nohup dotoold >/dev/null 2>&1 &
 fi
 
-[[ -f /home/blu/scripts/functions/in_use/video ]] && source /home/blu/scripts/functions/in_use/video
+[[ -f /home/blu/scripts/functions/in_use/media/video ]] && source /home/blu/scripts/functions/in_use/media/video
 
 # Load environment variables
 if [ -f "$USER_HOME/.secure_env" ]; then
