@@ -29,7 +29,7 @@ enable_all_seat_displays(){
 }
 
 focus_opentaiko () {
-	swaymsg '[class="^opentaiko.exe$"] focus'
+	swaymsg '[class="^(OpenTaiko|opentaiko.exe)$"] focus'
 }
 
 realign_mpv_openmusic () {
