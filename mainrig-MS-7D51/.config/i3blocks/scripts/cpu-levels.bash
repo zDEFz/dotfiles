@@ -30,3 +30,5 @@ LC_ALL=C stdbuf -o0 sar -P ALL 1 1 |
   
   # Print final result only at the end to ensure complete output
   END { print output }'
+
+
