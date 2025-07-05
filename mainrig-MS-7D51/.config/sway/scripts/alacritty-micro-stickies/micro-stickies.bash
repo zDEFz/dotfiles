@@ -69,11 +69,15 @@ if [[ $mode == "--cursor" ]]; then
     start_time=$(date +%s.%N)
 
     echo -e "${CYAN}${BOLD}[INFO]${RESET} Launching Alacritty in cursor mode..."
+    # pre-determine position so we only match it once foreach instance
+    swaymsg 'for_window [app_id="^alacritty-micro-cursor-*$"] move to position cursor'
+    
     alacritty \
         --working-directory="/home/blu/notes/custom/" \
         --class="${name}${unique_id}" \
         -e micro $micro_args 2>> "$log_file" &
-
+    
+    
     # Log elapsed time
     measure_time "$start_time" "Cursor mode Alacritty launch time"
 fi
