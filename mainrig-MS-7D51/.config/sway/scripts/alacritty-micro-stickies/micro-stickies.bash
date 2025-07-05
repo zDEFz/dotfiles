@@ -70,7 +70,7 @@ if [[ $mode == "--cursor" ]]; then
 
     echo -e "${CYAN}${BOLD}[INFO]${RESET} Launching Alacritty in cursor mode..."
     # pre-determine position so we only match it once foreach instance
-    swaymsg 'for_window [app_id="^alacritty-micro-cursor-*$"] move to position cursor'
+    # swaymsg 'for_window [app_id="^alacritty-micro-cursor-*$"] move to position cursor'
     
     alacritty \
         --working-directory="/home/blu/notes/custom/" \
