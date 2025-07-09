@@ -57,6 +57,80 @@ realign_mpv_openmusic () {
 	echo "Re-aligned $total mpv windows onto workspace 18."
 }
 
+# Swayr functions
+swayr_steal_window() {
+    swayr steal-window
+}
+
+swayr_switch_window() {
+    swayr switch-window
+}
+
+swayr_switch_workspace() {
+    swayr switch-workspace
+}
+
+swayr_move_focused_to_workspace() {
+    swayr move-focused-to-workspace
+}
+
+# Move focused window to specific displays
+move_focused_to_L() {
+    if [ -n "$L" ]; then
+        swaymsg move container to output "'$L'"
+    else
+        notify-send "L display not defined"
+    fi
+}
+
+move_focused_to_LL() {
+    if [ -n "$LL" ]; then
+        swaymsg move container to output "'$LL'"
+    else
+        notify-send "LL display not defined"
+    fi
+}
+
+move_focused_to_M() {
+    if [ -n "$M" ]; then
+        swaymsg move container to output "'$M'"
+    else
+        notify-send "M display not defined"
+    fi
+}
+
+move_focused_to_MON_KB() {
+    if [ -n "$MON_KB" ]; then
+        swaymsg move container to output "'$MON_KB'"
+    else
+        notify-send "MON_KB display not defined"
+    fi
+}
+
+move_focused_to_R() {
+    if [ -n "$R" ]; then
+        swaymsg move container to output "'$R'"
+    else
+        notify-send "R display not defined"
+    fi
+}
+
+move_focused_to_RR() {
+    if [ -n "$RR" ]; then
+        swaymsg move container to output "'$RR'"
+    else
+        notify-send "RR display not defined"
+    fi
+}
+
+move_focused_to_TAIKO() {
+    if [ -n "$TAIKO" ]; then
+        swaymsg move container to output "'$TAIKO'"
+    else
+        notify-send "TAIKO display not defined"
+    fi
+}
+
 # Menu entries in desired order
 read -r -d '' MENU_OPTIONS << 'EOF'
 --- Typing Tools ---
@@ -65,6 +139,19 @@ Type date
 Type vmpwd
 --- MyAnimeList ---
 MAL Synopsis from clipboard
+--- Swayr Window Management ---
+Steal window
+Switch window
+Switch workspace
+Move focused to workspace
+--- Move Window to Display ---
+Move to L
+Move to LL
+Move to M
+Move to MON_KB
+Move to R
+Move to RR
+Move to TAIKO
 --- Display Controls ---
 Disable L
 Disable LL
@@ -130,6 +217,41 @@ case "$CLEAN_CHOICE" in
     "MAL Synopsis from clipboard")
         myanimelist_synopsis_clipboard
         ;;
+    # Swayr commands
+    "Steal window")
+        swayr_steal_window
+        ;;
+    "Switch window")
+        swayr_switch_window
+        ;;
+    "Switch workspace")
+        swayr_switch_workspace
+        ;;
+    "Move focused to workspace")
+        swayr_move_focused_to_workspace
+        ;;
+    # Move window to specific displays
+    "Move to L")
+        move_focused_to_L
+        ;;
+    "Move to LL")
+        move_focused_to_LL
+        ;;
+    "Move to M")
+        move_focused_to_M
+        ;;
+    "Move to MON_KB")
+        move_focused_to_MON_KB
+        ;;
+    "Move to R")
+        move_focused_to_R
+        ;;
+    "Move to RR")
+        move_focused_to_RR
+        ;;
+    "Move to TAIKO")
+        move_focused_to_TAIKO
+        ;;
     "Disable L")
         disable_L
         ;;
@@ -163,7 +285,8 @@ case "$CLEAN_CHOICE" in
     "Disable support all")
         disable_support_all
         ;;
-    "Disable TAIKO")        disable_TAIKO
+    "Disable TAIKO")        
+        disable_TAIKO
         ;;
     "Enable L")
         enable_L
@@ -210,7 +333,7 @@ case "$CLEAN_CHOICE" in
     "Realign mpv Openmusic")        
         realign_mpv_openmusic
         ;;
-    "--- Typing Tools ---" | "--- Display Controls ---" | "--- Focus Controls ---" | "--- Window Realignment ---" | "--- MyAnimeList ---")
+    "--- Typing Tools ---" | "--- Display Controls ---" | "--- Focus Controls ---" | "--- Window Realignment ---" | "--- MyAnimeList ---" | "--- Swayr Window Management ---" | "--- Move Window to Display ---")
         # Do nothing for section headers
         exit 0
         ;;
