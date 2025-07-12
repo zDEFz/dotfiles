@@ -5,7 +5,9 @@ export NO_AT_BRIDGE=1                          # Disable AT-SPI2 service
 export WLR_SCENE_DISABLE_DIRECT_SCANOUT=1     # Disable direct scanout for WLR scene
 export ELECTRON_OZONE_PLATFORM_HINT=wayland   # Use Wayland for Electron apps
 export GTK_THEME=Breeze:dark                  # Set GTK theme
+export QT_QPA_PLATFORM=wayland
 export QT_QPA_PLATFORMTHEME=qt5ct             # Set QT platform theme
+
 export XDG_CONFIG_HOME="$HOME/.config"        # Set XDG config home
 export XDG_CURRENT_DESKTOP=sway               # Set current desktop environment
 export _JAVA_AWT_WM_NONREPARENTING=1          # Fix Java AWT issues on Wayland
