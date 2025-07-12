@@ -12,6 +12,7 @@ export XDG_CONFIG_HOME="$HOME/.config"        # Set XDG config home
 export XDG_CURRENT_DESKTOP=sway               # Set current desktop environment
 export _JAVA_AWT_WM_NONREPARENTING=1          # Fix Java AWT issues on Wayland
 
+export MOZ_ENABLE_WAYLAND=1
 # GPU Configuration
 
 export WLR_DRM_DEVICES=/dev/dri/by-name/AMD_6950XT:/dev/dri/by-name/AMD_Pro_W7500
