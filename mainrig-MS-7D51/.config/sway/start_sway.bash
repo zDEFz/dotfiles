@@ -48,4 +48,4 @@ if "$DEBUG"; then
   fi
 else
   sway -c "$CONFIG"
-fi
+fiE
