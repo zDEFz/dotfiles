@@ -1,25 +1,19 @@
 #!/bin/bash
 
 # Environment Variables for Wayland and Sway
-export NO_AT_BRIDGE=1                          # Disable AT-SPI2 service
-export WLR_SCENE_DISABLE_DIRECT_SCANOUT=1     # Disable direct scanout for WLR scene
 export ELECTRON_OZONE_PLATFORM_HINT=wayland   # Use Wayland for Electron apps
 export GTK_THEME=Breeze:dark                  # Set GTK theme
-export QT_QPA_PLATFORM=wayland
+export _JAVA_AWT_WM_NONREPARENTING=1          # Fix Java AWT issues on Wayland
+export MOZ_ENABLE_WAYLAND=1
+export NO_AT_BRIDGE=1                          # Disable AT-SPI2 service
 export QT_QPA_PLATFORMTHEME=qt5ct             # Set QT platform theme
-
+export QT_QPA_PLATFORM=wayland
+export RADV_PERFTEST=video_decode             # Enable better video decoding for MPV
+export WLR_DRM_DEVICES=/dev/dri/by-name/AMD_6950XT:/dev/dri/by-name/AMD_Pro_W7500
+export WLR_RENDERER=vulkan                    # Use Vulkan renderer for better performance
+export WLR_SCENE_DISABLE_DIRECT_SCANOUT=1     # Disable direct scanout for WLR scene
 export XDG_CONFIG_HOME="$HOME/.config"        # Set XDG config home
 export XDG_CURRENT_DESKTOP=sway               # Set current desktop environment
-export _JAVA_AWT_WM_NONREPARENTING=1          # Fix Java AWT issues on Wayland
-
-export MOZ_ENABLE_WAYLAND=1
-# GPU Configuration
-
-export WLR_DRM_DEVICES=/dev/dri/by-name/AMD_6950XT:/dev/dri/by-name/AMD_Pro_W7500
-# export WLR_DRM_DEVICES=/dev/dri/by-name/AMD_6950XT:/dev/dri/card1
-
-export WLR_RENDERER=vulkan                    # Use Vulkan renderer for better performance
-export RADV_PERFTEST=video_decode             # Enable better video decoding for MPV
 
 # Uncomment if needed for specific hardware or software issues
 # export WLR_DRM_NO_MODIFIERS=1               # Disable DRM modifiers
@@ -28,7 +22,6 @@ export RADV_PERFTEST=video_decode             # Enable better video decoding for
 # export WINE_WAYLAND_DISPLAY_INDEX=4         # Set Wayland display index for Wine
 
 #!/bin/bash
-
 CONFIG="$HOME/.config/sway/config"
 LOG="$HOME/sway_debug.log"
 DEBUG=true  # set to true for debug mode
