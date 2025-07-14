@@ -9,7 +9,7 @@ export NO_AT_BRIDGE=1                          # Disable AT-SPI2 service
 export QT_QPA_PLATFORMTHEME=qt5ct             # Set QT platform theme
 export QT_QPA_PLATFORM=wayland
 export RADV_PERFTEST=video_decode             # Enable better video decoding for MPV
-# export WLR_DRM_DEVICES=/dev/dri/by-name/AMD_6950XT:/dev/dri/by-name/AMD_Pro_W7500
+export WLR_DRM_DEVICES=/dev/dri/by-name/AMD_6950XT:/dev/dri/by-name/AMD_Pro_W7500
 export WLR_RENDERER=vulkan                    # Use Vulkan renderer for better performance
 export WLR_SCENE_DISABLE_DIRECT_SCANOUT=1     # Disable direct scanout for WLR scene
 export XDG_CONFIG_HOME="$HOME/.config"        # Set XDG config home
@@ -48,4 +48,4 @@ if "$DEBUG"; then
   fi
 else
   sway -c "$CONFIG"
-fiE
+fi
