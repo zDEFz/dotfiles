@@ -131,12 +131,12 @@ move_focused_to_TAIKO() {
     fi
 }
 
-# Menu entries in desired order
+# Menu entries in desired order with icons
 read -r -d '' MENU_OPTIONS << 'EOF'
 --- Typing Tools ---
 Type clipboard
-Type date
-Type vmpwd
+📅 Type date
+🔐 Type vmpwd
 --- MyAnimeList ---
 MAL Synopsis from clipboard
 --- Swayr Window Management ---
@@ -151,35 +151,35 @@ Move to M
 Move to MON_KB
 Move to R
 Move to RR
-Move to TAIKO
+🥁 Move to TAIKO
 --- Display Controls ---
-Disable L
-Disable LL
-Disable M
-Disable main support
-Disable main support and taiko
-Disable MON_KB
-Disable opt support
-Disable opt support and taiko
-Disable R
-Disable RR
-Disable support all
-Disable TAIKO
-Enable L
-Enable LL
-Enable M
-Enable main support
-Enable main support and taiko
-Enable MON_KB
-Enable opt support
-Enable opt support and taiko
-Enable R
-Enable RR
-Enable support all
-Enable TAIKO
+❌ Disable L
+❌ Disable LL
+❌ Disable M
+❌ Disable main support
+❌ Disable main support and taiko
+❌ Disable MON_KB
+❌ Disable opt support
+❌ Disable opt support and taiko
+❌ Disable R
+❌ Disable RR
+❌ Disable support all
+❌ Disable TAIKO
+✅ Enable L
+✅ Enable LL
+✅ Enable M
+✅ Enable main support
+✅ Enable main support and taiko
+✅ Enable MON_KB
+✅ Enable opt support
+✅ Enable opt support and taiko
+✅ Enable R
+✅ Enable RR
+✅ Enable support all
+✅ Enable TAIKO
 Enable all Seat Displays
 --- Focus Controls ---
-Focus OpenTaiko
+🥁 Focus OpenTaiko
 --- Window Realignment ---
 Realign mpv Openmusic
 EOF
@@ -190,8 +190,8 @@ CHOICE=$(printf '%s\n' "$MENU_OPTIONS" | wofi --insensitive --dmenu --cache-file
 # Exit if no choice made
 [ -z "$CHOICE" ] && exit 0
 
-# Strip non-printable characters (for safety)
-CLEAN_CHOICE=$(printf '%s' "$CHOICE" | LC_CTYPE=C sed 's/[^[:print:]]//g')
+# Strip non-printable characters and icons for matching
+CLEAN_CHOICE=$(printf '%s' "$CHOICE" | LC_CTYPE=C sed 's/[^[:print:]]//g' | sed 's/^[[:space:]]*[^[:alpha:]]*[[:space:]]*//')
 
 # Act based on selection
 case "$CLEAN_CHOICE" in
@@ -342,3 +342,6 @@ case "$CLEAN_CHOICE" in
         exit 1
         ;;
 esac
+
+
+
