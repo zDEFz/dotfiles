@@ -20,6 +20,11 @@ myanimelist_synopsis_clipboard() {
 	$USER_HOME/.config/sway/scripts/myanimelist_coverart_search.sh "$(wl-paste)"
 }
 
+share_clipboard_text() {
+    source /home/blu/scripts/functions/in_use/transfers/paste_services
+    0x0pipeclip "$(wl-paste)"
+}
+
 enable_all_seat_displays(){ 
 	for display in "$L" "$LL" "$M" "$MON_KB" "$R" "$RR" ; do 
 		if [ -n "$display" ]; then
@@ -137,6 +142,7 @@ read -r -d '' MENU_OPTIONS << 'EOF'
 Type clipboard
 📅 Type date
 🔐 Type vmpwd
+🔗 0x0pipeclip
 --- MyAnimeList ---
 MAL Synopsis from clipboard
 --- Swayr Window Management ---
@@ -191,7 +197,7 @@ CHOICE=$(printf '%s\n' "$MENU_OPTIONS" | wofi --insensitive --dmenu --cache-file
 [ -z "$CHOICE" ] && exit 0
 
 # Strip non-printable characters and icons for matching
-CLEAN_CHOICE=$(printf '%s' "$CHOICE" | LC_CTYPE=C sed 's/[^[:print:]]//g' | sed 's/^[[:space:]]*[^[:alpha:]]*[[:space:]]*//')
+CLEAN_CHOICE=$(printf '%s' "$CHOICE" | LC_CTYPE=C sed 's/[^[:print:]]//g' | sed 's/^[[:space:]]*[^[:alnum:]]*[[:space:]]*//')
 
 # Act based on selection
 case "$CLEAN_CHOICE" in
@@ -213,6 +219,9 @@ case "$CLEAN_CHOICE" in
         else
             notify-send "vmpwd variable not set"
         fi
+        ;;
+    "0x0pipeclip")
+        share_clipboard_text
         ;;
     "MAL Synopsis from clipboard")
         myanimelist_synopsis_clipboard
@@ -342,6 +351,3 @@ case "$CLEAN_CHOICE" in
         exit 1
         ;;
 esac
-
-
-
