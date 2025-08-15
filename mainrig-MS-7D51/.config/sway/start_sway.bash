@@ -24,7 +24,7 @@ export XDG_CURRENT_DESKTOP=sway               # Set current desktop environment
 #!/bin/bash
 CONFIG="$HOME/.config/sway/config"
 LOG="$HOME/sway_debug.log"
-DEBUG=true  # set to true for debug mode
+DEBUG=false  # set to true for debug mode
 
 if ! command -v sway >/dev/null; then
   echo "Error: sway not found" >&2
