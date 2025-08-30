@@ -1,5 +1,5 @@
 {
-    "ruler": false,
+    "ruler": true,
     "softwrap": true,
     "statusline": false,
     "wordwrap": true,
