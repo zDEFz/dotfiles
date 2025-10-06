@@ -1,0 +1,33 @@
+s
+nap () {
+        if [[ $# -eq 0 ]]
+        then
+                echo "Usage: snap <disk or path>"
+                exit 1
+        fi
+        
+        # If a full path is provided, use it; otherwise, assume it's a subdirectory of /mnt
+        disk="$1"
+        if [[ "$disk" != /* ]]; then
+                disk="/mnt/$disk"
+        fi
+
+        snapshot_dir="$disk/.snapshots"
+        date_suffix="$(date --iso-8601)"
+        snapshot_path="$snapshot_dir/$date_suffix"
+        
+        # Ensure snapshot directory exists
+        if [ ! -d "$snapshot_dir" ]; then
+                sudo mkdir -p "$snapshot_dir"
+        fi
+
+        # Check if a snapshot already exists for today
+        if [ -e "$snapshot_path" ]; then
+                date_suffix="$(date --iso-8601=seconds)"
+                snapshot_path="$snapshot_dir/$date_suffix"
+                echo "Snapshot already exists, saving instead at $snapshot_path"
+        fi
+        
+        # Create a read-only snapshot
+        sudo btrfs subvolume snapshot -r "$disk" "$snapshot_path"
+}

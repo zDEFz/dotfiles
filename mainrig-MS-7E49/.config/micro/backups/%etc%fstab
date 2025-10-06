@@ -1,0 +1,40 @@
+# Static information about the filesystems.
+# See fstab(5) for details.
+
+# <file system> <dir> <type> <options> <dump> <pass>
+# /dev/mapper/ainstnvme2n1p2
+UUID=1fd415cc-3aa1-4f98-83a4-62615f6a9046	/         	btrfs     	rw,relatime,ssd,space_cache=v2,subvolid=256,subvol=/@	0 0
+
+# /dev/mapper/ainstnvme2n1p2
+UUID=1fd415cc-3aa1-4f98-83a4-62615f6a9046	/home     	btrfs     	rw,relatime,ssd,space_cache=v2,subvolid=257,subvol=/@home	0 0
+
+# /dev/mapper/ainstnvme2n1p2
+UUID=1fd415cc-3aa1-4f98-83a4-62615f6a9046	/var/log  	btrfs     	rw,relatime,ssd,space_cache=v2,subvolid=258,subvol=/@log	0 0
+
+# /dev/mapper/ainstnvme2n1p2
+UUID=1fd415cc-3aa1-4f98-83a4-62615f6a9046	/var/cache/pacman/pkg	btrfs     	rw,relatime,ssd,space_cache=v2,subvolid=259,subvol=/@pkg	0 0
+
+# /dev/mapper/ainstnvme2n1p2
+UUID=1fd415cc-3aa1-4f98-83a4-62615f6a9046	/.snapshots	btrfs     	rw,relatime,ssd,space_cache=v2,subvolid=260,subvol=/@.snapshots	0 0
+
+# /dev/nvme2n1p1
+UUID=54C7-4059      	/boot     	vfat      	rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro	0 2
+
+/dev/mapper/vm  /mnt/vm  btrfs  rw,nofail,relatime,ssd,space_cache=v2 0 0
+
+/dev/mapper/firecuda_swap_exclusive   /mnt/firecuda_swap_exclusive   ext4  rw,nofail,relatime 0 0
+/mnt/firecuda_swap_exclusive/swap none swap sw,pri=20,nofail 0 0
+
+/dev/mapper/firecuda_cache   /mnt/firecuda_cache   btrfs  rw,nofail,relatime,ssd,space_cache=v2  0  0
+
+mergerfs -o cache.files=off,category.create=pfrd,func.getattr=newest,dropcacheonclose=false /mnt/firecuda_cache/thumbnails_anime_shows:/mnt/firecuda_cache/thumbnails_anime_movies:/mnt/firecuda_cache/thumbnails_anime_manga /home/blu/.cache/thumbnails
+
+
+
+blu@nas.local://mnt/d1    /mnt/d1 fuse.sshfs compression=no,cache=yes,kernel_cache,user,_netdev,reconnect,uid=1000,gid=1000,idmap=user,allow_other,IdentityFile=/home/blu/.ssh/id_rsa,noauto 0 0
+blu@nas.local://mnt/d2    /mnt/d2 fuse.sshfs compression=no,cache=yes,kernel_cache,user,_netdev,reconnect,uid=1000,gid=1000,idmap=user,allow_other,IdentityFile=/home/blu/.ssh/id_rsa,noauto 0 0
+blu@nas.local://mnt/d3    /mnt/d3 fuse.sshfs compression=no,cache=yes,kernel_cache,user,_netdev,reconnect,uid=1000,gid=1000,idmap=user,allow_other,IdentityFile=/home/blu/.ssh/id_rsa,noauto 0 0
+blu@nas.local://mnt/d4    /mnt/d4 fuse.sshfs compression=no,cache=yes,kernel_cache,user,_netdev,reconnect,uid=1000,gid=1000,idmap=user,allow_other,IdentityFile=/home/blu/.ssh/id_rsa,noauto 0 0
+blu@nas.local://mnt/d5    /mnt/d5 fuse.sshfs compression=no,cache=yes,kernel_cache,user,_netdev,reconnect,uid=1000,gid=1000,idmap=user,allow_other,IdentityFile=/home/blu/.ssh/id_rsa,noauto 0 0
+blu@nas.local://mnt/storage /mnt/storage fuse.sshfs max_conns=16,compression=no,cache=yes,kernel_cache,user,_netdev,reconnect,uid=1000,gid=1000,idmap=user,allow_other,IdentityFile=/home/blu/.ssh/id_rsa,noauto 0 0
+

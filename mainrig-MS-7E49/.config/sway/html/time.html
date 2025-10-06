@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Time</title>
+    <style>
+    /* General Layout */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url('/home/blu/.config/sway/wallpaper/16x9-Landscape.png');
+            color: #e0e0e0; /* Softened gray for text */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        
+        /* Time Container Styling */
+        .time-container {
+            text-align: center;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        /* Day and Date Styling */
+        .day-date {
+            display: flex;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: 300;
+            color: #b0bec5;  /* Softer light gray */
+            margin: 0;
+            padding: 10px 0;
+        }
+        
+        .day {
+            margin-right: 15px;  /* Space between day and date */
+        }
+        
+        /* Time Styling */
+        .time {
+            font-size: 100px;
+            font-weight: 600;
+            color: #d1d1d1;  /* Softer gray */
+            padding: 20px;
+            letter-spacing: 2px;
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .time span {
+            color: #FFB74D;  /* Soft amber for separators */
+            text-shadow: 0 0 8px rgba(255, 183, 77, 0.6);
+        }
+        
+
+    </style>
+</head>
+<body>
+    <div class="time-container">
+        <div class="day-date">
+            <div class="day" id="day"></div>
+            <div class="date" id="date"></div>
+        </div>
+        <div class="time" id="time"></div>
+    </div>
+
+    <script>
+        // Function to get formatted time
+        function getFormattedTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            return { hours, minutes, seconds };
+        }
+
+        // Function to get formatted date
+        function getFormattedDate() {
+            const now = new Date();
+            const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const dayOfWeek = daysOfWeek[now.getDay()];
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const date = String(now.getDate()).padStart(2, '0');
+            const year = now.getFullYear();
+            return { dayOfWeek, fullDate: `${month}/${date}/${year}` };
+        }
+
+        // Function to update time and date in the DOM
+        function updateTime() {
+            const { hours, minutes, seconds } = getFormattedTime();
+            const { dayOfWeek, fullDate } = getFormattedDate();
+
+            document.getElementById('day').textContent = dayOfWeek;
+            document.getElementById('date').textContent = fullDate;
+            document.getElementById('time').innerHTML = `${hours}<span>:</span>${minutes}<span>:</span>${seconds}`;
+        }
+
+        setInterval(updateTime, 1000);  // Update time every second
+        updateTime();  // Initialize immediately
+    </script>
+</body>
+</html>

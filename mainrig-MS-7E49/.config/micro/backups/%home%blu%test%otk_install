@@ -1,0 +1,108 @@
+#!/bin/bash
+
+if [[ $(/usr/bin/id -u) -ne 0 ]]; then
+    echo "Not running as root"
+    exit
+fi
+
+# Constants
+repo="0auBSQ/OpenTaiko"
+file="OpenTaiko.Linux.x64.zip"
+installation_folder="/opt/OpenTaiko"
+cache_dir="/opt/OpenTaiko/cache"
+launcher="/home/blu/test/start_opentaiko.sh"
+desktop_file="/home/blu/test/start_opentaiko.desktop"
+desktop_folder="/home/blu/.local/share/applications"
+
+# Create cache directory
+mkdir -p "$cache_dir"
+
+# Get latest release tag via GitHub API
+echo "Fetching latest release tag for $repo..."
+latest_tag=$(curl -s "https://api.github.com/repos/$repo/releases/latest" | jq -r '.tag_name')
+
+
+if [ -z "$latest_tag" ]; then
+    echo "Failed to fetch the latest version tag."
+    exit 1
+fi
+
+echo "Latest version: $latest_tag"
+
+# Create and move to installation_folder
+mkdir -p "$installation_folder"
+cd "$installation_folder" || exit 1
+
+# Check if we already have this version cached
+cached_file="$cache_dir/$latest_tag-$file"
+if [ -f "$cached_file" ]; then
+    echo "Using cached version: $cached_file"
+    cp "$cached_file" "$file"
+else
+    # Download using curl with redirect support
+    download_url="https://github.com/$repo/releases/download/$latest_tag/$file"
+echo $download_url
+    echo "Downloading from: $download_url"
+    curl -L -o "$file" "$download_url" || { echo "Download failed."; exit 1; }
+    
+    # Cache the download
+    echo "Caching download for future use..."
+    cp "$file" "$cached_file"
+fi
+
+echo "Unzipping..."
+unzip -o "$file"
+
+echo "Cleaning up zip file..."
+rm -f "$file"
+
+echo "Done. Extracted to $installation_folder"
+
+# Navigate to publish
+cd "publish" || exit 1
+
+# === Update/clone soundtrack repository ===
+cached_soundtrack="$cache_dir/OpenTaiko-Soundtrack"
+if [ -d "$cached_soundtrack" ]; then
+    echo "Updating cached soundtrack repository..."
+    cd "$cached_soundtrack" || exit 1
+    git pull
+    cd - || exit 1
+else
+    echo "Cloning soundtrack repository to cache..."
+    git clone https://github.com/OpenTaiko/OpenTaiko-Soundtrack "$cached_soundtrack"
+fi
+
+# Merge soundtrack into publish/Songs
+mkdir -p "Songs"
+cp -rn "$cached_soundtrack/"* "Songs/"
+echo "Soundtrack merged into Songs/"
+
+# === Update/clone skins repository ===
+cached_skins="$cache_dir/OpenTaiko-Skins"
+if [ -d "$cached_skins" ]; then
+    echo "Updating cached skins repository..."
+    cd "$cached_skins" || exit 1
+    git pull
+    cd - || exit 1
+else
+    echo "Cloning skins repository to cache..."
+    git clone https://github.com/OpenTaiko/OpenTaiko-Skins "$cached_skins"
+fi
+
+# Merge skins directly into publish
+cp -rn "$cached_skins/"* "./"
+echo "Skins merged into publish/"
+
+# Make OpenTaiko binary executable
+chmod +x "OpenTaiko"
+echo "OpenTaiko binary is now executable."
+
+# Done
+echo "OpenTaiko setup complete in $installation_folder"
+
+# Copy launcher script to installation folder
+cp "$launcher" "$installation_folder"
+chmod +x "$installation_folder/start_opentaiko.sh"
+
+cp "$desktop_file" "$desktop_folder"

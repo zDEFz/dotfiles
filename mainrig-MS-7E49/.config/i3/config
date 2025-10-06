@@ -1,0 +1,108 @@
+# i3 config main file
+# shellcheck disable=SC2148
+
+set $meta Mod4
+set $alt Mod1
+
+# shorter for_window
+set $as assign
+set $bp0 border pixel 0
+set $fd focus downx
+set $fe floating enable
+set $fl focus left
+set $fr focus right
+set $fs fullscreen
+set $fst fullscreen toggle
+set $fu focus up
+set $fw for_window
+set $map move absolute position
+set $mctw move container to workspace
+set $md move down
+set $ml move left
+set $mp move position
+set $mpc move position center
+set $mr move right
+set $mto move to output
+set $mtod move to output down
+set $mtol move to output left
+set $mtor move to output right
+set $mtou move to output up
+set $mtp move to position
+set $mts move to scratchpad
+set $mtw move to workspace
+set $mu move up
+set $rs resize set
+set $ws workspace
+####
+set $ensi exec --no-startup-id
+set $e exec
+set $ea exec_always
+set $ubin /usr/bin
+####
+set $bm bindsym
+####
+set $c class
+set $t title
+set $i instance
+
+
+
+# Use Mouse+$meta to drag floating windows to their wanted position
+floating_modifier $meta
+
+# move tiling windows via drag & drop by left-clicking into the title bar,
+# or left-clicking anywhere into the window while holding the floating modifier.
+tiling_drag modifier titlebar
+
+# Mouse
+mouse_warping none
+focus_follows_mouse no
+
+# disable power saving (for example if using xscreensaver)
+# $ensi xset -dpms
+# $ensi xset -dpms s off
+
+### WORKSPACES
+set $R DisplayPort-0
+set $L DisplayPort-1
+#set $R DP-1
+# set $R DP-1
+#set $L DP-2
+# set $RR DP-2
+include ~/.config/i3/workspace-definitions.conf
+
+# Theming
+
+font pango: Noto Mono Nerd Font Complete 11, Hack 11, IPAPGothic 11, Noto Sans Mono CJK JP 11, FontAwesome 11, Hack Nerd Font Mono 11
+
+# Color shemes for windows
+set $bgcolor    #2d6876
+set $in-bgcolor #363636
+set $text       #ffffff
+set $u-bgcolor  #ff0000
+set $indicator  #a8a3c1
+set $in-text    #969696
+#                       border          background      text            indicator (a line which shows where the next window will be placed)
+client.focused          $bgcolor        $bgcolor        $text           $indicator
+client.unfocused        $in-bgcolor     $in-bgcolor     $in-text        $in-bgcolor
+client.focused_inactive $in-bgcolor     $in-bgcolor     $in-text        $in-bgcolor
+client.urgent           $u-bgcolor      $u-bgcolor      $text           $u-bgcolor
+
+set $black        #282828
+set $darkred      #cc241d
+set $darkgreen    #98971a
+set $darkyellow   #d79921
+set $darkblue     #458588
+set $darkmagenta  #b16286
+set $darkcyan     #689d6a
+set $lightgray    #a89984
+set $darkgray     #928374
+set $red          #fb4934
+set $green        #b8bb26
+set $yellow       #fabd2f
+set $blue         #83a598
+set $magenta      #d3869b
+set $cyan         #8ec07c
+set $white        #ebdbb2
+
+include ~/.config/i3/conf.d/*
