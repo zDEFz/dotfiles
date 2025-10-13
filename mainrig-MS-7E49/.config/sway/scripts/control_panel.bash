@@ -33,6 +33,19 @@ enable_all_seat_displays(){
 	done
 }
 
+
+setrefreshrate() {
+    for i in $(lshz | grep -o "DP-[0-9]"); do
+        swaymsg output "$i" resolution 1920x1080@"$1"Hz
+    done
+}
+
+set_refresh_rate() {
+    RATE=$(wofi --insensitive --dmenu --cache-file=/dev/null --sort-order=default --hide-scroll -Dlayer=overlay -p "Enter refresh rate (Hz)")
+    [ -z "$RATE" ] && return
+    setrefreshrate "$RATE"
+}
+
 focus_opentaiko () {
 	swaymsg '[class="^(OpenTaiko|opentaiko.exe)$"] focus'
 }
@@ -159,6 +172,7 @@ Move to R
 Move to RR
 🥁 Move to TAIKO
 --- Display Controls ---
+🔄 Set refresh rate
 ❌ Disable L
 ❌ Disable LL
 ❌ Disable M
@@ -336,6 +350,9 @@ case "$CLEAN_CHOICE" in
     "Enable all Seat Displays")
         enable_all_seat_displays
         ;;
+    "Set refresh rate")
+         set_refresh_rate
+         ;;
     "Focus OpenTaiko")
         focus_opentaiko
         ;;
