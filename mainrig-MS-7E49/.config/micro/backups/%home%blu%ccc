@@ -1,0 +1,22 @@
+#!/bin/bash
+
+declare -A disks=(
+    [ata-TOSHIBA_MG10ACA20TE_Y2W0A0EWF4MJ-part1]=d1
+    [ata-TOSHIBA_MG10ACA20TE_Y2W0A0NVF4MJ-part1]=d2
+    [ata-TOSHIBA_MG10ACA20TE_Y2W0A0ACF4MJ-part1]=d3
+    [ata-TOSHIBA_MG10ACA20TE_X3C0A2S0F4MJ-part1]=d4
+    [ata-TOSHIBA_MG10ACA20TE_Y2H0A18BF4MJ-part1]=d5
+)
+
+for disk in "${!disks[@]}"; do
+    # Get the full device path for each disk partition
+    device_path=$(lsblk -o NAME,ID | grep "$disk" | awk '{print $1}')
+    
+    # Get the corresponding /dev/sda, /dev/sdb, etc.
+    if [ -n "$device_path" ]; then
+        device="/dev/$device_path"
+        echo "Device /dev: $device for disk identifier $disk"
+    else
+        echo "No matching device found for disk identifier: $disk"
+    fi
+done

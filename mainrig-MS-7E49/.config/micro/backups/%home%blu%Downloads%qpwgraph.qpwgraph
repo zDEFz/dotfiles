@@ -1,0 +1,23 @@
+<!DOCTYPE patchbay>
+<patchbay name="qpwgraph" version="0.8.3">
+ <items>
+  <item node-type="pipewire" port-type="pipewire-audio">
+   <output node="Digiface USB (24233870) Pro" port="Digiface USB (24233870):capture_AUX1"/>
+   <input node="Digiface USB (24233870) Pro" port="Digiface USB (24233870):playback_AUX1"/>
+  </item>
+  <item node-type="pipewire" port-type="pipewire-audio">
+   <output node="Digiface USB (24233870) Pro" port="Digiface USB (24233870):capture_AUX0"/>
+   <input node="Digiface USB (24233870) Pro" port="Digiface USB (24233870):playback_AUX0"/>
+  </item>
+  <item node-type="pipewire" port-type="pipewire-audio">
+   <output node="Digiface USB (24233870) Pro" port="Digiface USB (24233870):capture_AUX8"/>
+   <input node="Digiface USB (24233870) Pro" port="Digiface USB (24233870):playback_AUX0"/>
+  </item>
+  <item node-type="pipewire" port-type="pipewire-audio">
+   <output node="Digiface USB (24233870) Pro" port="Digiface USB (24233870):capture_AUX9"/>
+   <input node="Digiface USB (24233870) Pro" port="Digiface USB (24233870):playback_AUX1"/>
+  </item>
+ </items>
+</patchbay>
+
+q

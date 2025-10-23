@@ -1,0 +1,14 @@
+monitor.alsa.rules = [
+  {
+    matches = [
+      {
+        device.name = "alsa_card.usb-Generic_USB_Audio-00"
+      }
+    ]
+    actions = {
+      update-props = {         
+         node.description = "Micro Star International ALC4080"
+      }
+    }
+  }
+]

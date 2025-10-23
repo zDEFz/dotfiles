@@ -1,0 +1,19 @@
+# Green Colorscheme (Balanced and Comfortable)
+
+# Background and General Appearance
+color-link color-column "#2e4c2e,#2e4c2e"       # Dark green for the color column background
+color-link cursor-line "#3a7a3a"                # Calming mid-green for the cursor line
+color-link divider "#2e4c2e,#5c8c5c"            # Dark green and lighter green for dividers
+
+# statusline
+color-link statusline "#f0fff0,#3a7a3a"         # Soft off-white text on mid-green background
+
+color-link tabbar "#2e4c2e,#5c8c5c"             # Dark green and softer green for the tab bar
+
+# Line Numbers
+color-link line-number "#c2e6c2,#3a7a3a"        # Light green for line numbers, mid-green for background
+color-link current-line-number "bold #4caf50,#3a7a3a"  # Bold medium green for current line number, mid-green for background
+
+# Code Elements
+color-link default "#f0fff0,#3a7a3a"            # Off-white for default code color, mid-green background
+color-link identifier "#4caf50"                 # Medium green for identifiers

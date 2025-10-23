@@ -1,0 +1,67 @@
+#!/bin/bash
+
+# Wayland/X11 utilities
+alias get_cursor_pos='slurp -b 00000000'
+
+# Compile Sway from source
+compile_sway() { 
+	cd $HOME/git/sway-git-wlroots-git || return 1
+	rm -f $HOME/git/sway-git-wlroots-git/*.zst
+    makepkg -si
+}
+
+
+# Get screen coordinates using slurp
+screen_coordinates() { 
+    declare coordinate
+    coordinate=$(slurp -b 00000000 -p | awk "{print $1}")
+    [[ -z "$coordinate" ]] && { echo "Error: Failed to get screen coordinates"; return 1; }
+    local x_cord=${coordinate%%,*} y_cord=${coordinate##*,}
+    echo "$x_cord" "$y_cord"
+}
+
+identify_app_id() { 
+    # Check if an app_id is provided
+    local app_id="$1"
+    if [ -z "$app_id" ]; then
+        echo "Error: No app_id provided."
+        return 1
+    fi
+
+    # Retrieve all app_ids from the Sway tree
+    local all_app_ids
+    all_app_ids=$(swaymsg -t get_tree | jq -r '.. | .app_id? // empty' | sort | uniq)
+
+    # Check for exact matches
+    local exact_matches
+    exact_matches=$(echo "$all_app_ids" | grep -x "^$app_id")
+
+    if [ -n "$exact_matches" ]; then
+        echo "Exact match found for app_id '$app_id':"
+        echo -e "\t$exact_matches"
+    else
+        echo "No exact match found for app_id: $app_id"
+    fi
+
+    # Check for partial matches
+    local partial_matches
+    partial_matches=$(echo "$all_app_ids" | grep "$app_id")
+
+    if [ -n "$partial_matches" ]; then
+        echo "Partial matches found for app_id containing '$app_id':"
+        # Indent each line of the partial matches
+        echo "$partial_matches" | while IFS= read -r line; do
+            echo -e "\t$line"
+        done
+    else
+        echo "No matches found for app_id: $app_id (exact or partial)."
+    fi
+}
+
+# Show information about currently focused Sway window
+alias sample_sway_props='swaymsg -t get_tree | jq -r '\''recurse(.nodes[]?; .nodes) | select(.focused == true) | {type, app_id, name, title}'\'
+
+# Monitor app IDs in Sway
+alias monitor_app_id='swaymsg -t subscribe -m '\''[ "window" ]'\'' | jq -r '\''.container.app_id // empty'\'
+
+alias startup_microstickies='sh $HOME/.config/sway/alacritty-micro-stickies/startup.bash'

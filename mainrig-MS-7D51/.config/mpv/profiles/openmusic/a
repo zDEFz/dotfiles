@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+# Requires: inotify-tools (for inotifywait) and socat
+
+FILE="/tmp/wayland_app_id.txt"
+SOCKET_DIR="/tmp/mpvsockets"
+
+# Make sure inotifywait is installed
+command -v inotifywait >/dev/null 2>&1 || {
+  echo "ERROR: inotifywait not found. Install inotify-tools (e.g. apt install inotify-tools)." >&2
+  exit 1
+}
+
+echo "Watching $FILE for changes… (press Ctrl +C to quit)"
+
+# Loop forever, blocking until FILE is written/closed
+while inotifywait -qq -e close_write "$FILE"; do
+  # Wait 2 seconds before acting
+  sleep 2
+
+  # Read the new ID
+  id_matched=$(<"$FILE")
+
+  # Pause all mpvfloat sockets except the matching one
+  for i in {1..99}; do
+    if [[ "$id_matched" != "mpvfloat$i" ]]; then
+      echo '{ "command": ["set_property", "pause", true] }' \
+        | socat - "$SOCKET_DIR/mpvfloat$i"
+    fi
+  done
+done

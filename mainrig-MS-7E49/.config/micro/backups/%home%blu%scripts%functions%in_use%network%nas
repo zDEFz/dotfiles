@@ -1,0 +1,45 @@
+#!/bin/bash
+
+# Remote access
+nas() {
+  local user="${1:-${NAS_USER:-$(whoami)}}"
+  ssh -t "${user}@nas.local" 'cd "$HOME/git/nas/backup" && exec zsh --login'
+}
+
+nas_samedir() { 
+	local user="${1:-${NAS_USER:-$(whoami)}}"
+	local current_dir="$(pwd)"
+	ssh -t "${user}@nas.local" "cd '${current_dir}' && exec zsh --login"
+}
+
+nas_df() { ssh blu@nas.local 'df -BGiB /mnt/[bd]? | grep -E "^/dev/mapper/crypt.*"'; }
+
+nas_df_anime() { nas_df | grep -Eo "d[1-2].*"; }
+nas_df_anime_new() {
+    paths=(/sys/fs/btrfs/60eea042-8d92-4205-b292-d093b949c4f7/label /sys/fs/btrfs/cf0561da-04bf-4459-a4cf-f3573291856c/label)
+    
+    # Get the labels and use them to find matching filesystems
+    for p in "${paths[@]}"; do
+        label=$(ssh blu@nas.local "cat $p")
+         echo -n "btrfs label\t$label\t"
+         nas_df_anime | grep $(echo $label | grep -Eo d. 	    
+        )
+    done
+}
+
+nas_df_anime_new() {
+        query="$(ssh blu@nas.local "grep -H . /sys/fs/btrfs/*/label")"
+         results="$(echo "$query" | grep -Eo "anime_d[0-9]" | sed 's/anime_//')"
+         echo "$results"
+         for r in "${results[@]}"; do 
+         echo $r
+             ssh blu@nas.local "df -BGiB /mnt/$r"
+         done
+}
+
+
+nas_auth() { 
+  ssh "${NAS_PRE_USER}@${NAS_PRE_IP}" || return
+  sleep 5
+  nas
+}

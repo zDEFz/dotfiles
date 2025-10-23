@@ -1,0 +1,19 @@
+# Orange Colorscheme
+
+# Background and General Appearance
+color-link color-column "#c35600,#c35600"       # Vibrant orange for the color column background
+color-link cursor-line "#c35600"                # Cursor line matches the background for a clean look
+color-link divider "#c35600,#bf360c"            # Dividers in darker orange for contrast
+
+# Statusline
+color-link statusline "#ffffff,#c35600"         # White text on bright orange for the status line
+
+color-link tabbar "#c35600,#bf360c"             # Tab bar in darker orange for consistency
+
+# Line Numbers
+color-link line-number "#ffb74d,#c35600"        # Soft yellow-orange for line numbers, vibrant orange background
+color-link current-line-number "bold #ffffff,#c35600"  # Bold white for current line number on orange background
+
+# Code Elements
+color-link default "#ffffff,#c35600"            # White text on orange background (high contrast)
+color-link identifier "#66D9EF"
