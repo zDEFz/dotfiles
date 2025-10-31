@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# MEM speedup
+export CCACHE_DIR=/tmp/ccache
+
 # Environment Variables for Wayland and Sway
 export ELECTRON_OZONE_PLATFORM_HINT=wayland   # Use Wayland for Electron apps
 export GTK_THEME=Breeze:dark                  # Set GTK theme
