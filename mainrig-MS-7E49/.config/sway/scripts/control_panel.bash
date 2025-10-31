@@ -154,6 +154,7 @@ read -r -d '' MENU_OPTIONS << 'EOF'
 --- Typing Tools ---
 Type clipboard
 📅 Type date
+🖥️ Type hostname
 🔐 Type vmpwd
 🔗 0x0pipeclip
 --- MyAnimeList ---
@@ -226,6 +227,10 @@ case "$CLEAN_CHOICE" in
     "Type date")
         TEXT=$(date --iso-8601)
         printf 'key leftctrl\ntype %s\n' "$TEXT" | dotoolc
+        ;;
+    "Type hostname")
+            TEXT=$(hostname)
+            printf 'key leftctrl\ntype %s\n' "$TEXT" | dotoolc
         ;;
     "Type vmpwd")
         if [ -n "$vmpwd" ]; then
