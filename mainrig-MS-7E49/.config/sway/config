@@ -69,7 +69,7 @@ set {
 output {
     $LL     mode 1920x1080@240Hz
     $L      mode 1920x1080@240Hz
-    $M      mode 1920x1080@360Hz
+    $M      mode 1920x1080@240Hz
     $MON_KB mode 1920x1080@240Hz
     $R      mode 1920x1080@240Hz
     $RR     mode 1920x1080@240Hz
@@ -133,6 +133,7 @@ output {
 #	$R disable
 #	$RR disable
 	$TAIKO disable
+	$LG disable
 }
 
 
