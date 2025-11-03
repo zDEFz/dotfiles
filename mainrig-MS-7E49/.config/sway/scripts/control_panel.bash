@@ -156,6 +156,7 @@ Type clipboard
 📅 Type date
 🖥️ Type hostname
 🔐 Type vmpwd
+🔐 Type veracrypt pwd
 🔗 0x0pipeclip
 --- MyAnimeList ---
 MAL Synopsis from clipboard
@@ -237,6 +238,13 @@ case "$CLEAN_CHOICE" in
             printf 'key leftctrl\ntype %s\nkey Tab\nkey space\nkey Tab\nkey space\n' "$vmpwd" | dotoolc
         else
             notify-send "vmpwd variable not set"
+        fi
+        ;;
+    "Type veracrypt pwd")
+    if [ -n "$veracryptpwd" ]; then
+                printf '\ntype %s\nkey Enter\nkey Enter \n' "$veracryptpwd" | dotoolc
+        else
+        	notify-send "veracrypt variable not set"
         fi
         ;;
     "0x0pipeclip")
