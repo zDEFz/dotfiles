@@ -1,0 +1,18 @@
+sed -i '/# === UV INDEX/,/esac/!d' /home/blu/weather.sh
+cat <<'EOF' >> ./weather.bash
+
+# === UV INDEX – 100% ACCUWEATHER (Wiesloch) ===
+UV_JSON=$(curl -s --max-time 5 "https://api.open-meteo.com/v1/forecast?latitude=49.293&longitude=8.698&daily=uv_index_clear_sky_max&forecast_days=1")
+UV=$(echo "$UV_JSON" | grep -o '"uv_index_clear_sky_max":[0-9.]*' | cut -d: -f2)
+UV=${UV:-0}
+UV_INT=$(printf "%.0f" "$UV")
+
+case $UV_INT in
+  0|1|2) UV_ICON="🟢"; UV_TXT="Low" ;;
+  3|4|5) UV_ICON="🟡"; UV_TXT="Mod" ;;
+  6|7)   UV_ICON="🟠"; UV_TXT="Hi"  ;;
+  8|9|10)UV_ICON="🔴"; UV_TXT="V-Hi";;
+  *)     UV_ICON="🟣"; UV_TXT="Ext" ;;
+esac
+EOF
+pkill -RTMIN+10 i3blocks
