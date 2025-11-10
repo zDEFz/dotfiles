@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sway Keybindings Cheat Sheet</title>
+<style>
+    body {
+        font-family: 'Segoe UI', Arial, sans-serif;
+        margin: 40px;
+        background-color: #f8f9fa;
+        color: #2d2d2d;
+        line-height: 1.7;
+    }
+    h1 {
+        text-align: center;
+        color: #2c3e50;
+        margin-bottom: 50px;
+        font-size: 2.5em;
+    }
+    h2 {
+        margin: 50px 0 20px;
+        color: #2c3e50;
+        border-left: 5px solid #3498db;
+        padding-left: 15px;
+        font-size: 1.5em;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 15px 0 40px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    th, td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    th {
+        background-color: #2c3e50;
+        color: white;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.9em;
+        letter-spacing: 0.5px;
+    }
+    tr:nth-child(even) td {
+        background-color: #f7f9fc;
+    }
+    td.key {
+        font-family: "JetBrains Mono", "Fira Code", "Courier New", monospace;
+        background-color: #eef2f7 !important;
+        width: 280px;
+        font-weight: 500;
+    }
+    .modifier {
+        color: #e74c3c;
+        font-weight: bold;
+    }
+    .section {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
+    .note {
+        font-size: 0.9em;
+        color: #7f8c8d;
+        font-style: italic;
+        margin-top: 10px;
+    }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+</head>
+<body>
+<h1>🚀 SWAY KEYBINDINGS CHEAT SHEET</h1>
+
+<div class="section">
+    <h2>🎵 Media & Audio Controls</h2>
+    <table>
+        <thead><tr><th>Key</th><th>Action</th></tr></thead>
+        <tbody>
+            <tr><td class="key">XF86AudioRaiseVolume</td><td>Increase volume +5% <code>pamixer</code></td></tr>
+            <tr><td class="key">XF86AudioLowerVolume</td><td>Decrease volume -5% <code>pamixer</code></td></tr>
+            <tr><td class="key">XF86AudioMute</td><td>Toggle mute <code>wpctl</code></td></tr>
+            <tr><td class="key">XF86AudioMicMute</td><td>Toggle microphone mute <code>wpctl</code></td></tr>
+            <tr><td class="key"><span class="modifier">Meta</span>+XF86AudioMute</td><td>Toggle RME ADI-2 DAC FS <code>amidi</code></td></tr>
+            <tr><td class="key">XF86AudioPlay</td><td>Play/Pause <code>playerctl</code> & <code>mpv</code></td></tr>
+            <tr><td class="key">XF86AudioNext</td><td>Next track</td></tr>
+            <tr><td class="key">XF86AudioPrev</td><td>Previous track</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="section">
+    <h2>🪟 Window Management</h2>
+    <table>
+        <thead><tr><th>Key</th><th>Action</th></tr></thead>
+        <tbody>
+            <tr><td class="key"><span class="modifier">Meta</span>+f</td><td>Toggle fullscreen</td></tr>
+            <tr><td class="key"><span class="modifier">Meta</span>+s</td><td>Stacking layout</td></tr>
+            <tr><td class="key"><span class="modifier">Meta</span>+t</td><td>Tabbed layout</td></tr>
+            <tr><td class="key"><span class="modifier">Meta</span>+e</td><td>Toggle split (horizontal ↔ vertical)</td></tr>
+            <tr><td class="key"><span class="modifier">Meta</span>+h</td><td>Split horizontally</td></tr>
+            <tr><td class="key"><span class="modifier">Meta</span>+v</td><td>Split vertically</td></tr>
+            <tr><td class="key"><span class="modifier">Meta</span>+Shift+Space</td><td>Toggle floating</td></tr>
+            <tr><td class="key"><span class="modifier">Meta</span>+x</td><td>Toggle sticky (follows workspace)</td></tr>
+            <tr><td class="key"><span class="modifier">Meta</span>+Shift+-</td><td>Move to scratchpad</td></tr>
+            <tr><td class="key"><span class="modifier">Meta</span>+equal</td><td>Show scratchpad</td></tr>
+            <tr><td class="key"><span class="modifier">Ctrl</span>+q</td><td>Kill focused window</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="section">
+    <h2>🧭 Focus & Navigation</h2>
+    <table>
+        <thead><tr><th>Key</th><th>Action</th></tr></thead>
+        <tbody>
+            <tr><td class="key"><span class="modifier">Meta</span>+↑↓←→</td><td>Focus window in direction</td></tr>
+            <tr><td class="key"><span class="modifier">Meta</span>+Left / Right</td><td>Focus output left/right</td></tr>
+            <tr><td class="key"><span class="modifier">Meta</span>+Tab</td><td>Focus previous workspace</td></tr>
+            <tr><td class="key">F11</td><td>Toggle focus between outputs (script)</td></tr>
+            <tr><td class="key"><span class="modifier">Menu</span>+←→↑↓</td><td>Navigation (Vim-style)</td></tr>
+            <tr><td class="key"><span class="modifier">Menu</span>+Ctrl+←→↑↓</td><td>Move window + focus direction</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="section">
+    <h2>📏 Resize Windows</h2>
+    <table>
+        <thead><tr><th>Key</th><th>Action</th></tr></thead>
+        <tbody>
+            <tr><td class="key"><span class="modifier">Meta</span>+Ctrl+↑</td><td>Grow height +100px</td></tr>
+            <tr><td class="key"><span class="modifier">Meta</span>+Ctrl+↓</td><td>Shrink height -100px</td></tr>
+            <tr><td class="key"><span class="modifier">Meta</span>+Ctrl+←</td><td>Grow width +100px</td></tr>
+            <tr><td class="key"><span class="modifier">Meta</span>+Ctrl+→</td><td>Shrink width -100px</td></tr>
+            <tr><td class="key"><span class="modifier">Meta</span>+Shift+d</td><td>Enter resize mode (arrow keys)</td></tr>
+            <tr><td class="key"><span class="modifier">Meta</span>+Shift+g</td><td>Resize to 1280×1024</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="section">
+    <h2>🖥️ Workspaces (1–108!)</h2>
+    <table>
+        <thead><tr><th>Key</th><th>Workspaces</th></tr></thead>
+        <tbody>
+            <tr><td class="key"><span class="modifier">Ctrl</span>+KP_1</td><td>1–6</td></tr>
+            <tr><td class="key"><span class="modifier">Ctrl</span>+KP_2</td><td>7–12</td></tr>
+            <tr><td class="key"><span class="modifier">Ctrl</span>+KP_3</td><td>13–18</td></tr>
+            <tr><td class="key"><span class="modifier">Ctrl</span>+KP_4</td><td>19–24</td></tr>
+            <tr><td class="key"><span class="modifier">Ctrl</span>+KP_5</td><td>25–30</td></tr>
+            <tr><td class="key"><span class="modifier">Ctrl</span>+KP_6</td><td>31–36</td></tr>
+            <tr><td class="key"><span class="modifier">Ctrl</span>+KP_7</td><td>37–42</td></tr>
+            <tr><td class="key"><span class="modifier">Ctrl</span>+KP_8</td><td>43–48</td></tr>
+            <tr><td class="key"><span class="modifier">Ctrl</span>+KP_9</td><td>49–54</td></tr>
+            <tr><td class="key"><span class="modifier">Meta</span>+KP_1</td><td>55–60</td></tr>
+            <tr><td class="key"><span class="modifier">Meta</span>+KP_2</td><td>61–66</td></tr>
+            <tr><td class="key"><span class="modifier">Meta</span>+KP_3</td><td>67–72</td></tr>
+            <tr><td class="key"><span class="modifier">Meta</span>+KP_4</td><td>73–78</td></tr>
+            <tr><td class="key"><span class="modifier">Meta</span>+KP_5</td><td>79–84</td></tr>
+            <tr><td class="key"><span class="modifier">Meta</span>+KP_6</td><td>85–90</td></tr>
+            <tr><td class="key"><span class="modifier">Meta</span>+KP_7</td><td>91–96</td></tr>
+            <tr><td class="key"><span class="modifier">Meta</span>+KP_8</td><td>97–102</td></tr>
+            <tr><td class="key"><span class="modifier">Meta</span>+KP_9</td><td>103–108</td></tr>
+        </tbody>
+    </table>
+    <div class="note">💡 Move window: Add <kbd>Shift</kbd> → e.g. <kbd>Meta+Shift+KP_1</kbd> moves window to workspace 55–60</div>
+</div>
+
+<div class="section">
+    <h2>🚀 Launchers & Apps</h2>
+    <table>
+        <thead><tr><th>Key</th><th>Action</th></tr></thead>
+        <tbody>
+            <tr><td class="key"><span class="modifier">Menu</span>+Return</td><td>Open Alacritty (tiled)</td></tr>
+            <tr><td class="key"><span class="modifier">Meta</span>+Space</td><td>Floating Alacritty terminal</td></tr>
+            <tr><td class="key"><span class="modifier">Ctrl</span>+e</td><td>Wofi app launcher</td></tr>
+            <tr><td class="key"><span class="modifier">Meta</span>+d</td><td>Switch window (swayr)</td></tr>
+            <tr><td class="key">F12</td><td>Window switcher (wofi + swayr)</td></tr>
+            <tr><td class="key"><span class="modifier">Ctrl</span>+F12</td><td>Sway Control Panel</td></tr>
+            <tr><td class="key"><span class="modifier">Meta</span>+Shift+c</td><td>Reload Sway config</td></tr>
+            <tr><td class="key"><span class="modifier">Meta</span>+Shift+p</td><td>Toggle halt/continue script</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="section">
+    <h2>📸 Screenshots (swayshot + grim)</h2>
+    <table>
+        <thead><tr><th>Key</th><th>Action</th></tr></thead>
+        <tbody>
+            <tr><td class="key">Print</td><td>Full screen → /tmp/</td></tr>
+            <tr><td class="key"><span class="modifier">Ctrl</span>+Print</td><td>Full screen → clipboard</td></tr>
+            <tr><td class="key"><span class="modifier">Shift</span>+Print</td><td>Select region → clipboard</td></tr>
+            <tr><td class="key"><span class="modifier">Ctrl</span>+Shift+Print</td><td>Select region → clipboard (alt)</td></tr>
+            <tr><td class="key"><span class="modifier">Meta</span>+Print</td><td>Active window → ~/Pictures/screenshot.png</td></tr>
+            <tr><td class="key"><span class="modifier">Ctrl</span>+Meta+Print</td><td>Active window → clipboard</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="section">
+    <h2>🖵 Output (Monitor) Control</h2>
+    <table>
+        <thead><tr><th>Key</th><th>Action</th></tr></thead>
+        <tbody>
+            <tr><td class="key"><span class="modifier">Meta</span>+Comma (,)</td><td>Enable all outputs</td></tr>
+            <tr><td class="key"><span class="modifier">Meta</span>+m</td><td>Disable all outputs (mirror/lid close)</td></tr>
+            <tr><td class="key"><span class="modifier">Meta</span>+Shift+←→↑↓</td><td>Move window to output in direction</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="section">
+    <h2>🔄 Move Windows Between Workspaces/Outputs</h2>
+    <table>
+        <thead><tr><th>Key</th><th>Action</th></tr></thead>
+        <tbody>
+            <tr><td class="key"><span class="modifier">Meta</span>+Shift+a</td><td>Move to next workspace</td></tr>
+            <tr><td class="key"><span class="modifier">Meta</span>+Shift+KP_1..9</td><td>Move to workspace groups (55+)</td></tr>
+            <tr><td class="key"><span class="modifier">Meta</span>+Shift+←→↑↓</td><td>Move to adjacent output</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<p style="text-align:center; color:#95a5a6; margin-top:60px; font-size:0.9em;">
+    Generated with ❤️ for Sway power users • Last updated: November 2025
+</p>
+</body>
+</html>

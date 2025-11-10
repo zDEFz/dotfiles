@@ -75,6 +75,16 @@ realign_mpv_openmusic () {
 	echo "Re-aligned $total mpv windows onto workspace 18."
 }
 
+# 🧩 Added function — opens floating Alacritty window following journal logs
+follow_journalctl() {
+    alacritty \
+        --config-file="$USER_HOME/.config/alacritty/alacritty_non_opaque.toml" \
+        --class alacritty_floating \
+        --title "Floating Terminal" \
+        --working-directory "$USER_HOME" \
+        -e bash -c "sudo journalctl -f"
+}
+
 # Swayr functions
 swayr_steal_window() {
     swayr steal-window
@@ -204,6 +214,8 @@ Enable all Seat Displays
 🥁 Focus OpenTaiko
 --- Window Realignment ---
 Realign mpv Openmusic
+--- System ---
+🧾 Follow journalctl
 EOF
 
 # Show menu with history disabled to maintain order
@@ -372,7 +384,10 @@ case "$CLEAN_CHOICE" in
     "Realign mpv Openmusic")        
         realign_mpv_openmusic
         ;;
-    "--- Typing Tools ---" | "--- Display Controls ---" | "--- Focus Controls ---" | "--- Window Realignment ---" | "--- MyAnimeList ---" | "--- Swayr Window Management ---" | "--- Move Window to Display ---")
+    "Follow journalctl")
+        follow_journalctl
+        ;;
+    "--- Typing Tools ---" | "--- Display Controls ---" | "--- Focus Controls ---" | "--- Window Realignment ---" | "--- MyAnimeList ---" | "--- Swayr Window Management ---" | "--- Move Window to Display ---" | "--- System ---")
         # Do nothing for section headers
         exit 0
         ;;
@@ -380,4 +395,4 @@ case "$CLEAN_CHOICE" in
         notify-send "Invalid selection: $CLEAN_CHOICE"
         exit 1
         ;;
-esac
+esac 
