@@ -254,7 +254,7 @@ case "$CLEAN_CHOICE" in
         ;;
     "Type veracrypt pwd")
     if [ -n "$veracryptpwd" ]; then
-                printf '\ntype %s\nkey Enter\nkey Enter \n' "$veracryptpwd" | dotoolc
+                printf 'typedelay 20\nkeydelay 20\ntype %s\nkey Enter\nkey Enter\n' "$veracryptpwd" | dotoolc
         else
         	notify-send "veracrypt variable not set"
         fi
