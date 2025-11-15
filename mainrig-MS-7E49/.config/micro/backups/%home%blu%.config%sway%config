@@ -10,7 +10,6 @@ set {
     $ensi exec --no-startup-id
     $fw for_window
     $i instance
-$lhs layout horizontal split
     $map move absolute position
     $meta Mod4
     $ml move left
@@ -36,7 +35,7 @@ $lhs layout horizontal split
 # Use Mouse+$meta to drag floating windows to their wanted position
 floating_modifier $meta 
 focus_follows_mouse no
-mouse_warping none
+mouse_warping output
 
 # No urgency marks focus_on_window_activation smart|urgent|focus|none
 focus_on_window_activation none
@@ -53,7 +52,6 @@ input {
     '1003:8258:Keyboard' events enabled
 }
 
-
 # Displays
 set { 
     $L      'Iiyama North America PL2590HS 1219241201616'
@@ -63,17 +61,21 @@ set {
     $R      'BNQ ZOWIE XL LCD EBMCM01300SL0'
     $RR     'Iiyama North America PL2590HS 1219241201699'
     $TAIKO  'BNQ ZOWIE XL LCD EBX7M01214SL0'
+
+    $LG      'LG Electronics 24GM79G 0x0008042C'
 }
 
 # Display modes
 output {
     $LL     mode 1920x1080@240Hz
     $L      mode 1920x1080@240Hz
-    $M      mode 1920x1080@360Hz
+    $M      mode 1920x1080@240Hz
     $MON_KB mode 1920x1080@240Hz
     $R      mode 1920x1080@240Hz
     $RR     mode 1920x1080@240Hz
     $TAIKO  mode 1920x1080@240Hz
+
+    $LG     mode 1920x1080@144Hz
 }
 
 # Display positions
@@ -91,6 +93,7 @@ output {
     *       background /home/blu/.config/sway/wallpaper/9x16-Portrait.png fill
     $M      background /home/blu/.config/sway/wallpaper/16x9-Landscape.png fill
     $MON_KB background /home/blu/.config/sway/wallpaper/16x9-Landscape.png fill
+    $TAIKO background /home/blu/.config/sway/wallpaper/16x9-Landscape.png fill
 }
 
 # Display transforms
@@ -126,10 +129,11 @@ client.focused_inactive $in-bgcolor     $in-bgcolor     $in-text        $in-bgco
 
 output { 
 #	$L disable
-	$LL disable
+#	$LL disable
 #	$R disable
-	$RR disable
+#	$RR disable
 	$TAIKO disable
+	$LG disable
 }
 
 

@@ -35,7 +35,7 @@ set {
 # Use Mouse+$meta to drag floating windows to their wanted position
 floating_modifier $meta 
 focus_follows_mouse no
-mouse_warping none
+mouse_warping output
 
 # No urgency marks focus_on_window_activation smart|urgent|focus|none
 focus_on_window_activation none
