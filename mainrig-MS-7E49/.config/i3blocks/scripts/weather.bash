@@ -1,10 +1,8 @@
 #!/bin/bash
 [ -f /home/blu/.secure_env ] && source /home/blu/.secure_env
-
 CACHE_DIR="/tmp/weather_cache"
 CACHE_FILE="$CACHE_DIR/weather.txt"
 CACHE_AGE=300  # 5 minutes
-
 mkdir -p "$CACHE_DIR"
 
 # Check cache age
@@ -26,7 +24,7 @@ if ! echo "$WEATHER_DATA" | grep -q "\"cod\":200"; then
     exit 1
 fi
 
-# Parse with simple grep (more reliable than complex parsing)
+# Parse with simple grep
 TEMP=$(echo "$WEATHER_DATA" | grep -o '"temp":[^,]*' | cut -d':' -f2 | cut -d'.' -f1)
 DESCRIPTION=$(echo "$WEATHER_DATA" | grep -o '"description":"[^"]*' | cut -d'"' -f4)
 HUMIDITY=$(echo "$WEATHER_DATA" | grep -o '"humidity":[0-9]*' | cut -d':' -f2)
@@ -34,8 +32,14 @@ WIND_SPEED=$(echo "$WEATHER_DATA" | grep -o '"speed":[0-9.]*' | cut -d':' -f2)
 WIND_DEG=$(echo "$WEATHER_DATA" | grep -o '"deg":[0-9]*' | cut -d':' -f2)
 LAT=$(echo "$WEATHER_DATA" | grep -o '"lat":[0-9.-]*' | cut -d':' -f2)
 LON=$(echo "$WEATHER_DATA" | grep -o '"lon":[0-9.-]*' | cut -d':' -f2)
+SUNRISE=$(echo "$WEATHER_DATA" | grep -o '"sunrise":[0-9]*' | cut -d':' -f2)
+SUNSET=$(echo "$WEATHER_DATA" | grep -o '"sunset":[0-9]*' | cut -d':' -f2)
 
-# Wind direction with array lookup
+# Convert Unix timestamps to HH:MM
+SUNRISE_TIME=$(date -d "@$SUNRISE" "+%H:%M" 2>/dev/null || echo "N/A")
+SUNSET_TIME=$(date -d "@$SUNSET" "+%H:%M" 2>/dev/null || echo "N/A")
+
+# Wind direction
 WIND_DEG=${WIND_DEG:-0}
 DIRS=(↑ ↗ → ↘ ↓ ↙ ← ↖)
 WIND_DIR=${DIRS[$(( (WIND_DEG + 22) / 45 % 8 ))]}
@@ -47,7 +51,7 @@ if [ -n "$LAT" ] && [ -n "$LON" ]; then
     AQI=$(echo "$AIR_DATA" | grep -o '"aqi":[0-9]*' | cut -d':' -f2)
 fi
 
-# AQI lookup with arrays
+# AQI lookup
 AQI_ICONS=(⚪ 🟢 🟡 🟠 🔴 🟣)
 AQI_TEXTS=(N/A Good Fair Moderate Poor "Very Poor")
 AQI=${AQI:-0}
@@ -66,5 +70,5 @@ case "${DESCRIPTION,,}" in
 esac
 
 # Output
-OUTPUT="$ICON ${TEMP}°C | $DESCRIPTION | 💧${HUMIDITY}% | 🌬${WIND_SPEED}m/s $WIND_DIR | $AQI_ICON Air: $AQI_TEXT"
+OUTPUT="$ICON ${TEMP}°C | $DESCRIPTION | 💧${HUMIDITY}% | 🌬${WIND_SPEED}m/s $WIND_DIR | $AQI_ICON Air: $AQI_TEXT | 🌅${SUNRISE_TIME} 🌇${SUNSET_TIME}"
 echo "$OUTPUT" | tee "$CACHE_FILE"
