@@ -33,6 +33,57 @@ enable_all_seat_displays(){
 	done
 }
 
+# Generic enable/disable functions with multiple argument support
+enable_display() {
+    for display_var in "$@"; do
+        eval "display=\$$display_var"
+        if [ -n "$display" ]; then
+            swaymsg output "'$display'" enable
+        else
+            notify-send "Display not defined: $display_var"
+        fi
+    done
+}
+
+disable_display() {
+    for display_var in "$@"; do
+        eval "display=\$$display_var"
+        if [ -n "$display" ]; then
+            swaymsg output "'$display'" disable
+        else
+            notify-send "Display not defined: $display_var"
+        fi
+    done
+}
+
+# Individual display functions
+enable_L() { enable_display L; }
+enable_LL() { enable_display LL; }
+enable_M() { enable_display M; }
+enable_MON_KB() { enable_display MON_KB; }
+enable_R() { enable_display R; }
+enable_RR() { enable_display RR; }
+enable_TAIKO() { enable_display TAIKO; }
+
+disable_L() { disable_display L; }
+disable_LL() { disable_display LL; }
+disable_M() { disable_display M; }
+disable_MON_KB() { disable_display MON_KB; }
+disable_R() { disable_display R; }
+disable_RR() { disable_display RR; }
+disable_TAIKO() { disable_display TAIKO; }
+
+# Group functions
+enable_main_support() { enable_display L M R; }
+disable_main_support() { disable_display L M R; }
+enable_main_support_and_taiko() { enable_display L M R TAIKO; }
+disable_main_support_and_taiko() { disable_display L M R TAIKO; }
+enable_opt_support() { enable_display LL MON_KB RR; }
+disable_opt_support() { disable_display LL MON_KB RR; }
+enable_opt_support_and_taiko() { enable_display LL MON_KB RR TAIKO; }
+disable_opt_support_and_taiko() { disable_display LL MON_KB RR TAIKO; }
+enable_support_all() { enable_display L M R LL MON_KB RR; }
+disable_support_all() { disable_display L M R LL MON_KB RR; }
 
 setrefreshrate() {
     for i in $(lshz | grep -o "DP-[0-9]"); do
@@ -395,4 +446,4 @@ case "$CLEAN_CHOICE" in
         notify-send "Invalid selection: $CLEAN_CHOICE"
         exit 1
         ;;
-esac 
+esac
