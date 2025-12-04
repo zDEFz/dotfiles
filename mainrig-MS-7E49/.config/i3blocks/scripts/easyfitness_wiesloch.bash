@@ -2,9 +2,9 @@
 
 # Get current day of week (1=Mon … 7=Sun)
 day=$(date +%u)
+
 # Get current time in minutes since midnight
-now=$(date +%H)*60 + $(date +%M)
-now=$((now))
+now=$(( $(date +%H) * 60 + $(date +%M) ))
 
 is_open=false
 
@@ -15,6 +15,7 @@ if [ $day -ge 1 ] && [ $day -le 5 ]; then
     if [ $now -ge $open ] && [ $now -lt $close ]; then
         is_open=true
     fi
+
 # Weekends: Sat–Sun (6–7), open 08:00–21:00
 elif [ $day -ge 6 ] && [ $day -le 7 ]; then
     open=$((8*60))
