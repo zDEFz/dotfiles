@@ -1,17 +1,20 @@
 #!/bin/bash
 
-# Check if Mullvad VPN is connected using mullvad status
+# Check if Mullvad VPN is connected
 if mullvad status | grep -q "Connected"; then
-    # Get the current day of the week (0=Sunday, 1=Monday, ..., 6=Saturday)
+    # Get current day of the week (1=Monday, 7=Sunday)
     DAY=$(date +%u)
-    # Get the current hour (24-hour format)
-    HOUR=$(date +%H)
+    # Get current hour as a decimal (no octal issues)
+    HOUR=$((10#$(date +%H)))
 
-    # Define the opening hours
+    # Debug: show day and hour
+    # echo "DAY=$DAY, HOUR=$HOUR"
+
+    # Define business hours
     if [[ "$DAY" -ge 1 && "$DAY" -le 5 && "$HOUR" -ge 6 && "$HOUR" -lt 23 ]] || \
        [[ "$DAY" -eq 6 && "$HOUR" -ge 8 && "$HOUR" -lt 21 ]] || \
        [[ "$DAY" -eq 7 && "$HOUR" -ge 8 && "$HOUR" -lt 21 ]]; then
-        # If within business hours and connected to Mullvad, run the curl command
+        # Inside business hours, run curl
         curl -s https://easyfitness.club/studio/easyfitness-wiesloch/ \
             | sed -n 's/.*class="meterbubble">\([0-9][0-9]*\)%.*/\1/p' \
             | head -n1 \
