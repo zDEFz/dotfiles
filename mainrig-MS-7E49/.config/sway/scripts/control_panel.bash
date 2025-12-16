@@ -6,6 +6,9 @@ USER_HOME="/home/$NON_ROOT_USER"
 # Start dotoold if not running
 if ! pgrep -x dotoold >/dev/null; then
     nohup dotoold >/dev/null 2>&1 &
+    echo "dotoold started in the background."
+else
+    echo "dotoold is already running."
 fi
 
 [[ -f /home/blu/scripts/functions/in_use/media/video ]] && source /home/blu/scripts/functions/in_use/media/video
