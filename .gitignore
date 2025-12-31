@@ -1,12 +1,16 @@
-mainrig-MS-7D51/.config/micro/backups/
-mainrig-MS-7D51/.config/micro/buffers/
-mainrig-MS-7D51/.config/sway/wallpaper/unredacted/
-mainrig-MS-7D51/micro/backups/
-mainrig-MS-7E49/.config/micro/backups/
-mainrig-MS-7E49/.config/micro/buffers/
-mainrig-MS-7E49/.config/sway/wallpaper/unredacted/
-mainrig-MS-7E49/.config/micro/buffers/history
-tmp.code
+# Ignore micro editor backups and buffers for all mainrig machines
+mainrig-MS-*/.config/micro/backups/
+mainrig-MS-*/.config/micro/buffers/
+mainrig-MS-*/micro/backups/
+
+# Ignore sensitive wallpapers
+mainrig-MS-*/.config/sway/wallpaper/unredacted/
+
+# Ignore specific system/temp files
 root
+tmp.code
 
-
+# Optional: Ignore general OS/Editor noise
+.DS_Store
+*.tmp
+*.bak
