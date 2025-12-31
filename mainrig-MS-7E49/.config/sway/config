@@ -47,7 +47,11 @@ input {
     '0:0:wlr_virtual_keyboard_v1' events disabled
     '1356:2508:Sony_Interactive_Entertainment_Wireless_Controller_Touchpad' events disabled
     '9456:320:Metadot_-_Das_Keyboard_Das_Keyboard_System_Control' events disabled
-    type:keyboard xkb_numlock enabled
+    type:keyboard {
+		xkb_numlock enabled
+		# turns Caps Lock into an additional Control key
+		xkb_options ctrl:nocaps
+		}
     # '1003:8258:Keyboard' events disabled # disabled usually cause random keystroke issue
     '1003:8258:Keyboard' events enabled
 }
