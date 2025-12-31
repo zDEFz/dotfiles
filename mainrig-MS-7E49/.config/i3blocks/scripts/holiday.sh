@@ -1,43 +1,70 @@
 #!/bin/bash
 
-# Colors for holiday and non-holiday states
-HOLIDAY_COLOR="yellow"  # New color for holidays
-DEFAULT_COLOR="white"  # Original color
+# Colors
+HOLIDAY_COLOR="yellow"
+DEFAULT_COLOR="white"
 
-# Today's date and year
-TODAY=$(date +%Y-%m-%d)
-YEAR=$(date +%Y)
+TODAY_TS=$(date -d "today 00:00:00" +%s)
+CURRENT_YEAR=$(date +%Y)
 
-# Define holidays for the current year in an associative array
-declare -A holidays=(
-    ["2025-01-01"]="🎉 Neujahr"
-    ["2025-01-06"]="👑 Heilige Drei Könige"
-    ["2025-04-18"]="✝️ Karfreitag"      # Good Friday (2 days before Easter Sunday on April 20, 2025)
-    ["2025-04-21"]="🐣 Ostermontag"    # Easter Monday (1 day after Easter Sunday on April 20, 2025)
-    ["2025-05-01"]="💼 Tag der Arbeit"
-    ["2025-10-03"]="🇩🇪 Tag der Deutschen Einheit"
-    ["2025-11-01"]="🕊️ Allerheiligen"
-    ["2025-12-25"]="🎄 Erster Weihnachtstag"
-    ["2025-12-26"]="🎁 Zweiter Weihnachtstag"
-)
+# Function to get holiday dates for a specific year
+get_holidays() {
+    local yr=$1
+    # 1. Calculate Easter Sunday (using the Orthodox/Western Christian formula)
+    # This is a common shell implementation of the Gauss algorithm
+    local a=$(( yr % 19 ))
+    local b=$(( yr / 100 ))
+    local c=$(( yr % 100 ))
+    local d=$(( b / 4 ))
+    local e=$(( b % 4 ))
+    local f=$(( (b + 8) / 25 ))
+    local g=$(( (b - f + 1) / 3 ))
+    local h=$(( (19 * a + b - d - g + 15) % 30 ))
+    local i=$(( c / 4 ))
+    local k=$(( c % 4 ))
+    local l=$(( (32 + 2 * e + 2 * i - h - k) % 7 ))
+    local m=$(( (a + 11 * h + 22 * l) / 451 ))
+    local month=$(( (h + l - 7 * m + 114) / 31 ))
+    local day=$(( ((h + l - 7 * m + 114) % 31) + 1 ))
+    
+    local easter_date=$(printf "%04d-%02d-%02d" $yr $month $day)
 
-# Get today's holiday if it exists, otherwise check for the next one in the next 365 days
-today_holiday="${holidays[$TODAY]}"
-next_holiday=""
+    # Fixed Dates
+    echo "$yr-01-01|🎉 Neujahr"
+    echo "$yr-01-06|👑 Heilige Drei Könige"
+    echo "$yr-05-01|💼 Tag der Arbeit"
+    echo "$yr-10-03|🇩🇪 Tag der Deutschen Einheit"
+    echo "$yr-11-01|🕊️ Allerheiligen"
+    echo "$yr-12-25|🎄 Erster Weihnachtstag"
+    echo "$yr-12-26|🎁 Zweiter Weihnachtstag"
+    echo "$yr-12-31|🎆 Silvester"
 
-# Loop to find the first upcoming holiday within the next 365 days
-for i in {1..365}; do
-    NEXT_DATE=$(date -d "$TODAY + $i days" +"%Y-%m-%d")
-    if [[ -n "${holidays[$NEXT_DATE]}" ]]; then
-        next_holiday="${holidays[$NEXT_DATE]} on $NEXT_DATE"
+    # Moving Dates (Relative to Easter)
+    echo "$(date -d "$easter_date - 2 days" +%Y-%m-%d)|✝️ Karfreitag"
+    echo "$(date -d "$easter_date + 1 days" +%Y-%m-%d)|🐣 Ostermontag"
+    echo "$(date -d "$easter_date + 39 days" +%Y-%m-%d)|☁️ Christi Himmelfahrt"
+    echo "$(date -d "$easter_date + 50 days" +%Y-%m-%d)|🕊️ Pfingstmontag"
+}
+
+# Collect holidays for current and next year (to handle December look-ahead)
+all_holidays=$( (get_holidays $CURRENT_YEAR; get_holidays $((CURRENT_YEAR + 1))) | sort -u )
+
+display_message="No upcoming holidays"
+color=$DEFAULT_COLOR
+
+# Find the first holiday that is today or in the future
+while IFS='|' read -r hdate hname; do
+    h_ts=$(date -d "$hdate 00:00:00" +%s)
+    
+    if [[ "$h_ts" -eq "$TODAY_TS" ]]; then
+        display_message="Today: $hname"
+        color=$HOLIDAY_COLOR
+        break
+    elif [[ "$h_ts" -gt "$TODAY_TS" ]]; then
+        display_message="$hname ($hdate)"
+        color=$DEFAULT_COLOR
         break
     fi
-done
+done <<< "$all_holidays"
 
-# Determine display message and color
-display_message="${today_holiday:-${next_holiday:-No holidays today, none are upcoming}}"
-color="${today_holiday:+$HOLIDAY_COLOR}"
-color="${color:-$DEFAULT_COLOR}"
-
-# Output with Pango markup
 echo "<span color=\"$color\">$display_message</span>"
