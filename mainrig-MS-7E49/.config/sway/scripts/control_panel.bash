@@ -217,11 +217,12 @@ move_focused_to_TAIKO() {
 read -r -d '' MENU_OPTIONS << 'EOF'
 --- Typing Tools ---
 Type clipboard
-📅 Type date
-🖥️ Type hostname
-🔐 Type vmpwd
-🔐 Type veracrypt pwd
-🔗 0x0pipeclip
+Type date
+Type hostname
+Type local ip
+Type vmpwd
+Type veracrypt pwd
+0x0pipeclip
 --- MyAnimeList ---
 MAL Synopsis from clipboard
 --- Swayr Window Management ---
@@ -291,14 +292,22 @@ case "$CLEAN_CHOICE" in
             notify-send "Clipboard is empty"
         fi
         ;;
+        
     "Type date")
         TEXT=$(date --iso-8601)
         printf 'key leftctrl\ntype %s\n' "$TEXT" | dotoolc
         ;;
+        
     "Type hostname")
             TEXT=$(hostname)
             printf 'key leftctrl\ntype %s\n' "$TEXT" | dotoolc
         ;;
+
+    "Type local ip")
+    		TEXT=$(ip addr show | grep -i 'inet 192' | awk '{print $2}' | cut -d/ -f1 | head -n 1)
+    		printf 'key leftctrl\ntype %s\n' "$TEXT" | dotoolc
+    	;;
+    	
     "Type vmpwd")
         if [ -n "$vmpwd" ]; then
             printf 'key leftctrl\ntype %s\nkey Tab\nkey space\nkey Tab\nkey space\n' "$vmpwd" | dotoolc
