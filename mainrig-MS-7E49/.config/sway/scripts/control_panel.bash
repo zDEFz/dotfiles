@@ -25,7 +25,7 @@ myanimelist_synopsis_clipboard() {
 
 share_clipboard_text() {
     source /home/blu/scripts/functions/in_use/transfers/paste_services
-    0x0pipeclip "$(wl-paste)"
+    x0pipeclip "$(wl-paste)"
 }
 
 enable_all_seat_displays(){ 
@@ -219,10 +219,11 @@ read -r -d '' MENU_OPTIONS << 'EOF'
 Type clipboard
 Type date
 Type hostname
+Type http+hostname
 Type local ip
 Type vmpwd
 Type veracrypt pwd
-0x0pipeclip
+x0pipeclip
 --- MyAnimeList ---
 MAL Synopsis from clipboard
 --- Swayr Window Management ---
@@ -303,6 +304,11 @@ case "$CLEAN_CHOICE" in
             printf 'key leftctrl\ntype %s\n' "$TEXT" | dotoolc
         ;;
 
+     "Type http+hostname")
+                 TEXT="http://$(hostname)"
+                 printf 'key leftctrl\ntype %s\n' "$TEXT" | dotoolc
+             ;;
+
     "Type local ip")
     		TEXT=$(ip addr show | grep -i 'inet 192' | awk '{print $2}' | cut -d/ -f1 | head -n 1)
     		printf 'key leftctrl\ntype %s\n' "$TEXT" | dotoolc
@@ -322,7 +328,7 @@ case "$CLEAN_CHOICE" in
         	notify-send "veracrypt variable not set"
         fi
         ;;
-    "0x0pipeclip")
+    "x0pipeclip")
         share_clipboard_text
         ;;
     "MAL Synopsis from clipboard")
