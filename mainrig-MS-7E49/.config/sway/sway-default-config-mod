@@ -11,6 +11,30 @@ set {
     $MON_KB 'Iiyama North America PL2590HS 1219241201302'
     $R      'BNQ ZOWIE XL LCD EBMCM01300SL0'
     $RR     'Iiyama North America PL2590HS 1219241201699'
+    $TAIKO  'BNQ ZOWIE XL LCD EBX7M01214SL0'
+
+    # $LG      'LG Electronics 24GM79G 0x0008042C'
+}
+
+# Display modes
+output {
+    $LL     mode 1920x1080
+    $L      mode 1920x1080
+    $M      mode 1920x1080
+    $MON_KB mode 1920x1080
+    $R      mode 1920x1080
+    $RR     mode 1920x1080
+    $TAIKO  mode 1920x1080
+}
+
+# Display positions
+output {
+    $LL     position 0 460
+    $L      position 1080 460
+    $MON_KB position 2160 1650
+    $M      position 2160 570
+    $R      position 4080 470
+    $RR     position 5160 480
 }
 
 output { 
@@ -21,27 +45,9 @@ output {
     $RR     transform 270
 }
 
-output {
-    $LL     mode 1920x1080@240Hz
-    $L      mode 1920x1080@240Hz
-    $M      mode 1920x1080@240Hz
-    $MON_KB mode 1920x1080@240Hz
-    $R      mode 1920x1080@240Hz
-    $RR     mode 1920x1080@240Hz
-}
-
-output {
-    *       background /home/blu/.config/sway/wallpaper/9x16-Portrait.png fill
-    $M      background /home/blu/.config/sway/wallpaper/16x9-Landscape.png fill
-    $MON_KB background /home/blu/.config/sway/wallpaper/16x9-Landscape.png fill
-    $TAIKO background /home/blu/.config/sway/wallpaper/16x9-Landscape.png fill
-}
-
 bindsym {
 	$mod+q kill
-    $mod+F10 exec alacritty
-	$mod+F11 exec "[ ! $(pgrep -x wofi) ] && wofi --show=drun --location=center --width=800px --height=800px -Dlayer=overlay"	
-    $mod+F12 exec "[ ! $(pgrep -x wofi) ] && swayr switch-window"
+	$mod+F10 exec alacritty
 	$mod+F5 output $L power toggle
 	$mod+Shift+c reload
 }

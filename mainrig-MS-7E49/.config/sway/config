@@ -66,7 +66,7 @@ set {
     $RR     'Iiyama North America PL2590HS 1219241201699'
     $TAIKO  'BNQ ZOWIE XL LCD EBX7M01214SL0'
 
-    $LG      'LG Electronics 24GM79G 0x0008042C'
+    # $LG      'LG Electronics 24GM79G 0x0008042C'
 }
 
 # Display modes
@@ -78,8 +78,6 @@ output {
     $R      mode 1920x1080@240Hz
     $RR     mode 1920x1080@240Hz
     $TAIKO  mode 1920x1080@240Hz
-
-    $LG     mode 1920x1080@144Hz
 }
 
 # Display positions
