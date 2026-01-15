@@ -219,6 +219,7 @@ Type clipboard
 Type date
 Type hostname
 Type http+hostname
+Type http+hostname+search_all
 Type local ip
 Type vmpwd
 Type veracrypt pwd
@@ -307,6 +308,11 @@ case "$CLEAN_CHOICE" in
 	TEXT="http://$(hostname)/"
 	printf 'key leftctrl\ntype %s\n' "$TEXT" | dotoolc
 	;;
+
+"Type http+hostname+search_all")
+    TEXT="http://$(hostname)/audio/search_all"
+    printf 'key leftctrl\ntype %s\n' "$TEXT" | dotoolc
+    ;;
 
 "Type local ip")
 	TEXT=$(ip addr show | grep -i 'inet 192' | awk '{print $2}' | cut -d/ -f1 | head -n 1)
