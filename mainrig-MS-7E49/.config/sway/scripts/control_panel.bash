@@ -19,6 +19,15 @@ if [ -f "$USER_HOME/.secure_env" ]; then
 	. "$USER_HOME/.secure_env"
 fi
 
+kill_cultris2() {
+    if pgrep -f cultris2.jar >/dev/null; then
+        pkill -9 -f cultris2.jar
+        notify-send "Cultris II" "All cultris2.jar processes terminated."
+    else
+        notify-send "Cultris II" "No running process found."
+    fi
+}
+
 myanimelist_synopsis_clipboard() {
 	$USER_HOME/.config/sway/scripts/myanimelist_coverart_search.sh "$(wl-paste)"
 }
@@ -272,6 +281,8 @@ Enable all Seat Displays
 Realign mpv Openmusic
 --- System ---
 🧾 Follow journalctl
+--- Process Management -
+Kill Cultris II
 EOF
 
 # Show menu with history disabled to maintain order
@@ -294,6 +305,10 @@ case "$CLEAN_CHOICE" in
 	fi
 	;;
 
+"Kill Cultris II")
+    kill_cultris2
+    ;;
+    
 "Type date")
 	TEXT=$(date --iso-8601)
 	printf 'key leftctrl\ntype %s\n' "$TEXT" | dotoolc
