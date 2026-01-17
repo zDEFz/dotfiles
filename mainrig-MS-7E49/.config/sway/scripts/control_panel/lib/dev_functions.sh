@@ -23,12 +23,13 @@ open_cultris_dev_vscode() {
     touch "$LOCK_FILE"
     rsync -av "$DISK_SRC/" "$RAM_ROOT/"
     
-    local CP="$RAM_ROOT/binary:$RAM_ROOT/resources/libs/*"
+	local CP="$RAM_ROOT/binary:$RAM_ROOT/resources/libs/*"
     local MAIN_CLASS="net.gewaltig.cultris.Cultris"
     
     # --- Core Logic Commands ---
     # REFRESH: Kills old process, recompiles current file, and launches game
-    local REFRESH_CMD="unsetopt histchars; fuser -k -9 $LOCK_FILE 2>/dev/null || true; $J_BASE/javac -cp '$CP' -d $RAM_ROOT/binary \${file} && ( ( flock -x 9; cd $RAM_ROOT && taskset -c 0-15 $J_BASE/java -Xshare:auto -XX:TieredStopAtLevel=1 -XX:+UseParallelGC -Djava.library.path=$RAM_ROOT/resources/libs/ -Xms1G -Xmx2G -cp '$CP' $MAIN_CLASS ) 9>>$LOCK_FILE & )"
+	# Update the javac part of your REFRESH_CMD
+local REFRESH_CMD="unsetopt histchars; fuser -k -9 $LOCK_FILE 2>/dev/null || true; $J_BASE/javac -cp '$CP' -sourcepath $RAM_ROOT/binary -d $RAM_ROOT/binary $RAM_ROOT/binary/Mapping.java $RAM_ROOT/binary/*.java \${file} && ..."
     
     # SAVE: Syncs RAM back to Disk and repacks the JAR
     local SAVE_CMD="rsync -av --include='*/' --include='*.java' --include='binary/***' --exclude='*' '$RAM_ROOT/' '$DISK_SRC/' && cd '$DISK_SRC/binary' && rm -f ../cultris2.jar && zip -r -9 ../cultris2.jar * -x '*.j' && echo 'DISK UPDATED & JAR REPACKED'"
