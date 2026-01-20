@@ -16,40 +16,36 @@ open_cultris_dev_vscode() {
     local RAM_ROOT="/dev/shm/cultris-dev"
     local DATA_DIR="/dev/shm/.vscode-c2-dev"
     local LOCK_FILE="/dev/shm/cultris.lock"
-    
+
     mkdir -p "$RAM_ROOT"
     mkdir -p "$DATA_DIR/User"
     touch "$LOCK_FILE"
-    
-    rsync -av "$DISK_SRC/" "$RAM_ROOT/"
-    
- # Ensure CP and J_BASE are set as before
+
+    # Initial sync: DISK → RAM (full sync including resources)
+    rsync -av --delete "$DISK_SRC/" "$RAM_ROOT/"
+
     local J_BASE="$RAM_ROOT/resources/jdk-17.0.13+11/bin"
     local CP="$RAM_ROOT/binary:$RAM_ROOT/resources/libs/*"
     local MAIN_CLASS="net.gewaltig.cultris.Cultris"
 
-    # The fixed REFRESH_CMD
-    # 1. unsetopt histchars handles the shell behavior
-    # 2. fuser kills the previous instance via the lock file
-    # 3. javac compiles using the RAM source
-    # 4. java launches with the library path pointing to RAM libs
     local REFRESH_CMD="unsetopt histchars 2>/dev/null || true; fuser -k -9 $LOCK_FILE 2>/dev/null || true; $J_BASE/javac -cp '$CP' -sourcepath $RAM_ROOT/binary -d $RAM_ROOT/binary $RAM_ROOT/binary/Mapping.java $RAM_ROOT/binary/*.java \${file} && ($J_BASE/java -Djava.library.path='$RAM_ROOT/resources/libs' -cp '$CP' $MAIN_CLASS & disown) && echo 'REFRESHED'"
-    local SAVE_CMD="rsync -av --delete '$RAM_ROOT/' '$DISK_SRC/' && cd '$DISK_SRC/binary' && rm -f ../cultris2.jar && zip -r -9 ../cultris2.jar * -x '*.j' && echo 'DISK UPDATED & JAR REPACKED'"
-    
-    local REVERT_CMD="cd '$DISK_SRC' && git checkout HEAD -- . ':!resources' && git clean -fd -e resources/ && rsync -av --delete --exclude='resources/' '$DISK_SRC/' '$RAM_ROOT/' && find '$RAM_ROOT/binary' -type f -name '*.java' -exec touch -m {} + && echo 'REVERTED: Resources preserved.'"
 
-    # --- Your Git Logic Commands (Restored) ---
+    # FIXED: Sync only source code back (exclude resources since they don't change)
+    local SAVE_CMD="rsync -av --exclude='resources/' '$RAM_ROOT/' '$DISK_SRC/' && cd '$DISK_SRC/binary' && rm -f ../cultris2.jar && zip -r -9 ../cultris2.jar * -x '*.j' && echo 'DISK UPDATED & JAR REPACKED'"
+
+    # FIXED: REVERT syncs DISK → RAM (full sync to restore everything)
+    local REVERT_CMD="cd '$DISK_SRC' && git checkout HEAD -- . ':!resources' && git clean -fd -e resources/ && rsync -av --delete '$DISK_SRC/' '$RAM_ROOT/' && find '$RAM_ROOT/binary' -type f -name '*.java' -exec touch -m {} + && echo 'REVERTED: Resources preserved.'"
+
     local G_STATUS="cd '$DISK_SRC' && echo '--- GIT STATUS ---' && git status"
     local G_DIFF="cd '$DISK_SRC' && echo '--- GIT DIFF ---' && git diff"
     local G_PUSH="cd '$DISK_SRC' && echo '--- PUSHING TO REMOTE ---' && git push"
     local G_COMMIT="cd '$DISK_SRC' && git add . && printf 'Enter commit message: ' && read msg && git commit -m \\\"\$msg\\\""
-    
-    # --- VS Code Settings ---
-    cat <<EOF > "$DATA_DIR/User/settings.json"
+
+    cat > "$DATA_DIR/User/settings.json" << EOF
 {
     "runOnSave.enabled": true,
     "runOnSave.commands": [{
-        "match": ".*\\\\.java$",
+        "match": ".*\\.java$",
         "command": "$REFRESH_CMD",
         "runIn": "terminal"
     }],
@@ -85,7 +81,7 @@ open_cultris_dev_vscode() {
     }
 }
 EOF
-    
+
     code --user-data-dir "$DATA_DIR" "$RAM_ROOT"
 }
 
