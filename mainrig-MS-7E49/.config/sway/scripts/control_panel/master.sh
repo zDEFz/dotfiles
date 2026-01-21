@@ -34,13 +34,20 @@ app_mpv_workspace_setup() {
 
 # menu: Applications | 🗑️ Kill/Close MPV Workspace
 app_mpv_workspace_kill() {
-    # Specifically target the controller script path
-    # Using pkill -f allows matching the full command line seen in btop
+    # Stop the background controller scripts (Force kill by filename)
     pkill -9 -f "mpv_controller.bash"
+    pkill -9 -f "mpv_ipc_pause_others.bash"
     
-    # Kill the mpv players
+    # Kill all mpv instances using the 'mpvfloat' app_id/socket name
     pkill -9 -f "mpvfloat"
-    
+        
+    # Delete stale IPC socket files to prevent script hang on restart
+    rm -f /tmp/mpvsockets/mpvfloat*
+
+    # Wipe cached state and snapshots
+    rm -rf /tmp/mpv_monitor_cache/*
+
+    # On-screen confirmation that everything is closed
     notify-send "MPV" "Controller and Players Terminated"
 }
 
@@ -113,8 +120,13 @@ EOF
 }
 
 # menu: Dev Env | 📂 Sway Control Panel VSCode
-dev_sway_config_vscode() {
+dev_sway_config_control_panel_vscode() {
     code "$HOME/.config/sway/scripts/control_panel/"
+}
+
+# menu: Dev Env | 📂 Sway Config VSCode
+dev_sway_config_vscode() {
+    code "$HOME/.config/sway/"
 }
 
 
@@ -381,9 +393,61 @@ local socket_dir="/tmp/mpvsockets"
 	if [[ -n "$playing_id" ]]; then
 		echo "Focusing $playing_id..."
 		swaymsg "[app_id=\"$playing_id\"] focus"
+		printf 'type f\n' | dotoolc
 	else
 		echo "No active mpv instance found."
 	fi
+}
+
+# menu: Window Management | 🧲 Steal Active MPV 🎵
+win_mpv_steal_active() {
+    local socket_dir="/tmp/mpvsockets"
+    local playing_id=""
+
+    # 1. Find which one is playing (Fast check without jq for speed)
+    for s in "$socket_dir"/mpvfloat*; do
+        if timeout 0.03 socat - "$s" 2>/dev/null <<< '{"command":["get_property","pause"]}' | grep -q '"data":false'; then
+            playing_id=$(basename "$s")
+            break
+        fi
+    done
+
+    # 2. If found, "steal" it to the current workspace and focus
+    if [[ -n "$playing_id" ]]; then
+        echo "Stealing $playing_id to current workspace..."
+        # Move the window to the current workspace and focus it
+        swaymsg "[app_id=\"$playing_id\"] move container to workspace current, focus"		
+		swaymsg "[app_id=\"$playing_id\"] layout hsplit"
+
+    else
+        echo "No active mpv instance found."
+    fi
+}
+
+# menu: Window Management | 🧲 Steal Active MPV and defloat 🎵
+win_mpv_steal_active_defloat() {
+    local socket_dir="/tmp/mpvsockets"
+    local playing_id=""
+
+    # 1. Find which one is playing (Fast check without jq for speed)
+    for s in "$socket_dir"/mpvfloat*; do
+        if timeout 0.03 socat - "$s" 2>/dev/null <<< '{"command":["get_property","pause"]}' | grep -q '"data":false'; then
+            playing_id=$(basename "$s")
+            break
+        fi
+    done
+
+    # 2. If found, "steal" it to the current workspace and focus
+    if [[ -n "$playing_id" ]]; then
+        echo "Stealing $playing_id to current workspace..."
+        # Move the window to the current workspace and focus it
+        swaymsg "[app_id=\"$playing_id\"] move container to workspace current, focus"		
+		swaymsg "[app_id=\"$playing_id\"] floating disable"
+		swaymsg "[app_id=\"$playing_id\"] layout hsplit"
+
+    else
+        echo "No active mpv instance found."
+    fi
 }
 
 # menu: Window Management | 🎼 Realign MPV OpenMusic
@@ -402,7 +466,7 @@ win_mpv_realign() {
 }
 
 
-
+s
 
 # --- FROM FILE: window_management_swayr.sh ---
 

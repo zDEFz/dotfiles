@@ -18,5 +18,10 @@ sys_journal_follow() {
         -e bash -c "sudo journalctl -f"
 }
 
+# menu: System | 📊 investigate Process Stats
+sys_investigate_process_stats() {
+	alacritty -e zsh -c "source ~/.zshrc && investigate_processes"
+}
+
 
 "$@"

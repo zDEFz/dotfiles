@@ -42,6 +42,57 @@ local socket_dir="/tmp/mpvsockets"
 	fi
 }
 
+# menu: Window Management | 🧲 Steal Active MPV 🎵
+win_mpv_steal_active() {
+    local socket_dir="/tmp/mpvsockets"
+    local playing_id=""
+
+    # 1. Find which one is playing (Fast check without jq for speed)
+    for s in "$socket_dir"/mpvfloat*; do
+        if timeout 0.03 socat - "$s" 2>/dev/null <<< '{"command":["get_property","pause"]}' | grep -q '"data":false'; then
+            playing_id=$(basename "$s")
+            break
+        fi
+    done
+
+    # 2. If found, "steal" it to the current workspace and focus
+    if [[ -n "$playing_id" ]]; then
+        echo "Stealing $playing_id to current workspace..."
+        # Move the window to the current workspace and focus it
+        swaymsg "[app_id=\"$playing_id\"] move container to workspace current, focus"		
+		swaymsg "[app_id=\"$playing_id\"] layout hsplit"
+
+    else
+        echo "No active mpv instance found."
+    fi
+}
+
+# menu: Window Management | 🧲 Steal Active MPV and defloat 🎵
+win_mpv_steal_active_defloat() {
+    local socket_dir="/tmp/mpvsockets"
+    local playing_id=""
+
+    # 1. Find which one is playing (Fast check without jq for speed)
+    for s in "$socket_dir"/mpvfloat*; do
+        if timeout 0.03 socat - "$s" 2>/dev/null <<< '{"command":["get_property","pause"]}' | grep -q '"data":false'; then
+            playing_id=$(basename "$s")
+            break
+        fi
+    done
+
+    # 2. If found, "steal" it to the current workspace and focus
+    if [[ -n "$playing_id" ]]; then
+        echo "Stealing $playing_id to current workspace..."
+        # Move the window to the current workspace and focus it
+        swaymsg "[app_id=\"$playing_id\"] move container to workspace current, focus"		
+		swaymsg "[app_id=\"$playing_id\"] floating disable"
+		swaymsg "[app_id=\"$playing_id\"] layout hsplit"
+
+    else
+        echo "No active mpv instance found."
+    fi
+}
+
 # menu: Window Management | 🎼 Realign MPV OpenMusic
 win_mpv_realign() {
     local ids=$(ps aux | grep -Eo 'mpvfloat[0-9]+' | sort -u)
