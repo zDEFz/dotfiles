@@ -27,6 +27,7 @@ app_cultris_kill() {
 app_vscode_kill() {
     pkill -9 -f "code" && notify-send "VS Code" "Terminated" || notify-send "VS Code" "Not running"
 }
+
 # menu: Applications | 🎵 Create MPV Workspace
 app_mpv_workspace_setup() {
 	bash /home/blu/scripts/openmusic
@@ -279,6 +280,11 @@ sys_journal_follow() {
         -e bash -c "sudo journalctl -f"
 }
 
+# menu: System | 📊 investigate Process Stats
+sys_investigate_process_stats() {
+	alacritty -e zsh -c "source ~/.zshrc && investigate_processes"
+}
+
 
 
 
@@ -466,7 +472,7 @@ win_mpv_realign() {
 }
 
 
-s
+
 
 # --- FROM FILE: window_management_swayr.sh ---
 
