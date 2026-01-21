@@ -1,34 +1,41 @@
 #!/bin/bash
 
-# MEM speedup
-export CCACHE_DIR=/tmp/ccache
+# --- Build & Performance Optimization ---
+# Using persistent SSD storage for CCACHE (as verified by our latency test)
+export CCACHE_DIR="/mnt/cache/ccache"
+export CCACHE_MAXSIZE=50G
+export MAKEFLAGS="-j32"
+export NINJAJOBS=32
 
-# Environment Variables for Wayland and Sway
-export ELECTRON_OZONE_PLATFORM_HINT=wayland   # Use Wayland for Electron apps
-export GTK_THEME=Breeze:dark                  # Set GTK theme
-export _JAVA_AWT_WM_NONREPARENTING=1          # Fix Java AWT issues on Wayland
+# Graphics & Driver Tweaks
+export RADV_PERFTEST=video_decode
+export WLR_RENDERER=vulkan
+export WLR_SCENE_DISABLE_DIRECT_SCANOUT=1
+
+# --- Environment Variables for Wayland/Sway ---
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CURRENT_DESKTOP=sway
+export XDG_SESSION_TYPE=wayland
+
+# Toolkit Backends
+export ELECTRON_OZONE_PLATFORM_HINT=wayland
 export MOZ_ENABLE_WAYLAND=1
-export NO_AT_BRIDGE=1                          # Disable AT-SPI2 service
-export QT_QPA_PLATFORMTHEME=qt5ct             # Set QT platform theme
+export SDL_VIDEODRIVER=wayland
+export _JAVA_AWT_WM_NONREPARENTING=1
+export NO_AT_BRIDGE=1
+
+# Theming & Qt
+export GTK_THEME=Breeze:dark
 export QT_QPA_PLATFORM=wayland
-export RADV_PERFTEST=video_decode             # Enable better video decoding for MPV
-#export WLR_DRM_DEVICES=/dev/dri/by-name/AMD_6950XT:/dev/dri/by-name/AMD_Pro_W7500
-export WLR_RENDERER=vulkan                    # Use Vulkan renderer for better performance
-export WLR_SCENE_DISABLE_DIRECT_SCANOUT=1     # Disable direct scanout for WLR scene
-export XDG_CONFIG_HOME="$HOME/.config"        # Set XDG config home
-export XDG_CURRENT_DESKTOP=sway               # Set current desktop environment
+export QT_QPA_PLATFORMTHEME=qt5ct
+export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
 
-# Uncomment if needed for specific hardware or software issues
-# export WLR_DRM_NO_MODIFIERS=1               # Disable DRM modifiers
-# export WLR_NO_HARDWARE_CURSORS=1            # Disable hardware cursors
-# export XWAYLAND_NO_GLAMOR=1                 # Disable glamor for XWayland
-# export WINE_WAYLAND_DISPLAY_INDEX=4         # Set Wayland display index for Wine
-
-#!/bin/bash
+# --- Launch Logic ---
 CONFIG="$HOME/.config/sway/config"
 LOG="$HOME/sway_debug.log"
-DEBUG=false  # set to true for debug mode
+DEBUG=false  # Set to true for debug mode
 
+# Pre-flight checks
 if ! command -v sway >/dev/null; then
   echo "Error: sway not found" >&2
   exit 1
@@ -39,16 +46,23 @@ if [ ! -r "$CONFIG" ]; then
   exit 1
 fi
 
-if "$DEBUG"; then
+# Ensure CCACHE directory exists with correct permissions
+if [ ! -d "$CCACHE_DIR" ]; then
+    mkdir -p "$CCACHE_DIR" 2>/dev/null
+fi
+
+# Execution
+if [ "$DEBUG" = true ]; then
   if [ -e "$LOG" ] && [ ! -w "$LOG" ]; then
     echo "Warning: $LOG not writable, logging to stderr" >&2
-    sway -c "$CONFIG" --debug
+    exec sway -c "$CONFIG" --debug
   elif touch "$LOG" 2>/dev/null; then
-    sway -c "$CONFIG" --debug 2>>"$LOG"
+    exec sway -c "$CONFIG" --debug 2>>"$LOG"
   else
     echo "Warning: can't create $LOG, logging to stderr" >&2
-    sway -c "$CONFIG" --debug
+    exec sway -c "$CONFIG" --debug
   fi
 else
-  sway -c "$CONFIG"
+  # Use exec to replace the shell process with Sway
+  exec sway -c "$CONFIG"
 fi

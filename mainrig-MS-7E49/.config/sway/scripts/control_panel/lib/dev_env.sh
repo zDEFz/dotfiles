@@ -63,6 +63,11 @@ EOF
     code --user-data-dir "$DATA_DIR" "$RAM_ROOT"
 }
 
+# menu: Dev Env | 📝 Scripts Functions
+dev_scripts_functions_vscode() {
+	code "$HOME/scripts/functions/"
+}
+
 # menu: Dev Env | 📂 Sway Control Panel VSCode
 dev_sway_config_control_panel_vscode() {
     code "$HOME/.config/sway/scripts/control_panel/"
