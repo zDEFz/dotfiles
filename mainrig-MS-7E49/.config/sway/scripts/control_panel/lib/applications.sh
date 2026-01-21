@@ -1,19 +1,40 @@
 #!/bin/bash
 
 # --- CATEGORY: APPLICATIONS ---
-# menu: Applications | 🔪 Kill Cultris II
+# menu: Applications | 🔪 Kill/Close Cultris II
 app_cultris_kill() {
     pkill -9 -f cultris2.jar && notify-send "Cultris II" "Terminated" || notify-send "Cultris II" "Not running"
 }
 
-# menu: Applications | 🔪 Kill VS Code
+# menu: Applications | 🔪 Kill/Close VS Code
 app_vscode_kill() {
     pkill -9 -f "code" && notify-send "VS Code" "Terminated" || notify-send "VS Code" "Not running"
 }
 
 # menu: Applications | 🎵 Create MPV Workspace
 app_mpv_workspace_setup() {
-	bash /home/blu/scripts/openmusic
+	bash /home/blu/scripts/mpv/openmusic
+}
+
+# menu: Applications | 🗑️ Kill/Close MPV Workspace
+app_mpv_workspace_kill() {
+    # Stop the background controller scripts (Force kill by filename)
+	pkill -9 -f "openmusic"
+	pkill -9 -f "realign_opemusic.bash"
+    pkill -9 -f "mpv_controller.bash"
+    pkill -9 -f "mpv_ipc_pause_others.bash"
+    
+    # Kill all mpv instances using the 'mpvfloat' app_id/socket name
+    pkill -9 -f "mpvfloat"
+        
+    # Delete stale IPC socket files to prevent script hang on restart
+    rm -f /tmp/mpvsockets/mpvfloat*
+
+    # Wipe cached state and snapshots
+    rm -rf /tmp/mpv_monitor_cache/*
+
+    # On-screen confirmation that everything is closed
+    notify-send "MPV" "Controller and Players Terminated"
 }
 
 # menu: Applications | 🎮 Launch Slippi (RAM)
@@ -25,7 +46,7 @@ app_slippi_ram_setup() {
     local LAUNCH_DIR="/tmp/slippi-test"
     local DOLPHIN_RAM="/tmp/slippi-dolphin-ram"
     local ISO_RAM="/tmp/melee-ram.iso"
-    
+
     local ORIGINAL_APP="$HOME/apps/slippi/Slippi.AppImage"
     local NETPLAY_DIR="$HOME/.config/chromium/netplay"
     local AKANEIA_ISO="$HOME/.local/share/dolphin-emu/Games/Smash_Bros_Melee_Akaneia_1_0_1.iso"
@@ -59,7 +80,6 @@ app_slippi_ram_setup() {
     echo "⚡ Injecting RAM-redirector for Dolphin..."
     mkdir -p "$NETPLAY_DIR"
     cat <<EOF > "$NETPLAY_DIR/Slippi_Online-x86_64.AppImage"
-#!/bin/bash
 export LD_LIBRARY_PATH="$DOLPHIN_RAM/usr/lib/:$DOLPHIN_RAM/usr/lib/x86_64-linux-gnu/:\$LD_LIBRARY_PATH"
 exec "$DOLPHIN_RAM/AppRun" "\$@"
 EOF
@@ -77,28 +97,9 @@ EOF
         --disable-gpu-sandbox \
         --ignore-gpu-blocklist \
         --user-data-dir="$HOME/.config/chromium" >/dev/null 2>&1 &
-    
+
     disown
     echo "🏁 DONE. All systems in RAM."
-}
-
-# menu: Applications | 🗑️ Kill/Close MPV Workspace
-app_mpv_workspace_kill() {
-    # Stop the background controller scripts (Force kill by filename)
-    pkill -9 -f "mpv_controller.bash"
-    pkill -9 -f "mpv_ipc_pause_others.bash"
-    
-    # Kill all mpv instances using the 'mpvfloat' app_id/socket name
-    pkill -9 -f "mpvfloat"
-        
-    # Delete stale IPC socket files to prevent script hang on restart
-    rm -f /tmp/mpvsockets/mpvfloat*
-
-    # Wipe cached state and snapshots
-    rm -rf /tmp/mpv_monitor_cache/*
-
-    # On-screen confirmation that everything is closed
-    notify-send "MPV" "Controller and Players Terminated"
 }
 
 

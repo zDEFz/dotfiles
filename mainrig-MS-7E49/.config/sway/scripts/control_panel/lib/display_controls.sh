@@ -14,11 +14,11 @@ display_LL_on() { swaymsg output "'$LL'" enable; }
 # menu: Display Controls | ❌ Disable LL
 display_LL_off() { swaymsg output "'$LL'" disable; }
 
-# menu: Display Controls | ❌ Disable LL & Disable RR
-display_LL_and_RR_off() { swaymsg output "'$LL'" disable; swaymsg output "'$RR'" disable; }
+# menu: Display Controls | ❌ Disable LL and Disable RR
+display_LL_RR_off() { swaymsg output "'$LL'" disable; swaymsg output "'$RR'" disable; }
 
-# menu: Display Controls | ✅ Enable LL & Enable RR
-enable_LL_and_RR_on() { swaymsg output "'$LL'" enable; swaymsg output "'$RR'" enable; }
+# menu: Display Controls | ✅ Enable LL and Enable RR
+enable_LL_RR_on() { swaymsg output "'$LL'" enable; swaymsg output "'$RR'" enable; }
 
 # menu: Display Controls | ✅ Enable M
 display_M_on() { swaymsg output "'$M'" enable; }
