@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # --- CATEGORY: DEV ENVIRONMENT ---
-
 # menu: Dev Env | 💻 Cultris Alacritty
 dev_cultris_shell() {
     alacritty \
@@ -47,24 +46,6 @@ dev_cultris_vscode() {
         "runIn": "terminal"
     }],
     "files.autoSave": "off",
-    "files.autoRefresh": true,
-    "files.hotExit": "off",
-    "files.useExperimentalFileWatcher": true,
-    "workbench.editor.checkOutOfSyncFiles": true,
-    "files.watcherExclude": {
-        "**/.git/*": true,
-        "**/resources/libs/**": true
-    },
-    "files.exclude": {
-        "**/*.class": true,
-        "**/.git": true,
-        "**/binary/*.j": true
-    },
-    "search.exclude": {
-        "**/binary/**": true
-    },
-    "window.restoreWindows": "none",
-    "workbench.editor.revealIfOpen": true,
     "actionButtons": {
         "commands": [
             { "name": "⬆️ PUSH", "command": "$G_PUSH", "color": "#1abc9c" },
@@ -82,9 +63,15 @@ EOF
     code --user-data-dir "$DATA_DIR" "$RAM_ROOT"
 }
 
-# menu: Dev Env | 📂 Sway Control Panel
-dev_sway_config_vscode() {
+# menu: Dev Env | 📂 Sway Control Panel VSCode
+dev_sway_config_control_panel_vscode() {
     code "$HOME/.config/sway/scripts/control_panel/"
 }
+
+# menu: Dev Env | 📂 Sway Config VSCode
+dev_sway_config_vscode() {
+    code "$HOME/.config/sway/"
+}
+
 
 "$@"

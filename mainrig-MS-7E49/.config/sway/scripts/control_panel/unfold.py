@@ -16,7 +16,6 @@ def unfold_from_master(input_file):
     # Regex patterns
     menu_re = re.compile(r"^#\s*menu:\s*([^|]+)\|")
     func_start_re = re.compile(r"^([a-zA-Z0-9_]+)\(\)\s*\{")
-    func_end_re = re.compile(r"^\s*\}")
 
     if not os.path.exists(input_file):
         print(f"Error: Input file '{input_file}' not found.")
@@ -31,10 +30,10 @@ def unfold_from_master(input_file):
     while i < len(lines):
         line = lines[i]
 
-        # 1. Skip headers and capture comments
+        # 1. Capture comments but ignore specific markers and repetitive headers
         if line.strip().startswith("#") and not line.strip().startswith("#!"):
-            # Avoid capturing the "FROM FILE" markers from the collector
-            if "--- FROM FILE:" not in line and "====" not in line:
+            # Added logic to skip the "FROM FILE" and "MERGED LIBRARY" noise
+            if "--- FROM FILE:" not in line and "MERGED LIBRARY" not in line and "===" not in line:
                 current_comments.append(line)
             i += 1
             continue
@@ -44,7 +43,7 @@ def unfold_from_master(input_file):
         if match:
             func_name = match.group(1)
             
-            # Determine File Destination
+            # Determine Category
             category_name = "general"
             for c in current_comments:
                 menu_match = menu_re.search(c)
@@ -52,7 +51,7 @@ def unfold_from_master(input_file):
                     category_name = menu_match.group(1).strip()
                     break
             
-            # Route helpers to helpers.sh, others to category slug
+            # Routing: Start with underscore -> helpers, else use category slug
             if func_name.startswith("_"):
                 cat_slug = "helpers"
             else:
@@ -61,28 +60,36 @@ def unfold_from_master(input_file):
             if cat_slug not in categories:
                 categories[cat_slug] = ["#!/bin/bash\n\n"]
 
-            # Add comments and function
+            # Add comments and function start line
             categories[cat_slug].extend(current_comments)
             categories[cat_slug].append(line)
 
-            # Capture function body
-            if not ("}" in line and "{" in line):
+            # --- DEPTH TRACKING LOGIC ---
+            brace_depth = line.count("{") - line.count("}")
+            
+            i += 1
+            while i < len(lines) and brace_depth > 0:
+                inner_line = lines[i]
+                categories[cat_slug].append(inner_line)
+                
+                brace_depth += inner_line.count("{")
+                brace_depth -= inner_line.count("}")
                 i += 1
-                while i < len(lines):
-                    categories[cat_slug].append(lines[i])
-                    if func_end_re.match(lines[i]):
-                        break
-                    i += 1
             
             categories[cat_slug].append("\n")
-            current_comments = []
+            current_comments = [] # Reset after assignment
+            continue # Skip the i += 1 at the bottom because the while loop advanced it
+        
         else:
-            # If line is empty or non-function, reset comment buffer
+            # If line is not a comment and not a function, reset the comment buffer
+            # This prevents comments from one section "leaking" into the next 
+            # if there is empty space or non-function code in between.
             if line.strip() != "":
                 current_comments = []
+        
         i += 1
 
-    # 3. Write out the clean files
+    # 3. Write output files
     for cat, content in categories.items():
         file_path = os.path.join(lib_dir, f"{cat}.sh")
         with open(file_path, "w") as f_out:
@@ -95,5 +102,5 @@ def unfold_from_master(input_file):
         print(f"Successfully unfolded: {file_path}")
 
 if __name__ == "__main__":
-    target = sys.argv[1] if len(sys.argv) > 1 else "review_me.sh"
+    target = sys.argv[1] if len(sys.argv) > 1 else "master.sh"
     unfold_from_master(target)

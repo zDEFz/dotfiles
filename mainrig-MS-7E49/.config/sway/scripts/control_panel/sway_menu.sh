@@ -34,8 +34,12 @@ CHOICE=$(echo -e "$MENU_CONTENT" | sed '/^$/d' | wofi --insensitive --dmenu --ca
 [ -z "$CHOICE" ] || [[ "$CHOICE" == ---* ]] && exit 0
 
 # --- DYNAMIC DISCOVERY ---
-FILE_MATCH=$(grep -rlF "$CHOICE" "$SCRIPT_DIR/lib"/)
-FUNCTION_NAME=$(grep -A 1 -F "$CHOICE" "$FILE_MATCH" | grep "()" | cut -d'(' -f1 | awk '{print $NF}')
+# 1. Locate file
+FILE_MATCH=$(grep -rlF "$CHOICE" "$SCRIPT_DIR/lib/" | head -n 1)
+
+# 2. Extract function name
+# We look ahead 5 lines, find the line with (), then strip everything from '(' onwards
+FUNCTION_NAME=$(grep -A 5 -F "$CHOICE" "$FILE_MATCH" | grep "()" | head -n 1 | sed 's/(.*//' | xargs)
 
 if [ -n "$FUNCTION_NAME" ]; then
     $FUNCTION_NAME

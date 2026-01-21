@@ -1,17 +1,15 @@
 #!/bin/bash
 
-# MERGED LIBRARY FOR ARCHITECTURAL REVIEW
 # --- CATEGORY: APPLICATIONS ---
 # menu: Applications | 🔪 Kill Cultris II
 app_cultris_kill() {
     pkill -9 -f cultris2.jar && notify-send "Cultris II" "Terminated" || notify-send "Cultris II" "Not running"
 }
 
-# menu: Applications | 🎯 Focus OpenTaiko
-app_opentaiko_focus() { 
-    swaymsg '[class="^(OpenTaiko|opentaiko.exe)$"] focus'
+# menu: Applications | 🔪 Kill VS Code
+app_vscode_kill() {
+    pkill -9 -f "code" && notify-send "VS Code" "Terminated" || notify-send "VS Code" "Not running"
 }
-
 # menu: Applications | 🎵 Create MPV Workspace
 app_mpv_workspace_setup() {
 	bash /home/blu/scripts/openmusic

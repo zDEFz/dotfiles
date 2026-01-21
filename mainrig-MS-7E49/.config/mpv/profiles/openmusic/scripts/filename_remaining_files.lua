@@ -1,8 +1,8 @@
 local mp = require 'mp'
 
 -- === Overlay setup ===
-local top_overlay    = mp.create_osd_overlay("ass-events", false)  -- File info (top)
-local bottom_overlay = mp.create_osd_overlay("ass-events", false)  -- Remaining count (bottom)
+local top_overlay    = mp.create_osd_overlay("ass-events", false)
+local bottom_overlay = mp.create_osd_overlay("ass-events", false)
 
 local font_size = 94
 local max_width_chars = 40
@@ -18,9 +18,9 @@ local last_file_info = ""
 local last_remaining = ""
 local current_path = ""
 local current_filename = ""
+local overlays_visible = true  -- Toggle state
 
--- Pre-compile patterns for better performance
-local path_separator_pattern = "[/\\]+"
+-- Pre-compile patterns
 local extension_pattern = "^(.*)%."
 
 -- === Helper: Extract parent folder name ===
@@ -37,7 +37,7 @@ local function remove_extension(filename)
     return filename:match(extension_pattern) or filename
 end
 
--- === Helper: Wrap text if it exceeds max width ===
+-- === Helper: Wrap text ===
 local function wrap_text(text, max_width)
     if #text <= max_width then 
         return text 
@@ -58,8 +58,11 @@ local function wrap_text(text, max_width)
     return first_part .. "\\N" .. wrap_text(remaining, max_width)
 end
 
--- === Update top overlay: Folder + filename ===
+-- === Update functions with visibility check ===
+
 local function update_file_info()
+    if not overlays_visible then return end
+    
     local path = mp.get_property("path")
     local filename = mp.get_property("filename")
     
@@ -71,8 +74,7 @@ local function update_file_info()
         return
     end
     
-    -- Skip processing if file hasn't changed
-    if path == current_path and filename == current_filename then
+    if path == current_path and filename == current_filename and last_file_info ~= "" then
         return
     end
     
@@ -90,7 +92,6 @@ local function update_file_info()
         filename_color, wrapped_filename
     )
     
-    -- Only update if changed
     if ass_text ~= last_file_info then
         top_overlay.data = ass_text
         top_overlay:update()
@@ -98,8 +99,9 @@ local function update_file_info()
     end
 end
 
--- === Update bottom overlay: Remaining count ===
 local function update_remaining()
+    if not overlays_visible then return end
+    
     local pos = mp.get_property_number("playlist-pos")
     local tot = mp.get_property_number("playlist-count")
     
@@ -107,14 +109,13 @@ local function update_remaining()
         return
     end
     
-    pos = pos + 1  -- Convert from 0-based to 1-based
+    pos = pos + 1
     
     local ass_text = string.format(
         "{\\an2\\bord3\\shad0\\fs%d\\b1\\q2\\1c&H%s&\\3c&H%s&\\3a&H00&}Remaining: %d/%d", 
         font_size, counter_color, bg_color, pos, tot
     )
     
-    -- Only update if changed
     if ass_text ~= last_remaining then
         bottom_overlay.data = ass_text
         bottom_overlay:update()
@@ -122,7 +123,22 @@ local function update_remaining()
     end
 end
 
--- === Clean up on end ===
+-- === Toggle Logic ===
+local function toggle_labels()
+    overlays_visible = not overlays_visible
+    if overlays_visible then
+        -- Force refresh
+        last_file_info = ""
+        last_remaining = ""
+        update_file_info()
+        update_remaining()
+    else
+        top_overlay:remove()
+        bottom_overlay:remove()
+    end
+end
+
+-- === Events ===
 mp.register_event("end-file", function()
     top_overlay:remove()
     bottom_overlay:remove()
@@ -132,19 +148,14 @@ mp.register_event("end-file", function()
     current_filename = ""
 end)
 
--- === Event-based updating ===
--- Allow manual refresh via IPC
 mp.register_script_message("refresh-osd", function()
     update_file_info()
     update_remaining()
 end)
 
--- Update file info when a new file is loaded
 mp.register_event("file-loaded", update_file_info)
 
--- Update remaining count when playlist changes (with debouncing)
 local remaining_timer = nil
-
 local function schedule_remaining_update()
     if remaining_timer then
         remaining_timer:kill()
@@ -155,7 +166,11 @@ end
 mp.observe_property("playlist-pos", "number", schedule_remaining_update)
 mp.observe_property("playlist-count", "number", schedule_remaining_update)
 
--- Initial update only if playlist is ready
+-- === Keybindings ===
+-- You can change "h" to any key you prefer
+mp.add_key_binding("h", "toggle-labels", toggle_labels)
+
+-- Initial update
 mp.add_timeout(0.5, function()
     update_file_info()
     update_remaining()

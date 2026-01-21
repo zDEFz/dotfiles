@@ -5,6 +5,16 @@
 # ==================================================
 
 
+# --- FROM FILE: helpers.sh ---
+
+# --- CATEGORY: HELPERS ---
+# Internal helper used for moving containers to specific outputs
+_win_move_to_output() { 
+    swaymsg move container to output "'${!1}'"
+}
+
+
+
 # --- FROM FILE: applications.sh ---
 
 # --- CATEGORY: APPLICATIONS ---
@@ -13,11 +23,10 @@ app_cultris_kill() {
     pkill -9 -f cultris2.jar && notify-send "Cultris II" "Terminated" || notify-send "Cultris II" "Not running"
 }
 
-# menu: Applications | 🎯 Focus OpenTaiko
-app_opentaiko_focus() { 
-    swaymsg '[class="^(OpenTaiko|opentaiko.exe)$"] focus'
+# menu: Applications | 🔪 Kill VS Code
+app_vscode_kill() {
+    pkill -9 -f "code" && notify-send "VS Code" "Terminated" || notify-send "VS Code" "Not running"
 }
-
 # menu: Applications | 🎵 Create MPV Workspace
 app_mpv_workspace_setup() {
 	bash /home/blu/scripts/openmusic
@@ -37,10 +46,10 @@ app_mpv_workspace_kill() {
 
 
 
+
 # --- FROM FILE: dev_env.sh ---
 
 # --- CATEGORY: DEV ENVIRONMENT ---
-
 # menu: Dev Env | 💻 Cultris Alacritty
 dev_cultris_shell() {
     alacritty \
@@ -62,7 +71,6 @@ dev_cultris_vscode() {
     mkdir -p "$DATA_DIR/User"
     touch "$LOCK_FILE"
 
-    # Initial sync: DISK → RAM (full sync including resources)
     rsync -av --delete "$DISK_SRC/" "$RAM_ROOT/"
 
     local J_BASE="$RAM_ROOT/resources/jdk-17.0.13+11/bin"
@@ -87,24 +95,6 @@ dev_cultris_vscode() {
         "runIn": "terminal"
     }],
     "files.autoSave": "off",
-    "files.autoRefresh": true,
-    "files.hotExit": "off",
-    "files.useExperimentalFileWatcher": true,
-    "workbench.editor.checkOutOfSyncFiles": true,
-    "files.watcherExclude": {
-        "**/.git/*": true,
-        "**/resources/libs/**": true
-    },
-    "files.exclude": {
-        "**/*.class": true,
-        "**/.git": true,
-        "**/binary/*.j": true
-    },
-    "search.exclude": {
-        "**/binary/**": true
-    },
-    "window.restoreWindows": "none",
-    "workbench.editor.revealIfOpen": true,
     "actionButtons": {
         "commands": [
             { "name": "⬆️ PUSH", "command": "$G_PUSH", "color": "#1abc9c" },
@@ -122,10 +112,11 @@ EOF
     code --user-data-dir "$DATA_DIR" "$RAM_ROOT"
 }
 
-# menu: Dev Env | 📂 Sway Control Panel
+# menu: Dev Env | 📂 Sway Control Panel VSCode
 dev_sway_config_vscode() {
     code "$HOME/.config/sway/scripts/control_panel/"
 }
+
 
 
 
@@ -219,16 +210,6 @@ display_set_hz() {
 
 
 
-# --- FROM FILE: helpers.sh ---
-
-# --- CATEGORY: HELPERS ---
-# Internal helper used for moving containers to specific outputs
-_win_move_to_output() { 
-    swaymsg move container to output "'${!1}'"
-}
-
-
-
 # --- FROM FILE: move_window_to_display.sh ---
 
 # --- CATEGORY: MOVE WINDOW TO DISPLAY ---
@@ -262,24 +243,6 @@ win_move_TAIKO() { _win_move_to_output TAIKO; }
 app_mal_synopsis_clip() {
     "$USER_HOME"/.config/sway/scripts/myanimelist_coverart_search.sh "$(wl-paste)"
 }
-
-
-
-
-# --- FROM FILE: swayr_window_management.sh ---
-
-# --- CATEGORY: SWAYR WINDOW MANAGEMENT ---
-# menu: Swayr Window Management | 🥷 Steal window
-win_swayr_steal() { swayr steal-window; }
-
-# menu: Swayr Window Management | 🔄 Switch window
-win_swayr_switch() { swayr switch-window; }
-
-# menu: Swayr Window Management | 📑 Switch workspace
-win_swayr_work() { swayr switch-workspace; }
-
-# menu: Swayr Window Management | 📦 Move focused to workspace
-win_swayr_move() { swayr move-focused-to-workspace; }
 
 
 
@@ -382,6 +345,11 @@ type_share_clip() {
 
 # --- FROM FILE: window_management.sh ---
 
+# menu: Window Management | 🎯 Focus OpenTaiko
+app_opentaiko_focus() { 
+    swaymsg '[class="^(OpenTaiko|opentaiko.exe)$"] focus'
+}
+
 # menu: Window Management | 🎯 Focus MPV Workspace
 win_focus_mpv_workspace() {
     # We search for mpvfloat instances and extract the workspace name
@@ -393,6 +361,29 @@ win_focus_mpv_workspace() {
         # Fallback to 18 if no mpvfloat is found
         swaymsg workspace 18
     fi
+}
+
+# menu: Window Management | 🎼 Focus Active MPV 🎵
+win_mpv_focus_active() {
+local socket_dir="/tmp/mpvsockets"
+	local playing_id=""
+
+	# 1. Find which one is playing (using your script's logic)
+	for s in "$socket_dir"/mpvfloat*; do
+		playing=$(echo '{"command":["get_property","pause"]}' | socat - "$s" 2>/dev/null | jq -r '.data')
+		if [[ "$playing" == "false" ]]; then
+			playing_id=$(basename "$s")
+			break
+		fi
+	done
+
+	# 2. If found, tell sway to focus that app_id
+	if [[ -n "$playing_id" ]]; then
+		echo "Focusing $playing_id..."
+		swaymsg "[app_id=\"$playing_id\"] focus"
+	else
+		echo "No active mpv instance found."
+	fi
 }
 
 # menu: Window Management | 🎼 Realign MPV OpenMusic
@@ -409,6 +400,24 @@ win_mpv_realign() {
         ((counter++))
     done <<<"$ids"
 }
+
+
+
+
+# --- FROM FILE: window_management_swayr.sh ---
+
+# --- CATEGORY: SWAYR WINDOW MANAGEMENT ---
+# menu: Window Management - swayr | 🥷 Steal window
+win_swayr_steal() { swayr steal-window; }
+
+# menu: Window Management - swayr | 🔄 Switch window
+win_swayr_switch() { swayr switch-window; }
+
+# menu: Window Management - swayr | 📑 Switch workspace
+win_swayr_work() { swayr switch-workspace; }
+
+# menu: Window Management - swayr | 📦 Move focused to workspace
+win_swayr_move() { swayr move-focused-to-workspace; }
 
 
 

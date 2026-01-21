@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# menu: Window Management | 🎯 Focus OpenTaiko
+app_opentaiko_focus() { 
+    swaymsg '[class="^(OpenTaiko|opentaiko.exe)$"] focus'
+}
+
 # menu: Window Management | 🎯 Focus MPV Workspace
 win_focus_mpv_workspace() {
     # We search for mpvfloat instances and extract the workspace name
@@ -11,6 +16,30 @@ win_focus_mpv_workspace() {
         # Fallback to 18 if no mpvfloat is found
         swaymsg workspace 18
     fi
+}
+
+# menu: Window Management | 🎼 Focus Active MPV 🎵
+win_mpv_focus_active() {
+local socket_dir="/tmp/mpvsockets"
+	local playing_id=""
+
+	# 1. Find which one is playing (using your script's logic)
+	for s in "$socket_dir"/mpvfloat*; do
+		playing=$(echo '{"command":["get_property","pause"]}' | socat - "$s" 2>/dev/null | jq -r '.data')
+		if [[ "$playing" == "false" ]]; then
+			playing_id=$(basename "$s")
+			break
+		fi
+	done
+
+	# 2. If found, tell sway to focus that app_id
+	if [[ -n "$playing_id" ]]; then
+		echo "Focusing $playing_id..."
+		swaymsg "[app_id=\"$playing_id\"] focus"
+		printf 'type f\n' | dotoolc
+	else
+		echo "No active mpv instance found."
+	fi
 }
 
 # menu: Window Management | 🎼 Realign MPV OpenMusic
