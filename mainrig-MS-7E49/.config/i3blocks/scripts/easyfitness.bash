@@ -6,7 +6,6 @@
 # Day: 1=Mon ... 7=Sun
 # Hour = integer hour of start (24h)
 # ------------------------------
-
 declare -A SCHEDULE
 
 # MONDAY (1)
@@ -66,6 +65,7 @@ get_current_class() {
     hour_decimal=$(awk "BEGIN {print $hour + ($minute/60)}")
 
     # Check ±10 min window for start times
+    # Check ±10 min window for start times
     for t in "${!SCHEDULE[@]}"; do
         d="${t%_*}"
         h="${t#*_}"
@@ -98,7 +98,7 @@ if mullvad status | grep -q "Connected"; then
        [[ "$DAY" -eq 7 && "$HOUR" -ge 8 && "$HOUR" -lt 21 ]]; then
 
         # Fetch occupancy
-        OCC=$(curl -s https://easyfitness.club/studio/easyfitness-wiesloch/ \
+        OCC=$(curl -s https://easyfitness.club/studio/easyfitness-"$CITY_HOME"/ \
             | sed -n 's/.*class="meterbubble">\([0-9][0-9]*\)%.*/\1/p' \
             | head -n1)
 
