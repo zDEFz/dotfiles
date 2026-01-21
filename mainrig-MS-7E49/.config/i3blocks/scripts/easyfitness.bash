@@ -6,6 +6,8 @@
 # Day: 1=Mon ... 7=Sun
 # Hour = integer hour of start (24h)
 # ------------------------------
+source $HOME/.secure_env
+
 declare -A SCHEDULE
 
 # MONDAY (1)
