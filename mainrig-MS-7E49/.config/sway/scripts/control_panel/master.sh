@@ -15,8 +15,10 @@ _win_move_to_output() {
 
 # Internal helper used for opening URLs in Firefox with specific profile and class
 _firefox_open_url() {
-    firefox --no-remote -P "firefox-default" --class "firefox-default" --name "firefox-default" "'${!1}'"
+    firefox --no-remote -P "firefox-default" --class "firefox-default" --name "firefox-default" "$1"
 }
+
+
 
 # --- FROM FILE: applications.sh ---
 
@@ -256,33 +258,6 @@ display_TAIKO_on() { swaymsg output "'$TAIKO'" enable; }
 display_TAIKO_off() { swaymsg output "'$TAIKO'" disable; }
 
 # Group Controls
-# menu: Display Controls | ✅ Enable main support
-display_group_main_on() { for d in "$L" "$M" "$R"; do swaymsg output "'$d'" enable; done; }
-
-# menu: Display Controls | ❌ Disable main support
-display_group_main_off() { for d in "$L" "$M" "$R"; do swaymsg output "'$d'" disable; done; }
-
-# menu: Display Controls | ✅ Enable main support and taiko
-display_group_main_taiko_on() { for d in "$L" "$M" "$R" "$TAIKO"; do swaymsg output "'$d'" enable; done; }
-
-# menu: Display Controls | ❌ Disable main support and taiko
-display_group_main_taiko_off() { for d in "$L" "$M" "$R" "$TAIKO"; do swaymsg output "'$d'" disable; done; }
-
-# menu: Display Controls | ✅ Enable opt support
-display_group_opt_on() { for d in "$LL" "$MON_KB" "$RR"; do swaymsg output "'$d'" enable; done; }
-
-# menu: Display Controls | ❌ Disable opt support
-display_group_opt_off() { for d in "$LL" "$MON_KB" "$RR"; do swaymsg output "'$d'" disable; done; }
-
-# menu: Display Controls | ✅ Enable opt support and taiko
-display_group_opt_taiko_on() { for d in "$LL" "$MON_KB" "$RR" "$TAIKO"; do swaymsg output "'$d'" enable; done; }
-
-# menu: Display Controls | ❌ Disable opt support and taiko
-display_group_opt_taiko_off() { for d in "$LL" "$MON_KB" "$RR" "$TAIKO"; do swaymsg output "'$d'" disable; done; }
-
-# menu: Display Controls | ✅ Enable support all
-display_group_all_on() { for d in "$L" "$M" "$R" "$LL" "$MON_KB" "$RR"; do swaymsg output "'$d'" enable; done; }
-
 # menu: Display Controls | ❌ Disable support all
 display_group_all_off() { for d in "$L" "$M" "$R" "$LL" "$MON_KB" "$RR"; do swaymsg output "'$d'" disable; done; }
 
@@ -299,29 +274,11 @@ display_set_hz() {
 
 
 
-# --- FROM FILE: move_window_to_display.sh ---
+# --- FROM FILE: general.sh ---
 
-# --- CATEGORY: MOVE WINDOW TO DISPLAY ---
-# menu: Move Window to Display | 🪟 Move to L
-win_move_L() { _win_move_to_output L; }
-
-# menu: Move Window to Display | 🪟 Move to LL
-win_move_LL() { _win_move_to_output LL; }
-
-# menu: Move Window to Display | 🪟 Move to M
-win_move_M() { _win_move_to_output M; }
-
-# menu: Move Window to Display | 🪟 Move to MON_KB
-win_move_MON_KB() { _win_move_to_output MON_KB; }
-
-# menu: Move Window to Display | 🪟 Move to R
-win_move_R() { _win_move_to_output R; }
-
-# menu: Move Window to Display | 🪟 Move to RR
-win_move_RR() { _win_move_to_output RR; }
-
-# menu: Move Window to Display | 🥁 Move to TAIKO
-win_move_TAIKO() { _win_move_to_output TAIKO; }
+open_url_nginx_mainrig() {
+    _firefox_open_url "http://mainrig-MS-7E49/"
+}
 
 
 
@@ -338,10 +295,58 @@ app_mal_synopsis_clip() {
 
 # --- FROM FILE: open_url.sh ---
 
-# menu: URL | Open nginx mainrig URL in Default Browser
+# menu: Open URL | 0 Open nginx mainrig URL in Default Browser
 open_url_nginx_mainrig() {
-	_firefox_open_url "http://mainrig-MS-7E49/"
+    _firefox_open_url "http://mainrig-MS-7E49/"
 }
+
+# menu: Open URL | Open nginx mainrig cronlog URL in Default Browser
+open_url_nginx_mainrig_cronlog() {
+    _firefox_open_url "http://mainrig-MS-7E49/cronlogs"
+}
+
+# menu: Open URL | Open nginx cockpit URL in Default Browser
+open_url_nginx_cockpit() {
+	_firefox_open_url "https://mainrig-ms-7e49:9090/"
+}
+
+# menu: Open URL | Open fritzbox URL in Default Browser
+open_url_fritzbox() { 
+    _firefox_open_url "http://fritz.box" 
+}
+
+# menu: Open URL | Open hostname URL in Default Browser
+open_url_hostname() { 
+    _firefox_open_url "http://$(hostname)/" 
+}
+
+# menu: Open URL | Open Cyberchef URL in Default Browser
+open_url_cyberchef() {
+    _firefox_open_url "http://$(hostname)/cyberchef/"
+}
+
+# menu: Open URL | Open audio search URL in Default Browser
+open_url_audio_search() { 
+    _firefox_open_url "http://$(hostname)/audio/search_all" 
+}
+
+# menu: Open URL | Open video URL in Default Browser
+open_url_video_search() { 
+    _firefox_open_url "http://$(hostname)/video/" 
+}
+
+# menu: Open URL | Open solitaire URL in Default Browser
+open_url_solitaire() { 
+    _firefox_open_url "http://$(hostname)/shenzhen_solitaire/" 
+}
+
+# menu: Open URL | Open kvm URL in Default Browser
+open_url_kvm() { 
+    _firefox_open_url "https://kvm" 
+}
+
+
+
 
 # --- FROM FILE: system.sh ---
 
@@ -383,6 +388,7 @@ sys_print_specs() {
     # 3. Paste
     echo 'key ctrl+v' | dotoolc
 }
+
 
 
 
@@ -496,21 +502,6 @@ type_date() { printf 'key leftctrl\ntype %s\n' "$(date --iso-8601)" | dotoolc; }
 
 # menu: Typing Tools | 🏠 Type hostname
 type_hostname() { printf 'key leftctrl\ntype %s\n' "$(hostname)/" | dotoolc; }
-
-# menu: Typing Tools | 🏠 Type fritzbox
-type_url_fritzbox() { printf 'key leftctrl\ntype %s\n' "http://fritz.box" | dotoolc; }
-
-# menu: Typing Tools | 🏠 Type http+hostname
-type_url_hostname() { printf 'key leftctrl\ntype %s\n' "http://$(hostname)/" | dotoolc; }
-
-# menu: Typing Tools | 🎵 Type search audio
-type_url_audio_search() { printf 'key leftctrl\ntype %s\n' "http://$(hostname)/audio/search_all" | dotoolc; }
-
-# menu: Typing Tools | 🎮 Type solitaire
-type_url_solitaire() { printf 'key leftctrl\ntype %s\n' "http://$(hostname)/shenzhen_solitaire/" | dotoolc; }
-
-# menu: Typing Tools | 🖥️ Type kvm
-type_url_kvm() { printf 'key leftctrl\ntype %s\n' "https://kvm" | dotoolc; }
 
 # menu: Typing Tools | 🌐 Type local ip
 type_ip_local() {

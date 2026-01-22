@@ -1,9 +1,0 @@
-#!/bin/bash
-
-# menu: URL | Open nginx mainrig URL in Default Browser
-open_url_nginx_mainrig() {
-    _firefox_open_url "http://mainrig-MS-7E49/"
-}
-
-
-"$@"

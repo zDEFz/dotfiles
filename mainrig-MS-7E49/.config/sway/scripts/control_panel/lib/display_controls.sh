@@ -51,38 +51,14 @@ display_TAIKO_on() { swaymsg output "'$TAIKO'" enable; }
 display_TAIKO_off() { swaymsg output "'$TAIKO'" disable; }
 
 # Group Controls
-# menu: Display Controls | ✅ Enable main support
-display_group_main_on() { for d in "$L" "$M" "$R"; do swaymsg output "'$d'" enable; done; }
-
-# menu: Display Controls | ❌ Disable main support
-display_group_main_off() { for d in "$L" "$M" "$R"; do swaymsg output "'$d'" disable; done; }
-
-# menu: Display Controls | ✅ Enable main support and taiko
-display_group_main_taiko_on() { for d in "$L" "$M" "$R" "$TAIKO"; do swaymsg output "'$d'" enable; done; }
-
-# menu: Display Controls | ❌ Disable main support and taiko
-display_group_main_taiko_off() { for d in "$L" "$M" "$R" "$TAIKO"; do swaymsg output "'$d'" disable; done; }
-
-# menu: Display Controls | ✅ Enable opt support
-display_group_opt_on() { for d in "$LL" "$MON_KB" "$RR"; do swaymsg output "'$d'" enable; done; }
-
-# menu: Display Controls | ❌ Disable opt support
-display_group_opt_off() { for d in "$LL" "$MON_KB" "$RR"; do swaymsg output "'$d'" disable; done; }
-
-# menu: Display Controls | ✅ Enable opt support and taiko
-display_group_opt_taiko_on() { for d in "$LL" "$MON_KB" "$RR" "$TAIKO"; do swaymsg output "'$d'" enable; done; }
-
-# menu: Display Controls | ❌ Disable opt support and taiko
-display_group_opt_taiko_off() { for d in "$LL" "$MON_KB" "$RR" "$TAIKO"; do swaymsg output "'$d'" disable; done; }
-
-# menu: Display Controls | ✅ Enable support all
-display_group_all_on() { for d in "$L" "$M" "$R" "$LL" "$MON_KB" "$RR"; do swaymsg output "'$d'" enable; done; }
-
 # menu: Display Controls | ❌ Disable support all
 display_group_all_off() { for d in "$L" "$M" "$R" "$LL" "$MON_KB" "$RR"; do swaymsg output "'$d'" disable; done; }
 
 # menu: Display Controls | ✅ Enable all Seat Displays
 display_group_seat_on() { for d in "$L" "$LL" "$M" "$MON_KB" "$R" "$RR"; do swaymsg output "'$d'" enable; done; }
+
+# menu: Display Controls | ❌ Disable all Seat Displays
+display_group_seat_off() { for d in "$L" "$LL" "$M" "$MON_KB" "$R" "$RR"; do swaymsg output "'$d'" disable; done; }
 
 # menu: Display Controls | 🔄 Set refresh rate
 display_set_hz() {

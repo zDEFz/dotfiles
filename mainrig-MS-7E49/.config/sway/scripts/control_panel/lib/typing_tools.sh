@@ -31,21 +31,6 @@ type_date() { printf 'key leftctrl\ntype %s\n' "$(date --iso-8601)" | dotoolc; }
 # menu: Typing Tools | 🏠 Type hostname
 type_hostname() { printf 'key leftctrl\ntype %s\n' "$(hostname)/" | dotoolc; }
 
-# menu: Typing Tools | 🏠 Type fritzbox
-type_url_fritzbox() { printf 'key leftctrl\ntype %s\n' "http://fritz.box" | dotoolc; }
-
-# menu: Typing Tools | 🏠 Type http+hostname
-type_url_hostname() { printf 'key leftctrl\ntype %s\n' "http://$(hostname)/" | dotoolc; }
-
-# menu: Typing Tools | 🎵 Type search audio
-type_url_audio_search() { printf 'key leftctrl\ntype %s\n' "http://$(hostname)/audio/search_all" | dotoolc; }
-
-# menu: Typing Tools | 🎮 Type solitaire
-type_url_solitaire() { printf 'key leftctrl\ntype %s\n' "http://$(hostname)/shenzhen_solitaire/" | dotoolc; }
-
-# menu: Typing Tools | 🖥️ Type kvm
-type_url_kvm() { printf 'key leftctrl\ntype %s\n' "https://kvm" | dotoolc; }
-
 # menu: Typing Tools | 🌐 Type local ip
 type_ip_local() {
     TEXT=$(ip addr show | grep -i 'inet 192' | awk '{print $2}' | cut -d/ -f1 | head -n 1)
