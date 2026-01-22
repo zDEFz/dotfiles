@@ -18,23 +18,24 @@ app_mpv_workspace_setup() {
 
 # menu: Applications | 🗑️ Kill/Close MPV Workspace
 app_mpv_workspace_kill() {
-    # Stop the background controller scripts (Force kill by filename)
-	pkill -9 -f "openmusic"
-	pkill -9 -f "realign_opemusic.bash"
-    pkill -9 -f "mpv_controller.bash"
-    pkill -9 -f "mpv_ipc_pause_others.bash"
+    # 1. Send gentle termination signal (SIGTERM)
+    # This allows mpv to write to the 'watch_later' directory
+    pkill -f "openmusic"
+    pkill -f "mpvfloat"
     
-    # Kill all mpv instances using the 'mpvfloat' app_id/socket name
-    pkill -9 -f "mpvfloat"
-        
-    # Delete stale IPC socket files to prevent script hang on restart
-    rm -f /dev/shm/mpvsockets/mpvfloat*
+    # Kill the helper scripts (these usually don't need to save state)
+    pkill -f "realign_opemusic.bash"
+    pkill -f "mpv_controller.bash"
+    pkill -f "mpv_ipc_pause_others.bash"
 
-    # Wipe cached state and snapshots
+    # 2. Brief pause to allow disk I/O (writing the position file)
+    sleep 0.5
+        
+    # 3. Cleanup remaining socket files and cache
+    rm -f /dev/shm/mpvsockets/mpvfloat*
     rm -rf /dev/shm/mpv_monitor_cache/*
 
-    # On-screen confirmation that everything is closed
-    notify-send "MPV" "Controller and Players Terminated"
+    notify-send "MPV" "Session Saved and Terminated"
 }
 
 # menu: Applications | 🎮 Launch Slippi (RAM)

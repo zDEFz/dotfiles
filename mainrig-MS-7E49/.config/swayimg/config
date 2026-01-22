@@ -1,0 +1,42 @@
+################################################################################
+# Viewer mode key binding configuration: key = action [parameters]
+################################################################################
+[keys.viewer]
+F1 = help
+Home = first_file
+End = last_file
+Prior = prev_file
+Next = next_file
+Space = next_file
+Shift+d = prev_dir
+d = next_dir
+Shift+o = prev_frame
+o = next_frame
+c = skip_file
+# FIX: Use 'mode slideshow' to start the slideshow
+Shift+s = mode slideshow
+s = animation
+f = fullscreen
+Return = mode
+Left = step_left 10
+Right = step_right 10
+Up = step_up 10
+Down = step_down 10
+Equal = zoom +10
+Plus = zoom +10
+Minus = zoom -10
+w = zoom width
+Shift+w = zoom height
+0 = zoom real
+BackSpace = zoom optimal
+bracketleft = rotate_left
+bracketright = rotate_right
+m = flip_vertical
+Shift+m = flip_horizontal
+r = reload
+i = info
+Shift+Delete = exec rm "%"; skip_file
+Escape = exit
+q = exit
+
+Ctrl+c = exec sh -c 'wl-copy < "%"'
