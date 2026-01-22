@@ -13,7 +13,10 @@ _win_move_to_output() {
     swaymsg move container to output "'${!1}'"
 }
 
-
+# Internal helper used for opening URLs in Firefox with specific profile and class
+_firefox_open_url() {
+    firefox --no-remote -P "firefox-default" --class "firefox-default" --name "firefox-default" "'${!1}'"
+}
 
 # --- FROM FILE: applications.sh ---
 
@@ -52,85 +55,6 @@ app_mpv_workspace_kill() {
 
     # On-screen confirmation that everything is closed
     notify-send "MPV" "Controller and Players Terminated"
-}
-
-
-
-
-# --- FROM FILE: dev_env.sh ---
-
-# --- CATEGORY: DEV ENVIRONMENT ---
-# menu: Dev Env | 💻 Cultris Alacritty
-dev_cultris_shell() {
-    alacritty \
-        --config-file "$HOME/.config/alacritty/alacritty_non_opaque.toml" \
-        --class alacritty_floating \
-        --title "Cultris Dev Env" \
-        --working-directory "$HOME/git/c2-patch-deobf" \
-        -e $SHELL
-}
-
-
-# menu: Dev Env | 📝 Cultris VSCode
-dev_cultris_vscode() {
-    local DISK_SRC="$HOME/git/c2-patch-deobf"
-    local RAM_ROOT="/dev/shm/cultris-dev"
-    local DATA_DIR="/dev/shm/.vscode-c2-dev"
-    local LOCK_FILE="/dev/shm/cultris.lock"
-
-    mkdir -p "$RAM_ROOT"
-    mkdir -p "$DATA_DIR/User"
-    touch "$LOCK_FILE"
-
-    rsync -av --delete "$DISK_SRC/" "$RAM_ROOT/"
-
-    local J_BASE="$RAM_ROOT/resources/jdk-17.0.13+11/bin"
-    local CP="$RAM_ROOT/binary:$RAM_ROOT/resources/libs/*"
-    local MAIN_CLASS="net.gewaltig.cultris.Cultris"
-
-    local REFRESH_CMD="unsetopt histchars 2>/dev/null || true; fuser -k -9 $LOCK_FILE 2>/dev/null || true; $J_BASE/javac -cp '$CP' -sourcepath $RAM_ROOT/binary -d $RAM_ROOT/binary $RAM_ROOT/binary/Mapping.java $RAM_ROOT/binary/*.java \${file} && ($J_BASE/java -Djava.library.path='$RAM_ROOT/resources/libs' -cp '$CP' $MAIN_CLASS & disown) && echo 'REFRESHED'"
-    local SAVE_CMD="rsync -av --exclude='resources/' '$RAM_ROOT/' '$DISK_SRC/' && cd '$DISK_SRC/binary' && rm -f ../cultris2.jar && zip -r -9 ../cultris2.jar * -x '*.j' && echo 'DISK UPDATED & JAR REPACKED'"
-    local REVERT_CMD="cd '$DISK_SRC' && git checkout HEAD -- . ':!resources' && git clean -fd -e resources/ && rsync -av --delete '$DISK_SRC/' '$RAM_ROOT/' && find '$RAM_ROOT/binary' -type f -name '*.java' -exec touch -m {} + && echo 'REVERTED: Resources preserved.'"
-
-    local G_STATUS="cd '$DISK_SRC' && echo '--- GIT STATUS ---' && git status"
-    local G_DIFF="cd '$DISK_SRC' && echo '--- GIT DIFF ---' && git diff"
-    local G_PUSH="cd '$DISK_SRC' && echo '--- PUSHING TO REMOTE ---' && git push"
-    local G_COMMIT="cd '$DISK_SRC' && git add . && printf 'Enter commit message: ' && read msg && git commit -m \\\"\$msg\\\""
-
-    cat > "$DATA_DIR/User/settings.json" << EOF
-{
-    "runOnSave.enabled": true,
-    "runOnSave.commands": [{
-        "match": ".*\\\\.java$",
-        "command": "$REFRESH_CMD",
-        "runIn": "terminal"
-    }],
-    "files.autoSave": "off",
-    "actionButtons": {
-        "commands": [
-            { "name": "⬆️ PUSH", "command": "$G_PUSH", "color": "#1abc9c" },
-            { "name": "💾 SYNC & JAR", "command": "$SAVE_CMD", "color": "#4caf50" },
-            { "name": "📊 STATUS", "command": "$G_STATUS", "color": "#3498db" },
-            { "name": "📦 COMMIT", "command": "$G_COMMIT", "color": "#e67e22" },
-            { "name": "🔄 REVERT", "command": "$REVERT_CMD", "color": "#ffcc00" },
-            { "name": "🔍 DIFF", "command": "$G_DIFF", "color": "#9b59b6" },
-            { "name": "🚀 REFRESH", "command": "$REFRESH_CMD", "color": "#ff4500" }
-        ]
-    }
-}
-EOF
-
-    code --user-data-dir "$DATA_DIR" "$RAM_ROOT"
-}
-
-# menu: Dev Env | 📂 Sway Control Panel VSCode
-dev_sway_config_control_panel_vscode() {
-    code "$HOME/.config/sway/scripts/control_panel/"
-}
-
-# menu: Dev Env | 📂 Sway Config VSCode
-dev_sway_config_vscode() {
-    code "$HOME/.config/sway/"
 }
 
 # menu: Applications | 🎮 Launch Slippi (RAM)
@@ -197,6 +121,85 @@ EOF
     disown
     echo "🏁 DONE. All systems in RAM."
 }
+
+
+
+
+# --- FROM FILE: dev_env.sh ---
+
+# --- CATEGORY: DEV ENVIRONMENT ---
+# menu: Dev Env | 💻 Cultris Alacritty
+dev_cultris_shell() {
+    alacritty \
+        --config-file "$HOME/.config/alacritty/alacritty_non_opaque.toml" \
+        --class alacritty_floating \
+        --title "Cultris Dev Env" \
+        --working-directory "$HOME/git/c2-patch-deobf" \
+        -e $SHELL
+}
+
+# menu: Dev Env | 📝 Cultris VSCode
+dev_cultris_vscode() {
+    local DISK_SRC="$HOME/git/c2-patch-deobf"
+    local RAM_ROOT="/dev/shm/cultris-dev"
+    local DATA_DIR="/dev/shm/.vscode-c2-dev"
+    local LOCK_FILE="/dev/shm/cultris.lock"
+
+    mkdir -p "$RAM_ROOT"
+    mkdir -p "$DATA_DIR/User"
+    touch "$LOCK_FILE"
+
+    rsync -av --delete "$DISK_SRC/" "$RAM_ROOT/"
+
+    local J_BASE="$RAM_ROOT/resources/jdk-17.0.13+11/bin"
+    local CP="$RAM_ROOT/binary:$RAM_ROOT/resources/libs/*"
+    local MAIN_CLASS="net.gewaltig.cultris.Cultris"
+
+    local REFRESH_CMD="unsetopt histchars 2>/dev/null || true; fuser -k -9 $LOCK_FILE 2>/dev/null || true; $J_BASE/javac -cp '$CP' -sourcepath $RAM_ROOT/binary -d $RAM_ROOT/binary $RAM_ROOT/binary/Mapping.java $RAM_ROOT/binary/*.java \${file} && ($J_BASE/java -Djava.library.path='$RAM_ROOT/resources/libs' -cp '$CP' $MAIN_CLASS & disown) && echo 'REFRESHED'"
+    local SAVE_CMD="rsync -av --exclude='resources/' '$RAM_ROOT/' '$DISK_SRC/' && cd '$DISK_SRC/binary' && rm -f ../cultris2.jar && zip -r -9 ../cultris2.jar * -x '*.j' && echo 'DISK UPDATED & JAR REPACKED'"
+    local REVERT_CMD="cd '$DISK_SRC' && git checkout HEAD -- . ':!resources' && git clean -fd -e resources/ && rsync -av --delete '$DISK_SRC/' '$RAM_ROOT/' && find '$RAM_ROOT/binary' -type f -name '*.java' -exec touch -m {} + && echo 'REVERTED: Resources preserved.'"
+
+    local G_STATUS="cd '$DISK_SRC' && echo '--- GIT STATUS ---' && git status"
+    local G_DIFF="cd '$DISK_SRC' && echo '--- GIT DIFF ---' && git diff"
+    local G_PUSH="cd '$DISK_SRC' && echo '--- PUSHING TO REMOTE ---' && git push"
+    local G_COMMIT="cd '$DISK_SRC' && git add . && printf 'Enter commit message: ' && read msg && git commit -m \\\"\$msg\\\""
+
+    cat > "$DATA_DIR/User/settings.json" << EOF
+{
+    "runOnSave.enabled": true,
+    "runOnSave.commands": [{
+        "match": ".*\\\\.java$",
+        "command": "$REFRESH_CMD",
+        "runIn": "terminal"
+    }],
+    "files.autoSave": "off",
+    "actionButtons": {
+        "commands": [
+            { "name": "⬆️ PUSH", "command": "$G_PUSH", "color": "#1abc9c" },
+            { "name": "💾 SYNC & JAR", "command": "$SAVE_CMD", "color": "#4caf50" },
+            { "name": "📊 STATUS", "command": "$G_STATUS", "color": "#3498db" },
+            { "name": "📦 COMMIT", "command": "$G_COMMIT", "color": "#e67e22" },
+            { "name": "🔄 REVERT", "command": "$REVERT_CMD", "color": "#ffcc00" },
+            { "name": "🔍 DIFF", "command": "$G_DIFF", "color": "#9b59b6" },
+            { "name": "🚀 REFRESH", "command": "$REFRESH_CMD", "color": "#ff4500" }
+        ]
+    }
+}
+EOF
+
+    code --user-data-dir "$DATA_DIR" "$RAM_ROOT"
+}
+
+# menu: Dev Env | 📂 Sway Control Panel VSCode
+dev_sway_config_control_panel_vscode() {
+    code "$HOME/.config/sway/scripts/control_panel/"
+}
+
+# menu: Dev Env | 📂 Sway Config VSCode
+dev_sway_config_vscode() {
+    code "$HOME/.config/sway/"
+}
+
 
 
 
@@ -333,6 +336,13 @@ app_mal_synopsis_clip() {
 
 
 
+# --- FROM FILE: open_url.sh ---
+
+# menu: URL | Open nginx mainrig URL in Default Browser
+open_url_nginx_mainrig() {
+	_firefox_open_url "http://mainrig-MS-7E49/"
+}
+
 # --- FROM FILE: system.sh ---
 
 # --- CATEGORY: SYSTEM ---
@@ -351,6 +361,104 @@ sys_journal_follow() {
         --title "Floating Terminal" \
         --working-directory "$USER_HOME" \
         -e bash -c "sudo journalctl -f"
+}
+
+# menu: System | 🖥 Print System Specs
+sys_print_specs() {
+
+    # 1. Generate clean text
+    # Added a filter to strip cursor control codes and ANSI colors
+    TEXT=$(neofetch --off \
+             --disable resolution \
+             --disable shell \
+             --disable theme \
+             --disable icons \
+             --disable terminal \
+             --disable underline \
+             --color_blocks off | sed -e 's/\x1b\[[0-9;?]*[a-zA-Z]//g')
+
+    # 2. Copy to clipboard
+    echo "$TEXT" | wl-copy
+
+    # 3. Paste
+    echo 'key ctrl+v' | dotoolc
+}
+
+
+
+# --- FROM FILE: tetris_tools.sh ---
+
+# menu: Tetris Tools | 🎵 Activate 1kf Sounds
+1kf_sounds() { 
+    local pid_file="/tmp/1kf_sounds.pid"
+
+    if ! command -v play &> /dev/null || ! command -v libinput &> /dev/null; then
+        echo "❌ Please install dependencies: sudo pacman -S sox libinput-tools"
+        return 1
+    fi
+
+    echo "🚀 1kf Sound Orientation Active [Bulma's Spaceship Computer]"
+    echo "📟 System Status: ONLINE"
+    echo "🛡️ Boundary Guard: Enabled (Strict Matrix Only)"
+
+    (
+        declare -A FREQS=(
+            [KEY_1]=400 [KEY_2]=444 [KEY_3]=488 [KEY_4]=533 [KEY_5]=577
+            [KEY_6]=622 [KEY_7]=666 [KEY_8]=711 [KEY_9]=755 [KEY_0]=800
+            [KEY_Q]=450 [KEY_W]=494 [KEY_E]=538 [KEY_R]=583 [KEY_T]=627
+            [KEY_Y]=672 [KEY_U]=716 [KEY_I]=761 [KEY_O]=805 [KEY_P]=850
+            [KEY_A]=500 [KEY_S]=544 [KEY_D]=588 [KEY_F]=633 [KEY_G]=677
+            [KEY_H]=722 [KEY_J]=766 [KEY_K]=811 [KEY_L]=855 [KEY_SEMICOLON]=900
+            [KEY_Z]=550 [KEY_X]=594 [KEY_C]=638 [KEY_V]=683 [KEY_B]=727
+            [KEY_N]=772 [KEY_M]=816 [KEY_COMMA]=861 [KEY_DOT]=905 [KEY_SLASH]=950
+        )
+
+        RATE=22050
+        BITS=16
+        CHANNELS=1
+        DURATION=0.055
+        FADE_IN=0.003
+        FADE_OUT=0.012
+
+        libinput debug-events --show-keycodes | while read -r line; do
+            if [[ "$line" == *"pressed"* ]]; then
+                key=$(echo "$line" | grep -oP 'KEY_[A-Z0-9_]+')
+                if [[ -n "$key" && -n "${FREQS[$key]}" ]]; then
+                    freq="${FREQS[$key]}"
+                    play -q -r $RATE -b $BITS -c $CHANNELS -n synth $DURATION sine "$freq" tremolo 8 40 fade t $FADE_IN $DURATION $FADE_OUT gain -8 echo 0.8 0.7 10 0.3 lowpass 6000 &
+                elif [[ "$key" == "KEY_SPACE" ]]; then
+                    play -q -r $RATE -b $BITS -c $CHANNELS -n synth 0.08 sine 500:600 fade t 0.005 0.08 0.02 gain -9 echo 0.8 0.7 12 0.3 lowpass 5000 &
+                elif [[ "$key" == "KEY_RIGHTSHIFT" ]]; then
+                    (play -q -r $RATE -b $BITS -c $CHANNELS -n synth 0.05 sine 1000 fade t 0.002 0.05 0.01 gain -9 echo 0.8 0.7 10 0.3 lowpass 6000 ; \
+                     play -q -r $RATE -b $BITS -c $CHANNELS -n synth 0.05 sine 800 fade t 0.002 0.05 0.012 gain -9 echo 0.8 0.7 10 0.3 lowpass 6000) &
+                fi
+            fi
+        done
+    ) &
+    
+    echo $! > "$pid_file"
+    disown $!
+}
+
+# menu: Tetris Tools | 🔇 Stop 1kf Sounds
+stop_1kf_sounds() {
+    local pid_file="/tmp/1kf_sounds.pid"
+
+    echo "🔌 Deactivating Spaceship Computer..."
+    
+    if [ -f "$pid_file" ]; then
+        local saved_pid=$(cat "$pid_file")
+        # Kill the subshell process and all children
+        pkill -P "$saved_pid" 2>/dev/null
+        kill "$saved_pid" 2>/dev/null
+        rm "$pid_file"
+    fi
+
+    # Hard cleanup for libinput and audio
+    pkill -f "libinput debug-events"
+    pkill -u "$USER" play
+    
+    echo "💤 System Status: OFFLINE"
 }
 
 
