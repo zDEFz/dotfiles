@@ -2,7 +2,7 @@
 
 # menu: Tetris Tools | 🎵 Activate 1kf Sounds
 1kf_sounds() { 
-    local pid_file="/tmp/1kf_sounds.pid"
+    local pid_file="/dev/shm/1kf_sounds.pid"
 
     if ! command -v play &> /dev/null || ! command -v libinput &> /dev/null; then
         echo "❌ Please install dependencies: sudo pacman -S sox libinput-tools"
@@ -54,7 +54,7 @@
 
 # menu: Tetris Tools | 🔇 Stop 1kf Sounds
 stop_1kf_sounds() {
-    local pid_file="/tmp/1kf_sounds.pid"
+    local pid_file="/dev/shm/1kf_sounds.pid"
 
     echo "🔌 Deactivating Spaceship Computer..."
     

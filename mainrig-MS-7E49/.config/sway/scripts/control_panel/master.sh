@@ -50,10 +50,10 @@ app_mpv_workspace_kill() {
     pkill -9 -f "mpvfloat"
         
     # Delete stale IPC socket files to prevent script hang on restart
-    rm -f /tmp/mpvsockets/mpvfloat*
+    rm -f /dev/shm/mpvsockets/mpvfloat*
 
     # Wipe cached state and snapshots
-    rm -rf /tmp/mpv_monitor_cache/*
+    rm -rf /dev/shm/mpv_monitor_cache/*
 
     # On-screen confirmation that everything is closed
     notify-send "MPV" "Controller and Players Terminated"
@@ -264,6 +264,9 @@ display_group_all_off() { for d in "$L" "$M" "$R" "$LL" "$MON_KB" "$RR"; do sway
 # menu: Display Controls | ✅ Enable all Seat Displays
 display_group_seat_on() { for d in "$L" "$LL" "$M" "$MON_KB" "$R" "$RR"; do swaymsg output "'$d'" enable; done; }
 
+# menu: Display Controls | ❌ Disable all Seat Displays
+display_group_seat_off() { for d in "$L" "$LL" "$M" "$MON_KB" "$R" "$RR"; do swaymsg output "'$d'" disable; done; }
+
 # menu: Display Controls | 🔄 Set refresh rate
 display_set_hz() {
     RATE=$(wofi --insensitive --dmenu -p "Hz")
@@ -308,6 +311,16 @@ open_url_nginx_mainrig_cronlog() {
 # menu: Open URL | Open nginx cockpit URL in Default Browser
 open_url_nginx_cockpit() {
 	_firefox_open_url "https://mainrig-ms-7e49:9090/"
+}
+
+# menu: Open URL | Open Portainer mainrig URL in Default Browser
+open_url_portainer_mainrig() {
+	_firefox_open_url "http://mainrig-MS-7E49:9000/"
+}
+
+# menu: Open URL | Open Explainshell mainrig URL in Default Browser
+open_url_explainshell_mainrig() {
+	_firefox_open_url "http://mainrig-MS-7E49/explainshell/"
 }
 
 # menu: Open URL | Open fritzbox URL in Default Browser
@@ -396,7 +409,7 @@ sys_print_specs() {
 
 # menu: Tetris Tools | 🎵 Activate 1kf Sounds
 1kf_sounds() { 
-    local pid_file="/tmp/1kf_sounds.pid"
+    local pid_file="/dev/shm/1kf_sounds.pid"
 
     if ! command -v play &> /dev/null || ! command -v libinput &> /dev/null; then
         echo "❌ Please install dependencies: sudo pacman -S sox libinput-tools"
@@ -448,7 +461,7 @@ sys_print_specs() {
 
 # menu: Tetris Tools | 🔇 Stop 1kf Sounds
 stop_1kf_sounds() {
-    local pid_file="/tmp/1kf_sounds.pid"
+    local pid_file="/dev/shm/1kf_sounds.pid"
 
     echo "🔌 Deactivating Spaceship Computer..."
     
@@ -550,7 +563,7 @@ win_focus_mpv_workspace() {
 
 # menu: Window Management | 🎼 Focus Active MPV 🎵
 win_mpv_focus_active() {
-local socket_dir="/tmp/mpvsockets"
+local socket_dir="/dev/shm/mpvsockets"
 	local playing_id=""
 
 	# 1. Find which one is playing (using your script's logic)
@@ -574,7 +587,7 @@ local socket_dir="/tmp/mpvsockets"
 
 # menu: Window Management | 🧲 Steal Active MPV 🎵
 win_mpv_steal_active() {
-    local socket_dir="/tmp/mpvsockets"
+    local socket_dir="/dev/shm/mpvsockets"
     local playing_id=""
 
     # 1. Find which one is playing (Fast check without jq for speed)
@@ -599,7 +612,7 @@ win_mpv_steal_active() {
 
 # menu: Window Management | 🧲 Steal Active MPV and defloat 🎵
 win_mpv_steal_active_defloat() {
-    local socket_dir="/tmp/mpvsockets"
+    local socket_dir="/dev/shm/mpvsockets"
     local playing_id=""
 
     # 1. Find which one is playing (Fast check without jq for speed)

@@ -20,6 +20,11 @@ open_url_portainer_mainrig() {
 	_firefox_open_url "http://mainrig-MS-7E49:9000/"
 }
 
+# menu: Open URL | Open Explainshell mainrig URL in Default Browser
+open_url_explainshell_mainrig() {
+	_firefox_open_url "http://mainrig-MS-7E49/explainshell/"
+}
+
 # menu: Open URL | Open fritzbox URL in Default Browser
 open_url_fritzbox() { 
     _firefox_open_url "http://fritz.box" 

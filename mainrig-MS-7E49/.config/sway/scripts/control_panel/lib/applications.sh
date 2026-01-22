@@ -28,10 +28,10 @@ app_mpv_workspace_kill() {
     pkill -9 -f "mpvfloat"
         
     # Delete stale IPC socket files to prevent script hang on restart
-    rm -f /tmp/mpvsockets/mpvfloat*
+    rm -f /dev/shm/mpvsockets/mpvfloat*
 
     # Wipe cached state and snapshots
-    rm -rf /tmp/mpv_monitor_cache/*
+    rm -rf /dev/shm/mpv_monitor_cache/*
 
     # On-screen confirmation that everything is closed
     notify-send "MPV" "Controller and Players Terminated"

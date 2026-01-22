@@ -20,7 +20,7 @@ win_focus_mpv_workspace() {
 
 # menu: Window Management | 🎼 Focus Active MPV 🎵
 win_mpv_focus_active() {
-local socket_dir="/tmp/mpvsockets"
+local socket_dir="/dev/shm/mpvsockets"
 	local playing_id=""
 
 	# 1. Find which one is playing (using your script's logic)
@@ -44,7 +44,7 @@ local socket_dir="/tmp/mpvsockets"
 
 # menu: Window Management | 🧲 Steal Active MPV 🎵
 win_mpv_steal_active() {
-    local socket_dir="/tmp/mpvsockets"
+    local socket_dir="/dev/shm/mpvsockets"
     local playing_id=""
 
     # 1. Find which one is playing (Fast check without jq for speed)
@@ -69,7 +69,7 @@ win_mpv_steal_active() {
 
 # menu: Window Management | 🧲 Steal Active MPV and defloat 🎵
 win_mpv_steal_active_defloat() {
-    local socket_dir="/tmp/mpvsockets"
+    local socket_dir="/dev/shm/mpvsockets"
     local playing_id=""
 
     # 1. Find which one is playing (Fast check without jq for speed)
