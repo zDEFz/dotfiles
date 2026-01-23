@@ -6,7 +6,6 @@
     "Backtab": "CommandMode",
     "CtrlC": "Copy",
     "Ctrl-f": "FindLiteral",
-    "CtrlJ": "command:textfilter sed '/ICONST_1/{N;/DUP/{N;/POP2/d;}}'",
     "CtrlS": "Save",
     "CtrlT": "command:textfilter sort -fu",
     "CtrlUnderscore": "lua:comment.comment",
