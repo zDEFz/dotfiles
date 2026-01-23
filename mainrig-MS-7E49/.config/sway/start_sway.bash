@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # --- Build & Performance Optimization ---
-# Using persistent SSD storage for CCACHE (as verified by our latency test)
 export CCACHE_DIR="/mnt/cache/ccache"
 export CCACHE_MAXSIZE=50G
 export MAKEFLAGS="-j32"
@@ -37,32 +36,29 @@ DEBUG=false  # Set to true for debug mode
 
 # Pre-flight checks
 if ! command -v sway >/dev/null; then
-  echo "Error: sway not found" >&2
-  exit 1
+    echo "Error: sway not found" >&2
+    exit 1
 fi
 
 if [ ! -r "$CONFIG" ]; then
-  echo "Error: config file not found or unreadable: $CONFIG" >&2
-  exit 1
+    echo "Error: config file not found or unreadable: $CONFIG" >&2
+    exit 1
 fi
 
-# Ensure CCACHE directory exists with correct permissions
-if [ ! -d "$CCACHE_DIR" ]; then
-    mkdir -p "$CCACHE_DIR" 2>/dev/null
-fi
+# Ensure CCACHE directory exists
+mkdir -p "$CCACHE_DIR" 2>/dev/null
 
 # Execution
 if [ "$DEBUG" = true ]; then
-  if [ -e "$LOG" ] && [ ! -w "$LOG" ]; then
-    echo "Warning: $LOG not writable, logging to stderr" >&2
-    exec sway -c "$CONFIG" --debug
-  elif touch "$LOG" 2>/dev/null; then
-    exec sway -c "$CONFIG" --debug 2>>"$LOG"
-  else
-    echo "Warning: can't create $LOG, logging to stderr" >&2
-    exec sway -c "$CONFIG" --debug
-  fi
+    if [ -e "$LOG" ] && [ ! -w "$LOG" ]; then
+        echo "Warning: $LOG not writable, logging to stderr" >&2
+        exec sway -c "$CONFIG" --debug
+    elif touch "$LOG" 2>/dev/null; then
+        exec sway -c "$CONFIG" --debug 2>>"$LOG"
+    else
+        echo "Warning: can't create $LOG, logging to stderr" >&2
+        exec sway -c "$CONFIG" --debug
+    fi
 else
-  # Use exec to replace the shell process with Sway
-  exec sway -c "$CONFIG"
+    exec sway -c "$CONFIG"
 fi
