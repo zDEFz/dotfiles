@@ -1,6 +1,7 @@
 # Ignore micro editor backups and buffers for all mainrig machines
 **/mainrig-MS-*/.config/micro/backups/**
 **/mainrig-MS-*/.config/micro/buffers/**
+**/mainrig-MS-*/.config/sway/scripts/**
 **/mainrig-MS-*/micro/backups/**
 
 # Ignore sensitive wallpapers
