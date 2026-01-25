@@ -1,0 +1,8 @@
+[Unit]
+Description=Rebuild static-marks index
+
+[Service]
+Type=oneshot
+User=blu
+WorkingDirectory=/etc/nginx
+ExecStart=/bin/sh -c '/usr/bin/static-marks build Index.yml > index.html'

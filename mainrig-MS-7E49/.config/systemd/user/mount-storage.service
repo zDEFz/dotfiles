@@ -1,0 +1,11 @@
+[Unit]
+Description=Mount storage to /mnt/storage
+
+[Service]
+Type=oneshot
+ExecStart=/bin/mount /mnt/storage/
+ExecStop=/bin/umount /mnt/storage/
+RemainAfterExit=true
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,8 @@
+[Unit]
+Description=Monitor Index.yml for changes
+
+[Path]
+PathModified=/etc/nginx/Index.yml
+
+[Install]
+WantedBy=default.target
