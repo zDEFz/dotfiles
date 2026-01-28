@@ -1,0 +1,40 @@
+filetype: fstab
+
+detect:
+    filename: "fstab*"
+
+# Important: rules are applied in order — more specific matches must come after broader ones to take effect.
+rules:
+# Standard comment highlighting taken from ini.yaml
+ - comment:
+        start: "#"
+        end: "$"
+        rules:
+            - todo: "(TODO|XXX|FIXME):?"
+# Fsck pass (6th field in fstab) — value: 0, 1 or 2. Highlighting the last column.
+ - blue: '^\S+\s+\S+\s+\S+\s+\S+\s+[01]\s+([012])\s*$'
+
+# Dump flag (5th field) — allowed values: 0 or 1. Highlights the fifth column.
+ - blue: '^\S+\s+\S+\s+\S+\s+\S+\s+([01])\s'
+
+# <options> (4th field) — mount options like rw,noatime,etc. Highlights the 4th field.
+ - cyan: ^[^\s]+\s+[^\s]+\s+[^\s]+\s+([^\s]+)
+
+# <type> — (3rd field) filesystem type (e.g. ext4, vfat). Highlights the 3rd field.
+ - green: '^[^\s]+\s+[^\s]+\s+([^\s]+)'
+
+# <mount point> (2nd field) — path to where device is mounted. Highlights the 2nd field.
+ - yellow: '^\S+\s+(\S+)'
+
+# <file system>  (1st field)— device or label. Highlights the 1st field.
+ - default: '^[^\s]+'
+
+# Commas inside options field — for easier visual splitting.
+ - white: ','
+
+# Highlights values after "=" (like "uid=1000") up to comma or space.
+ - brightyellow: '=([^\s,]+)'
+
+
+
+
