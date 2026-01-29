@@ -95,7 +95,7 @@ output {
     *       background /home/blu/.config/sway/wallpaper/9x16-Portrait.png fill
     $M      background /home/blu/.config/sway/wallpaper/16x9-Landscape.png fill
     $MON_KB background /home/blu/.config/sway/wallpaper/16x9-Landscape.png fill
-    $TAIKO background /home/blu/.config/sway/wallpaper/16x9-Landscape.png fill
+    $TAIKO  background /home/blu/.config/sway/wallpaper/16x9-Landscape.png fill
 }
 
 # Display transforms
@@ -139,4 +139,4 @@ output {
 }
 
 
-include ~/.config/sway/conf.d/*
+include ~/.config/sway/conf.d/*.conf
