@@ -19,7 +19,6 @@ mkdir -p "$CCACHE_DIR"
 export WLR_RENDERER=vulkan
 export WLR_SCENE_DISABLE_DIRECT_SCANOUT=1
 export GBM_BACKEND=drm
-
 export VAAPI_DRIVER=radeonsi
 export LIBVA_DRIVER_NAME=radeonsi
 export VDPAU_DRIVER=radeonsi
