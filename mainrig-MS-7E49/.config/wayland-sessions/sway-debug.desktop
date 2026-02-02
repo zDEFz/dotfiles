@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Sway (Debug - default)
+Comment=An i3-compatible Wayland compositor (with custom settings)
+Exec=/home/blu/.config/sway/start_sway-debug.bash
+Type=Application
+DesktopNames=Sway
