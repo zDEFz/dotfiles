@@ -56,8 +56,8 @@ export QT_QPA_PLATFORMTHEME=qt5ct
 export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
 
 # --- Configuration ---
-CONFIG="${HOME}/.config/sway/config"
-LOG="${HOME}/sway_debug.log"
+CONFIG="$HOME/.config/sway/sway-default-config-mod"
+LOG="${HOME}/sway_debug_2.log"
 
 # --- Pre-flight Checks ---
 if ! command -v sway &>/dev/null; then
