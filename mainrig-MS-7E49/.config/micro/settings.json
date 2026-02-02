@@ -1,7 +1,8 @@
 {
+    "autoclose": false,
     "ruler": false,
     "softwrap": true,
     "statusline": false,
-    "wordwrap": true,
-    "autoclose": false
+    "truecolor": "on",
+    "wordwrap": true
 }
