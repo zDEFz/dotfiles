@@ -11,6 +11,10 @@
 	rebase = false
 [push]
     autoSetupRemote = true
+[url "git@gitea.tail.ws:bluetail/"]
+        insteadOf = gt:   
+[url "ssh://git@local.vm-ubuntu24:222/blu/"]
+        insteadOf = vm:
 [core]
 	editor = micro
 	bigFileThreshold = 512m
@@ -18,3 +22,4 @@
 	threads = 32
 	windowMemory = 2g
 	packSizeLimit = 2g
+
