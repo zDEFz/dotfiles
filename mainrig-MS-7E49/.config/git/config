@@ -1,0 +1,20 @@
+[user]
+	email = a-development+bluetail@posteo.de
+	name = bluetail
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[pull]
+	rebase = false
+[push]
+    autoSetupRemote = true
+[core]
+	editor = micro
+	bigFileThreshold = 512m
+[pack]
+	threads = 32
+	windowMemory = 2g
+	packSizeLimit = 2g
