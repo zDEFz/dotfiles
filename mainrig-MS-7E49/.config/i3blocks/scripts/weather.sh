@@ -1,74 +1,68 @@
 #!/bin/bash
+# weather.sh - Display current weather conditions with caching to minimize API calls, including air quality index and sunrise/sunset times
 [ -f /home/blu/.secure_env ] && source /home/blu/.secure_env
+
 CACHE_DIR="/tmp/weather_cache"
 CACHE_FILE="$CACHE_DIR/weather.txt"
-CACHE_AGE=300  # 5 minutes
 mkdir -p "$CACHE_DIR"
 
-# Check cache age
-if [ -f "$CACHE_FILE" ]; then
-    AGE=$(($(date +%s) - $(stat -c %Y "$CACHE_FILE" 2>/dev/null || echo 0)))
-    if [ $AGE -lt $CACHE_AGE ]; then
+# 1. Check Cache - Only exit if the file actually has content
+if [[ -s "$CACHE_FILE" ]]; then
+    AGE=$(( $(date +%s) - $(stat -c %Y "$CACHE_FILE") ))
+    if (( AGE < 300 )); then
         cat "$CACHE_FILE"
         exit 0
     fi
 fi
 
-# Fetch weather data
-WEATHER_URL="https://api.openweathermap.org/data/2.5/weather?zip=${ZIP_CODE},${COUNTRY_CODE}&appid=${OPENWEATHERMAP_API_KEY}&units=metric"
-WEATHER_DATA=$(curl -s "$WEATHER_URL")
+# 2. Fetch Data
+URL="https://api.openweathermap.org/data/2.5/weather?zip=${ZIP_CODE},${COUNTRY_CODE}&appid=${OPENWEATHERMAP_API_KEY}&units=metric"
+DATA=$(curl -s "$URL")
 
-# Quick fail check
-if ! echo "$WEATHER_DATA" | grep -q "\"cod\":200"; then
-    echo "Weather N/A"
+if [[ "$DATA" != *'"cod":200'* ]]; then
+    echo "Weather: API/Connection Error"
     exit 1
 fi
 
-# Parse with simple grep
-TEMP=$(echo "$WEATHER_DATA" | grep -o '"temp":[^,]*' | cut -d':' -f2 | cut -d'.' -f1)
-DESCRIPTION=$(echo "$WEATHER_DATA" | grep -o '"description":"[^"]*' | cut -d'"' -f4)
-HUMIDITY=$(echo "$WEATHER_DATA" | grep -o '"humidity":[0-9]*' | cut -d':' -f2)
-WIND_SPEED=$(echo "$WEATHER_DATA" | grep -o '"speed":[0-9.]*' | cut -d':' -f2)
-WIND_DEG=$(echo "$WEATHER_DATA" | grep -o '"deg":[0-9]*' | cut -d':' -f2)
-LAT=$(echo "$WEATHER_DATA" | grep -o '"lat":[0-9.-]*' | cut -d':' -f2)
-LON=$(echo "$WEATHER_DATA" | grep -o '"lon":[0-9.-]*' | cut -d':' -f2)
-SUNRISE=$(echo "$WEATHER_DATA" | grep -o '"sunrise":[0-9]*' | cut -d':' -f2)
-SUNSET=$(echo "$WEATHER_DATA" | grep -o '"sunset":[0-9]*' | cut -d':' -f2)
+# 3. Extraction logic
+# We use a slightly different sed pattern to ensure we don't get empty strings
+TEMP=$(echo "$DATA" | sed -n 's/.*"temp":\([0-9.]*\).*/\1/p')
+DESC=$(echo "$DATA" | sed -n 's/.*"description":"\([^"]*\)".*/\1/p')
+HUM=$(echo "$DATA" | sed -n 's/.*"humidity":\([0-9]*\).*/\1/p')
+WIND_S=$(echo "$DATA" | sed -n 's/.*"speed":\([0-9.]*\).*/\1/p')
+WIND_D=$(echo "$DATA" | sed -n 's/.*"deg":\([0-9]*\).*/\1/p')
+LAT=$(echo "$DATA" | sed -n 's/.*"lat":\([0-9.-]*\).*/\1/p')
+LON=$(echo "$DATA" | sed -n 's/.*"lon":\([0-9.-]*\).*/\1/p')
+RISE=$(echo "$DATA" | sed -n 's/.*"sunrise":\([0-9]*\).*/\1/p')
+SET=$(echo "$DATA" | sed -n 's/.*"sunset":\([0-9]*\).*/\1/p')
 
-# Convert Unix timestamps to HH:MM
-SUNRISE_TIME=$(date -d "@$SUNRISE" "+%H:%M" 2>/dev/null || echo "N/A")
-SUNSET_TIME=$(date -d "@$SUNSET" "+%H:%M" 2>/dev/null || echo "N/A")
+# 4. Air Quality Call
+AQI_DATA=$(curl -s "https://api.openweathermap.org/data/2.5/air_pollution?lat=${LAT}&lon=${LON}&appid=${OPENWEATHERMAP_API_KEY}")
+AQI=$(echo "$AQI_DATA" | sed -n 's/.*"aqi":\([0-9]\).*/\1/p')
+AQI=${AQI:-0}
 
-# Wind direction
-WIND_DEG=${WIND_DEG:-0}
+# 5. Icons & Formatting
 DIRS=(↑ ↗ → ↘ ↓ ↙ ← ↖)
-WIND_DIR=${DIRS[$(( (WIND_DEG + 22) / 45 % 8 ))]}
-
-# Get air quality
-AQI=0
-if [ -n "$LAT" ] && [ -n "$LON" ]; then
-    AIR_DATA=$(curl -s "https://api.openweathermap.org/data/2.5/air_pollution?lat=${LAT}&lon=${LON}&appid=${OPENWEATHERMAP_API_KEY}")
-    AQI=$(echo "$AIR_DATA" | grep -o '"aqi":[0-9]*' | cut -d':' -f2)
-fi
-
-# AQI lookup
+WIND_DIR=${DIRS[$(( (WIND_D + 22) / 45 % 8 ))]}
 AQI_ICONS=(⚪ 🟢 🟡 🟠 🔴 🟣)
 AQI_TEXTS=(N/A Good Fair Moderate Poor "Very Poor")
-AQI=${AQI:-0}
-AQI_ICON=${AQI_ICONS[$AQI]}
-AQI_TEXT=${AQI_TEXTS[$AQI]}
 
-# Weather icon
-case "${DESCRIPTION,,}" in
-    *clear*|*sunny*) ICON="☀" ;;
-    *cloud*) ICON="☁" ;;
-    *rain*|*drizzle*) ICON="🌧" ;;
-    *storm*|*thunder*) ICON="⛈" ;;
-    *snow*) ICON="❄" ;;
-    *fog*|*mist*) ICON="🌫" ;;
-    *) ICON="🌤" ;;
+case "${DESC,,}" in 
+    *clear*) I="☀" ;; *cloud*) I="☁" ;; *rain*) I="🌧" ;; 
+    *storm*) I="⛈" ;; *snow*) I="❄" ;; *mist*|*fog*) I="🌫" ;; *) I="🌤" ;;
 esac
 
-# Output
-OUTPUT="$ICON ${TEMP}°C | $DESCRIPTION | 💧${HUMIDITY}% | 🌬${WIND_SPEED}m/s $WIND_DIR | $AQI_ICON Air: $AQI_TEXT | 🌅${SUNRISE_TIME} 🌇${SUNSET_TIME}"
-echo "$OUTPUT" | tee "$CACHE_FILE"
+# Ensure TEMP is an integer for rounding
+TEMP_INT=${TEMP%.*}
+
+# Final check: if TEMP_INT is empty, something went wrong with sed
+if [[ -z "$TEMP_INT" ]]; then
+    echo "Weather: Parsing Error"
+    exit 1
+fi
+
+OUTPUT="$I ${TEMP_INT}°C | $DESC | 💧$HUM% | 🌬$WIND_S m/s $WIND_DIR | ${AQI_ICONS[$AQI]} Air: ${AQI_TEXTS[$AQI]} | 🌅$(date -d "@$RISE" +%H:%M) 🌇$(date -d "@$SET" +%H:%M)"
+
+# 6. Save and Display
+echo "$OUTPUT" > "$CACHE_FILE"
+cat "$CACHE_FILE"
