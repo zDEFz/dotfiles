@@ -1,17 +1,12 @@
 #!/bin/bash
+# holiday.sh - Highly efficient holiday tracker for i3blocks
 
-# Colors
-HOLIDAY_COLOR="yellow"
-DEFAULT_COLOR="white"
+TODAY=$(date +%Y-%m-%d)
+YR=$(date +%Y)
 
-TODAY_TS=$(date -d "today 00:00:00" +%s)
-CURRENT_YEAR=$(date +%Y)
-
-# Function to get holiday dates for a specific year
 get_holidays() {
     local yr=$1
-    # 1. Calculate Easter Sunday (using the Orthodox/Western Christian formula)
-    # This is a common shell implementation of the Gauss algorithm
+    # Gauss algorithm for Easter Sunday
     local a=$(( yr % 19 ))
     local b=$(( yr / 100 ))
     local c=$(( yr % 100 ))
@@ -27,44 +22,41 @@ get_holidays() {
     local month=$(( (h + l - 7 * m + 114) / 31 ))
     local day=$(( ((h + l - 7 * m + 114) % 31) + 1 ))
     
-    local easter_date=$(printf "%04d-%02d-%02d" $yr $month $day)
+    # Base Easter Date
+    local easter=$(date -d "$yr-03-01 +$((day-1)) days +$((month-3)) months" +%Y-%m-%d)
 
-    # Fixed Dates
-    echo "$yr-01-01|🎉 Neujahr"
-    echo "$yr-01-06|👑 Heilige Drei Könige"
-    echo "$yr-05-01|💼 Tag der Arbeit"
-    echo "$yr-10-03|🇩🇪 Tag der Deutschen Einheit"
-    echo "$yr-11-01|🕊️ Allerheiligen"
-    echo "$yr-12-25|🎄 Erster Weihnachtstag"
-    echo "$yr-12-26|🎁 Zweiter Weihnachtstag"
-    echo "$yr-12-31|🎆 Silvester"
+    # Fixed Holidays
+    printf "%s-01-01|🎉 Neujahr\n" "$yr"
+    printf "%s-01-06|👑 Drei Könige\n" "$yr"
+    printf "%s-05-01|💼 Tag der Arbeit\n" "$yr"
+    printf "%s-10-03|🇩🇪 Dt. Einheit\n" "$yr"
+    printf "%s-11-01|🕊️ Allerheiligen\n" "$yr"
+    printf "%s-12-25|🎄 1. Weihnacht\n" "$yr"
+    printf "%s-12-26|🎁 2. Weihnacht\n" "$yr"
+    printf "%s-12-31|🎆 Silvester\n" "$yr"
 
-    # Moving Dates (Relative to Easter)
-    echo "$(date -d "$easter_date - 2 days" +%Y-%m-%d)|✝️ Karfreitag"
-    echo "$(date -d "$easter_date + 1 days" +%Y-%m-%d)|🐣 Ostermontag"
-    echo "$(date -d "$easter_date + 39 days" +%Y-%m-%d)|☁️ Christi Himmelfahrt"
-    echo "$(date -d "$easter_date + 50 days" +%Y-%m-%d)|🕊️ Pfingstmontag"
+    # Moving Holidays (Relative to Easter)
+    date -d "$easter - 2 days" +"%Y-%m-%d|✝️ Karfreitag"
+    date -d "$easter + 1 days" +"%Y-%m-%d|🐣 Ostermontag"
+    date -d "$easter + 39 days" +"%Y-%m-%d|☁️ Christi Himmelfahrt"
+    date -d "$easter + 50 days" +"%Y-%m-%d|🕊️ Pfingstmontag"
 }
 
-# Collect holidays for current and next year (to handle December look-ahead)
-all_holidays=$( (get_holidays $CURRENT_YEAR; get_holidays $((CURRENT_YEAR + 1))) | sort -u )
+# Fetch holidays. Only look at next year if we are at the very end of December.
+H_LIST=$(get_holidays "$YR")
+if [[ "$TODAY" > "$YR-12-26" ]]; then
+    H_LIST+=$'\n'$(get_holidays $((YR+1)))
+fi
 
-display_message="No upcoming holidays"
-color=$DEFAULT_COLOR
-
-# Find the first holiday that is today or in the future
+# Sort and find the first holiday that is today or in the future
 while IFS='|' read -r hdate hname; do
-    h_ts=$(date -d "$hdate 00:00:00" +%s)
-    
-    if [[ "$h_ts" -eq "$TODAY_TS" ]]; then
-        display_message="Today: $hname"
-        color=$HOLIDAY_COLOR
-        break
-    elif [[ "$h_ts" -gt "$TODAY_TS" ]]; then
-        display_message="$hname ($hdate)"
-        color=$DEFAULT_COLOR
-        break
+    if [[ "$hdate" == "$TODAY" ]]; then
+        echo "<span color=\"yellow\">Today: $hname</span>"
+        exit 0
+    elif [[ "$hdate" > "$TODAY" ]]; then
+        echo "<span>$hname ($hdate)</span>"
+        exit 0
     fi
-done <<< "$all_holidays"
+done < <(echo "$H_LIST" | sort)
 
-echo "<span color=\"$color\">$display_message</span>"
+echo "No upcoming holidays"
