@@ -1,4 +1,3 @@
-include monitors.conf
 # sway config main file
 set { 
     $a app_id
