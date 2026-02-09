@@ -1,0 +1,6 @@
+#!/bin/sh
+# Xsetup - run as root before the login dialog appears
+xrandr --output DP-1 --mode 1920x1080 --pos 2160x570 --rotate normal \
+       --output DP-2 --mode 1920x1080 --pos 1080x460 --rotate left \
+       --output DP-3 --mode 1920x1080 --pos 4080x470 --rotate left \
+       --output DP-4 --mode 1920x1080 --pos 2160x1650 --rotate inverted
