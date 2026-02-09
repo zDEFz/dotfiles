@@ -1,11 +1,23 @@
 # Ignore micro editor backups and buffers for all mainrig machines
-**/mainrig-MS-*/.config/micro/backups/**
-**/mainrig-MS-*/.config/micro/buffers/**
-**/mainrig-MS-*/.config/sway/scripts/**
-**/mainrig-MS-*/micro/backups/**
+mainrig-MS-*/.config/micro/backups/
+mainrig-MS-*/.config/micro/buffers/
+mainrig-MS-*/micro/backups/
+
+mainrig-MS-*/.config/sway/scripts/*
+
+# Ignore everything in .ssh
+.ssh/*
+# Re-include the config file
+!.ssh/config
+
+.config/micro/buffers/history
+.config/micro/backups/*
 
 # Ignore sensitive wallpapers
-**/mainrig-MS-*/.config/sway/wallpaper/unredacted/**
+mainrig-MS-*/.config/sway/wallpaper/unredacted/
+
+# Ignore specific system/temp files
+tmp.code
 
 # Ignore specific system/temp files
 root
