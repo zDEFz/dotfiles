@@ -1,14 +1,2 @@
-# Sway Configuration File
-include {
-    ~/.config/sway/conf.d/00-vars/*.conf
-    ~/.config/sway/conf.d/01-terminal/*.conf
-    ~/.config/sway/conf.d/02-keyboard/*.conf
-    ~/.config/sway/conf.d/03-rules/*.conf
-    ~/.config/sway/conf.d/04-exec/*.conf
-    ~/.config/sway/conf.d/05-bar/*.conf
-    ~/.config/sway/conf.d/06-modes/*.conf
-    ~/.config/sway/conf.d/07-video/*.conf
-    # Include the specific definition file from the workspaces folder
-    ~/.config/sway/conf.d/workspaces/workspace-definitions
-    ~/.config/sway/conf.d/08-workspaces/*.conf
-}
+# Sway Master Config
+include ~/.config/sway/conf.d/*/*.conf
