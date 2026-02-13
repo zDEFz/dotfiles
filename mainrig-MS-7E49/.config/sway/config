@@ -1,2 +1,5 @@
 # Sway Master Config
 include ~/.config/sway/conf.d/*/*.conf
+
+# reload sway
+$bm $meta+Shift+c exec ~/.config/sway/scripts/sway-reload.bash
