@@ -1,3 +1,0 @@
-
-    # TODO
-    # ~/scripts/cronjobs/watch-borgbackup-log.bash
