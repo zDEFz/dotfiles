@@ -17,7 +17,7 @@ fi
 
 # --- AMD W7500 / RDNA 3 Lean Stack ---
 export WLR_RENDERER=vulkan
-export WLR_SCENE_DISABLE_DIRECT_SCANOUT=0
+export WLR_SCENE_DISABLE_DIRECT_SCANOUT=1
 export GBM_BACKEND=drm
 export VAAPI_DRIVER=radeonsi
 export LIBVA_DRIVER_NAME=radeonsi
