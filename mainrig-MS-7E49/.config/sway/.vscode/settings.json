@@ -1,0 +1,15 @@
+{
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.expand": false,
+    "explorer.fileNesting.patterns": {
+        "00-system-vars.conf": "*.conf",
+        "monitor-setup.conf": "monitor-toggles.conf",
+        "01-definitions.conf": "02-*.conf, 03-*.conf, 04-*.conf, template-*, workspace-*",
+        "01-terminal.conf": "02-*.conf",
+        "01-input-devices.conf": "02-*.conf, 03-*.conf, 04-*.conf, 05-*.conf, 06-*.conf, 07-*.conf, 08-*.conf, 09-*.conf",
+        "exec-once.conf": "exec-always.conf, *.txt",
+        "00_bar-setup.conf": "bar-*.conf",
+        "00_mode-setup.conf": "mode-*.conf"
+    },
+    "explorer.sortOrder": "default"
+}
