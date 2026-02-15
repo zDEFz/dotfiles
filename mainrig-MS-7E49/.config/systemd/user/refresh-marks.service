@@ -3,6 +3,8 @@ Description=Rebuild static-marks index
 
 [Service]
 Type=oneshot
-User=blu
+# This ensures systemd can find 'node' and other tools
+Environment="PATH=/usr/local/bin:/usr/bin:/bin"
 WorkingDirectory=/etc/nginx
-ExecStart=/bin/sh -c '/usr/bin/static-marks build Index.yml > index.html'
+# Use the full path for both the shell and the redirect
+ExecStart=/bin/sh -c '/usr/bin/static-marks build /etc/nginx/Index.yml > /etc/nginx/index.html'
