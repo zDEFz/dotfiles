@@ -1,8 +1,8 @@
-#!/bin/bash
+/#!/bin/bash
 # weather.sh - Display current weather conditions with caching to minimize API calls, including air quality index and sunrise/sunset times
 [ -f /home/blu/.secure_env ] && source /home/blu/.secure_env
 
-CACHE_DIR="/tmp/weather_cache"
+CACHE_DIR="/dev/shm/weather_cache"
 CACHE_FILE="$CACHE_DIR/weather.txt"
 mkdir -p "$CACHE_DIR"
 
