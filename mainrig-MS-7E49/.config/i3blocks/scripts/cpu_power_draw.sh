@@ -32,7 +32,7 @@ if [[ -f "$STATE_FILE" ]]; then
         # P = (DE * 1000) / DT
         # To get 2 decimal places (X.XX):
         # W_100 = (DE * 1000 * 100) / DT
-        W_100=$(( (DE * 100000) / DT ))
+        W_100=$(( (DE * 1000000) / DT ))
         
         printf "%d.%02dW\n" $((W_100 / 100)) $((W_100 % 100))
     else
