@@ -1,41 +1,50 @@
 #!/bin/bash
 # check_network.sh - Mullvad monitor with RAM caching
 
-STATUS_CACHE="/dev/shm/mullvad_current_status"
-RELAY_CACHE="/dev/shm/mullvad_current_relay"
+CACHE_FILE="/dev/shm/mullvad_cache"
 WATCHER_NAME="mullvad-status-watcher"
 
 # Start watcher if missing
-pgrep -f "$WATCHER_NAME" > /dev/null || {
+if ! pgrep -f "$WATCHER_NAME" > /dev/null; then
     ( exec -a "$WATCHER_NAME" bash -c '
         mullvad status listen | while read -r line; do
-            # Trim leading whitespace for comparison
             clean_line=$(echo "$line" | xargs)
             case "$clean_line" in
-                Connected|Disconnected|Connecting|Disconnecting) 
-                    echo "$clean_line" > "'$STATUS_CACHE'" ;;
-                Relay:*) 
-                    # Extract the relay name after the colon
-                    echo "$clean_line" | awk "{print \$2}" > "'$RELAY_CACHE'" ;;
+                Connected|Disconnected|Connecting|Disconnecting)
+                    # Store both status and relay in one atomic write
+                    if [[ "$clean_line" == "Connected" ]]; then
+                        relay=$(mullvad status | grep -Ei "Relay:" | awk "{print \$2}")
+                        echo "$clean_line|$relay" > "'$CACHE_FILE'"
+                    else
+                        echo "$clean_line|" > "'$CACHE_FILE'"
+                    fi
+                    ;;
+                Relay:*)
+                    # Update relay while preserving status
+                    if [[ -f "'$CACHE_FILE'" ]]; then
+                        status=$(cut -d"|" -f1 < "'$CACHE_FILE'" 2>/dev/null)
+                        relay=$(echo "$clean_line" | awk "{print \$2}")
+                        echo "${status:-Connected}|$relay" > "'$CACHE_FILE'"
+                    fi
+                    ;;
             esac
         done' ) &>/dev/null &
-}
+fi
 
-# 1. Read existing cache
-status=$(<"$STATUS_CACHE" 2>/dev/null)
-relay=$(<"$RELAY_CACHE" 2>/dev/null)
+# Read cache (single file with pipe delimiter: status|relay)
+if [[ -f "$CACHE_FILE" ]]; then
+    IFS='|' read -r status relay < "$CACHE_FILE"
+fi
 
-# 2. Force immediate update if cache is missing or relay is empty while connected
-if [[ -z "$status" || ( "$status" == "Connected" && -z "$relay" ) ]]; then
+# Force immediate update only if cache is completely missing
+if [[ -z "$status" ]]; then
     m_out=$(mullvad status)
     status=$(echo "$m_out" | grep -Ei "^(Connected|Disconnected|Connecting|Disconnecting)" | head -n1)
     relay=$(echo "$m_out" | grep -Ei "Relay:" | awk '{print $2}')
-    
-    echo "${status:-Unknown}" > "$STATUS_CACHE"
-    [[ -n "$relay" ]] && echo "$relay" > "$RELAY_CACHE"
+    echo "${status:-Unknown}|${relay}" > "$CACHE_FILE"
 fi
 
-# 3. Build the text string
+# Build display text
 if [[ "$status" == "Connected" && -n "$relay" ]]; then
     text="Connected to $relay"
 elif [[ "$status" == "Connected" ]]; then
@@ -44,7 +53,7 @@ else
     text="${status:-Unknown}"
 fi
 
-# 4. Color selection
+# Color selection
 case "$status" in
     Connected)    color="#1AAFEF" ;;
     Connect*)     color="#FFDF00" ;;
@@ -52,5 +61,5 @@ case "$status" in
     *)            color="#93A1A1" ;;
 esac
 
-# 5. Final Output
+# Output
 echo "<span foreground=\"$color\">$text</span>"
