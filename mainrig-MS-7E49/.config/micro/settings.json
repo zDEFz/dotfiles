@@ -4,5 +4,6 @@
     "softwrap": true,
     "statusline": false,
     "truecolor": "on",
-    "wordwrap": true
+    "wordwrap": true,
+    "mkparents": true
 }
