@@ -1,9 +1,10 @@
 {
     "autoclose": false,
+    "mkparents": true,
     "ruler": false,
-    "softwrap": true,
     "statusline": false,
     "truecolor": "on",
     "wordwrap": true,
-    "mkparents": true
+    "tabsize": 8,
+    "tabstospaces": false
 }
