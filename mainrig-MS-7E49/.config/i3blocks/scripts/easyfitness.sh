@@ -45,7 +45,7 @@ get_current_class() {
 }
 
 # Check Mullvad status via cache to avoid process forking
-VPN_STATUS=$(< /dev/shm/mullvad_current_status)
+VPN_STATUS=$(cut -d'|' -f1 /dev/shm/mullvad_cache 2>/dev/null)
 
 if [[ "$VPN_STATUS" == "Connected" ]]; then
     read d h < <(date "+%u %k")
