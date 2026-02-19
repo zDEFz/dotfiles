@@ -30,6 +30,9 @@ export RADV_PERFTEST=video_decode
 export MESA_SHADER_CACHE_DIR="$XDG_CACHE_HOME/mesa_shader_cache"
 export MESA_SHADER_CACHE_MAX_SIZE="2G"
 
+# Silence e.g KeePassXC
+export QT_LOGGING_RULES="qt.qpa.wayland=false"
+
 # --- Toolkit Backends (Wayland Native) ---
 export XDG_CURRENT_DESKTOP=sway
 export XDG_SESSION_TYPE=wayland
