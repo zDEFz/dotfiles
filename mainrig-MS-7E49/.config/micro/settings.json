@@ -1,7 +1,7 @@
 {
     "autoclose": false,
     "mkparents": true,
-    "ruler": false,
+    "ruler": true,
     "statusline": false,
     "truecolor": "on",
     "wordwrap": true,
