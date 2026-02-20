@@ -23,3 +23,5 @@
 	windowMemory = 2g
 	packSizeLimit = 2g
 
+[safe]
+	directory = .
