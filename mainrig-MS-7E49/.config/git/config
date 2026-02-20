@@ -13,7 +13,7 @@
     autoSetupRemote = true
 [url "git@gitea.tail.ws:bluetail/"]
         insteadOf = gt:   
-[url "ssh://git@local.vm-ubuntu24:222/blu/"]
+[url "ssh://git@vm-ubuntu24:222/blu/"]
         insteadOf = vm:
 [core]
 	editor = micro
