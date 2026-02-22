@@ -22,6 +22,9 @@ export GBM_BACKEND=drm
 export VAAPI_DRIVER=radeonsi
 export LIBVA_DRIVER_NAME=radeonsi
 
+# Enable Mesa Anti-Lag (Mesa 25.3+) - requires MESA to be compiled with -D vulkan-layers=device-select,overlay,anti-lag
+export VK_LOAD_LAYERS=VK_LAYER_MESA_anti_lag
+
 # Ensure we use RADV (Open Source AMD Vulkan)
 export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.x86_64.json
 export RADV_PERFTEST=video_decode
