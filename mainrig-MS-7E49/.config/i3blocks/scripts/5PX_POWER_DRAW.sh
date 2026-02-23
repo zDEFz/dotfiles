@@ -1,4 +1,5 @@
 #!/bin/bash
+# 5PX_POWER_DRAW.sh - Fetches power draw and battery status from Eaton 5PX UPS via SNMP
 
 # Configuration
 HOST="eaton-5PX-2200i"
