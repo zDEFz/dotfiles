@@ -6,8 +6,8 @@ After=default.target
 ExecStart=/usr/bin/python3 /home/blu/scripts/clean_kb_mouse.py
 Restart=always
 RestartSec=3
-StandardOutput=append:/home/blu/scripts/lock.log
-StandardError=append:/home/blu/scripts/lock.log
+StandardOutput=journal
+StandardError=journal
 
 [Install]
 WantedBy=default.target
