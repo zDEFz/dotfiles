@@ -1,0 +1,13 @@
+[Unit]
+Description=Keyboard and Mouse Lock Script
+After=default.target
+
+[Service]
+ExecStart=/usr/bin/python3 /home/blu/scripts/clean_kb_mouse.py
+Restart=always
+RestartSec=3
+StandardOutput=append:/home/blu/scripts/lock.log
+StandardError=append:/home/blu/scripts/lock.log
+
+[Install]
+WantedBy=default.target
