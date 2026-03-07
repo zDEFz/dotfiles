@@ -1,52 +1,49 @@
-#entry {
-  font-family: monospace;
-  font-size: 16px;
-  margin-left: 2px;
-  padding: 2px 0 0;
-}
-
-#entry, #input {
-  margin: 5px;
-  margin-right: 20px;
-  padding-left: 10px;
-}
-
-#entry:nth-child(even) {
-  background-color: rgba(64, 69, 82, 0.7);
-}
-
-#input {
-  border-radius: 0;
-  background-color: rgba(56, 60, 74, 0.7);
-  color: white;
-}
-
+/* Main Window - Increased opacity to 0.9 for a more solid look */
 #window {
-  background-color: rgba(56, 60, 74, 0.7);
-  border: 1px solid rgba(255, 0, 0, 0.7);
-  border: 0; /* Overwriting border width */
-  font-size: 1.2rem;
-}
-
-#window #outer-box {
-  border: 1px solid #7c8389;
-}
-
-#window #outer-box #input {
+  background-color: rgba(56, 60, 74, 0.9);
   border: none;
+  font-family: monospace;
+}
+
+/* The Border Container - Keeping it thin (1px) */
+#outer-box {
+  border: 1px solid #7c8389;
+  margin: 0;
+}
+
+/* Search Bar - Increased opacity and kept your 1.5rem size */
+#input {
+  background-color: rgba(64, 69, 82, 0.9);
   color: #f2f2f2;
+  border: none;
+  border-radius: 0;
+  margin: 5px 20px 5px 5px;
+  padding: 5px 10px;
   font-size: 1.5rem;
 }
 
-#window #outer-box #scroll #inner-box #entry:selected {
-  background-color: rgba(38, 139, 210, 0.7);
-  color: #fff;
+/* List Container - Set to transparent to prevent double-layering */
+#inner-box {
+  background-color: transparent;
+  margin: 0;
+}
+
+/* Entry rows - Kept your 16px size and slim padding */
+#entry {
+  font-size: 16px;
+  margin: 2px 20px 2px 5px;
+  padding: 4px 10px; /* Slight padding for better legibility */
+  color: #ffffff;
+}
+
+/* Zebra Striping - Slightly darker for contrast */
+#entry:nth-child(even) {
+  background-color: rgba(48, 52, 63, 0.9);
+}
+
+/* Selection Highlight - Increased opacity to 0.9 */
+#entry:selected {
+  background-color: rgba(38, 139, 210, 0.9);
+  color: #ffffff;
   outline: none;
 }
-
-#inner-box {
-  background-color: rgba(56, 60, 74, 0.7);
-}
-
-
-
