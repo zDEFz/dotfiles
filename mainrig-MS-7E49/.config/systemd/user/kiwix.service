@@ -1,12 +1,7 @@
-[Unit]
-Description=Kiwix Server
-After=network.target
-
 [Service]
 Type=simple
-WorkingDirectory=/home/blu/.local/share/kiwix-desktop
-ExecStart=/usr/bin/bash -c "/usr/bin/kiwix-serve --port=20623 --address=127.0.0.1 --urlRootLocation /kiwix/ /home/blu/.local/share/kiwix-desktop/*.zim"
+# We change this to your home directory, which definitely exists.
+WorkingDirectory=/home/blu
+# We use the bash -c version so the asterisk (*) works correctly.
+ExecStart=/usr/bin/bash -c "/usr/bin/kiwix-serve --port=20623 --address=127.0.0.1 --urlRootLocation /kiwix/ /mnt/data/system_rebuild_vault/kiwix_archives/kiwix-2026-03-07/*.zim"
 Restart=on-failure
-
-[Install]
-WantedBy=default.target
