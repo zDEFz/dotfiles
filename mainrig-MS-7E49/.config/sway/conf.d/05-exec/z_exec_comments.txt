@@ -9,5 +9,5 @@
     # exec ~/scripts/autostart/start_keyboard-watcher.bash
     # exec antimicrox --hidden # replaced with input-remapper
     # exec thunderbird
-    # exec_always killall at-spi2-registryd; killall at-spi-bus-launcher
+    # exec killall at-spi2-registryd; killall at-spi-bus-launcher
     # /usr/bin/vmware
