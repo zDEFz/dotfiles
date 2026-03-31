@@ -29,7 +29,7 @@ export WLR_RENDER_NO_EXPLICIT_SYNC=1
 
 # Open Source AMD Vulkan (RADV) Selection
 export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.x86_64.json
-export RADV_PERFTEST=video_decode
+export RADV_EXPERIMENTAL=video_decode 
 
 # --- Toolkit Backends (Wayland Native) ---
 export XDG_CURRENT_DESKTOP=sway
