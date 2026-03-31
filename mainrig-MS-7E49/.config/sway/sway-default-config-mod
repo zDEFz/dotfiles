@@ -12,8 +12,6 @@ set {
     $R      'BNQ ZOWIE XL LCD EBMCM01300SL0'
     $RR     'Iiyama North America PL2590HS 1219241201699'
     $TAIKO  'BNQ ZOWIE XL LCD EBX7M01214SL0'
-
-    # $LG      'LG Electronics 24GM79G 0x0008042C'
 }
 
 # Display modes
@@ -51,4 +49,3 @@ bindsym {
 	$mod+F5 output $L power toggle
 	$mod+Shift+c reload
 }
-
