@@ -34,4 +34,6 @@ d_cost=$(printf "%d.%02d" $((d_total_mc/100)) $((d_total_mc%100)))
 m_cost=$(printf "%d.%02d" $((m_total_mc/100)) $((m_total_mc%100)))
 
 # 3. Single Line i3blocks Output
-echo "${ld}% ${wt}W | bat ${bc}% ${time_h}h${time_m}m | EUR ${d_cost}/d | EUR ${m_cost}/mo"
+# We use 'tr -d "\n"' to ensure no internal variables break the line, 
+# and 'xargs' to clean up any leading/trailing whitespace.
+echo "${ld}% ${wt}W | bat ${bc}% ${time_h}h${time_m}m | EUR ${d_cost}/d | EUR ${m_cost}/mo" | tr -d '\n' | xargs
