@@ -1,0 +1,13 @@
+[Unit]
+Description=20-20-20 Eye Timer (Mako + Zenity)
+After=graphical-session.target
+
+[Service]
+ExecStart=/usr/bin/python3 /home/blu/scripts/eye_timer.py
+Restart=always
+Environment=DISPLAY=:0
+Environment=XDG_RUNTIME_DIR=/run/user/1000
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=graphical-session.target
