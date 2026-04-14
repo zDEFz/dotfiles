@@ -1,13 +1,14 @@
 [Unit]
-Description=Keyboard and Mouse Lock Script
-After=default.target
+Description=Unified Input Lock and Eye Timer
+After=graphical-session.target
 
 [Service]
+Type=simple
 ExecStart=/usr/bin/python3 /home/blu/scripts/clean_kb_mouse.py
 Restart=always
-RestartSec=3
-StandardOutput=journal
-StandardError=journal
+Environment=PYTHONUNBUFFERED=1
+Environment=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/%U/bus
+Environment=DISPLAY=:0
 
 [Install]
 WantedBy=default.target
