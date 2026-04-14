@@ -17,7 +17,7 @@ fi
 
 # --- AMD Radeon W7500 (RDNA 3) Lean Stack ---
 # Force Vulkan renderer for Sway and disable direct scanout for flicker-free performance
-export WLR_DRM_DEVICES=/dev/dri/dgpu_w7500
+export WLR_DRM_DEVICES=/dev/dri/card1
 export WLR_RENDERER=vulkan
 export WLR_SCENE_DISABLE_DIRECT_SCANOUT=1
 
