@@ -23,6 +23,13 @@ export GBM_BACKEND=drm
 export VAAPI_DRIVER=radeonsi
 export LIBVA_DRIVER_NAME=radeonsi
 
+# Force the AMD driver to keep shader compilers ready
+export AMD_DEBUG=precompile,nodcc
+# Tell Mesa to use as many threads as you have for shader compilation
+export mesa_glthread=true
+# Since you have 172GB, don't be shy with the cache
+export VK_MAX_PIPELINE_CACHE_SIZE=4G
+
 # Mesa Anti-Lag (Requires Mesa 25.3+)
 export VK_LOAD_LAYERS=VK_LAYER_MESA_anti_lag
 export WLR_RENDER_NO_EXPLICIT_SYNC=1
