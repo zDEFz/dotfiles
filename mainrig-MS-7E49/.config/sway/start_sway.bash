@@ -23,6 +23,8 @@ export GBM_BACKEND=drm
 export VAAPI_DRIVER=radeonsi
 export LIBVA_DRIVER_NAME=radeonsi
 
+# Get Games running on Wayland with Proton-GE
+export PROTON_ENABLE_WAYLAND=1
 # Force the AMD driver to keep shader compilers ready
 export AMD_DEBUG=precompile,nodcc
 # Tell Mesa to use as many threads as you have for shader compilation
