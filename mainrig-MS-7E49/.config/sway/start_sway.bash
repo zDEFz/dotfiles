@@ -25,7 +25,7 @@ export LIBVA_DRIVER_NAME=radeonsi
 
 export HSA_OVERRIDE_GFX_VERSION=12.0.0
 # Sync it to systemd so ollama/systemd-run can see it
-exec systemctl --user import-environment HSA_OVERRIDE_GFX_VERSION
+
 
 # Get Games running on Wayland with Proton-GE
 export PROTON_ENABLE_WAYLAND=1
