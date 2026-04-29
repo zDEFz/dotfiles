@@ -7,6 +7,56 @@
 // Find the full list of options on the wiki:
 // https://yalter.github.io/niri/Configuration:-Input
 
+window-rule {
+    match monitor="Iiyama North America PL2590HS 1219241201677"
+    match monitor="Iiyama North America PL2590HS 1219241201616"
+    match monitor="PNP(BNQ) ZOWIE XL LCD EBMCM01300SL0"
+    default-column-width { proportion 1.0; }
+}
+
+// Monitor $LL (Iiyama ...1677) - Disabled per original setup
+output "Iiyama North America PL2590HS 1219241201677" {
+    off
+    mode "1920x1080@143.981"
+    position x=1680 y=942
+    transform "270"
+}
+
+// Monitor $L (Iiyama ...1616)
+output "Iiyama North America PL2590HS 1219241201616" {
+    mode "1920x1080@239.760"
+    position x=2760 y=942
+    transform "90"
+}
+
+// Monitor $M (ZOWIE ...370SL0) - 240Hz (capable of 360Hz)
+output "PNP(BNQ) ZOWIE XL LCD EBF2R02370SL0" {
+    mode "1920x1080@360.00"
+    position x=3840 y=1080
+}
+
+// Monitor $MON_KB (Iiyama ...1302)
+output "Iiyama North America PL2590HS 1219241201302" {
+    mode "1920x1080@239.760"
+    position x=3840 y=2160
+    transform "180"
+}
+
+// Monitor $R (ZOWIE ...300SL0)
+output "PNP(BNQ) ZOWIE XL LCD EBMCM01300SL0" {
+    mode "1920x1080@239.964"
+    position x=5760 y=942
+    transform "90"
+}
+
+// Monitor $RR (Iiyama ...1699) - Disabled per original setup
+output "Iiyama North America PL2590HS 1219241201699" {
+    off
+    mode "1920x1080@60.000"
+    position x=6840 y=942
+    transform "90"
+}
+
 input {
     keyboard {
         xkb {
