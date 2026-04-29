@@ -5,3 +5,4 @@ include ~/.config/sway/conf.d/*/*.conf
 $bm $meta+Shift+c exec ~/.config/sway/scripts/sway-reload.bash
 
 
+
