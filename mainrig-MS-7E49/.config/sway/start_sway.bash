@@ -3,6 +3,7 @@
 # --- Safety & Environment ---
 set -euo pipefail
 
+export WLR_RENDER_DRM_DEVICE=/dev/dri/renderD128
 # --- Essential XDG Paths ---
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
@@ -23,7 +24,7 @@ export GBM_BACKEND=drm
 export VAAPI_DRIVER=radeonsi
 export LIBVA_DRIVER_NAME=radeonsi
 
-export HSA_OVERRIDE_GFX_VERSION=12.0.0
+
 # Sync it to systemd so ollama/systemd-run can see it
 
 
