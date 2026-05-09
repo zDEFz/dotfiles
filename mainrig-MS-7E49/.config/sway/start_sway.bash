@@ -20,7 +20,7 @@ fi
 # Force Vulkan renderer for Sway and disable direct scanout for flicker-free performance
 export WLR_RENDERER=vulkan
 export WLR_SCENE_DISABLE_DIRECT_SCANOUT=1
-export GBM_BACKEND=drm
+export GBM_BACKEND=dri
 export VAAPI_DRIVER=radeonsi
 export LIBVA_DRIVER_NAME=radeonsi
 
