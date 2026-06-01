@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # --- Safety & Environment ---
-set -euo pipefail
+# set -euo pipefail
 
 export WLR_DRM_DEVICE=/dev/dri/9070xt_card
 # --- Essential XDG Paths ---
@@ -19,19 +19,15 @@ fi
 # --- AMD Radeon W7500 (RDNA 3) Lean Stack ---
 # Force Vulkan renderer for Sway and disable direct scanout for flicker-free performance
 export WLR_RENDERER=vulkan
-export WLR_SCENE_DISABLE_DIRECT_SCANOUT=1
+# export WLR_SCENE_DISABLE_DIRECT_SCANOUT=1
 export GBM_BACKEND=dri
 export VAAPI_DRIVER=radeonsi
 export LIBVA_DRIVER_NAME=radeonsi
 
-
-# Sync it to systemd so ollama/systemd-run can see it
-
-
 # Get Games running on Wayland with Proton-GE
 export PROTON_ENABLE_WAYLAND=1
 # Force the AMD driver to keep shader compilers ready
-export AMD_DEBUG=precompile,nodcc
+# export AMD_DEBUG=precompile,nodcc
 # Tell Mesa to use as many threads as you have for shader compilation
 export mesa_glthread=true
 # Since you have 172GB, don't be shy with the cache
