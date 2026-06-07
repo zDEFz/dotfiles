@@ -1,0 +1,50 @@
+# ~/.config/app-powerd/config.yaml
+version: 1
+
+defaults:
+  mode:
+    ac: enable
+    battery: enable
+  timing:
+    suspend_delay: "30s"
+    resume_grace: "3s"
+  guards:
+    audio_active: check
+    fullscreen: check
+    input_idle: "5m"
+
+profiles:
+  browser:
+    action: throttle
+    suspend_delay: "30s"
+    nice: 5
+    cpu_weight: 20
+    cpu_quota: "40%"
+
+  messenger:
+    action: freeze
+    suspend_delay: "1m"
+    maintenance_resume:
+      enabled: true
+      interval: "30s"
+      duration: "3s"
+
+rules:
+  - id: terminals
+    match:
+      executable: [kitty, foot, alacritty, wezterm-gui]
+    policy:
+      action: ignore
+
+  - id: firefox
+    match:
+      cmdline_regex: ".*firefox.*"
+    policy:
+      use_profile: browser
+
+  - id: jetbrains
+    match:
+      cmdline_regex: "jetbrains|intellij|pycharm"
+    policy:
+      action: throttle
+      cpu_quota: "50%"
