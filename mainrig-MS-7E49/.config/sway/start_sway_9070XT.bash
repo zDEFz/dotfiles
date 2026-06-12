@@ -55,12 +55,12 @@ export NINJAJOBS="$_nprocs"
 # --- 196GB RAM: ASD/PSD Managed Caches ---
 export MESA_SHADER_CACHE_DIR="$XDG_CACHE_HOME/mesa_shader_cache"
 export MESA_SHADER_CACHE_MAX_SIZE="4G" 
-export CCACHE_DIR="/mnt/data/cache/ccache"
+export CCACHE_DIR="/mnt/data1/cache/ccache"
 
 # --- Go Environment (RAM-Backed) ---
 export GOPATH="$XDG_DATA_HOME/go"
-export GOCACHE="/mnt/data/cache/go_build"
-export GOMODCACHE="/mnt/data/cache/go_mod"
+export GOCACHE="/mnt/data1/cache/go_build"
+export GOMODCACHE="/mnt/data1/cache/go_mod"
 export PATH="$PATH:$GOPATH/bin"
 
 # --- Execution ---
