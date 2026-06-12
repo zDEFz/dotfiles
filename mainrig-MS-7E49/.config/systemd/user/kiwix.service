@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=simple
 WorkingDirectory=/home/blu
-ExecStart=/usr/bin/bash -c '/usr/bin/kiwix-serve --port=20623 --address=127.0.0.1 --urlRootLocation /kiwix/ $(ls -td /mnt/data/system_rebuild_vault/kiwix_archives/*/ | head -1)*.zim'
+ExecStart=/usr/bin/bash -c '/usr/bin/kiwix-serve --port=20623 --address=127.0.0.1 --urlRootLocation /kiwix/ $(ls -td /mnt/data1/system_rebuild_vault/kiwix_archives/*/ | head -1)*.zim'
 Restart=on-failure
 
 [Install]
