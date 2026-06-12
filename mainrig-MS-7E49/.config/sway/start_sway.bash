@@ -61,18 +61,18 @@ export MAKEFLAGS="-j$_nprocs"
 export NINJAJOBS="$_nprocs"
 
 # --- 196GB RAM: ASD/PSD Managed Caches ---
-# These variables point to your /mnt/data paths which ASD then mirrors to RAM via OverlayFS
+# These variables point to your /mnt/data1 paths which ASD then mirrors to RAM via OverlayFS
 export MESA_SHADER_CACHE_DIR="$XDG_CACHE_HOME/mesa_shader_cache"
 export MESA_SHADER_CACHE_MAX_SIZE="4G" # Boosted to 4G because you have the RAM
-export CCACHE_DIR="/mnt/data/cache/ccache"
+export CCACHE_DIR="/mnt/data1/cache/ccache"
 
 # --- Go Environment (RAM-Backed) ---
 # GOPATH: Persistent binaries (installed tools) stay on SSD/Data for survival
 export GOPATH="$XDG_DATA_HOME/go"
 
 # GOCACHE/MODCACHE: Redirected to your ASD-managed folders in RAM
-export GOCACHE="/mnt/data/cache/go_build"
-export GOMODCACHE="/mnt/data/cache/go_mod"
+export GOCACHE="/mnt/data1/cache/go_build"
+export GOMODCACHE="/mnt/data1/cache/go_mod"
 
 # Ensure PATH includes Go binaries
 export PATH="$PATH:$GOPATH/bin"
