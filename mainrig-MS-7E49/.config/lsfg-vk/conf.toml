@@ -13,7 +13,7 @@ pacing = "none"
 performance_mode = true
 
 [[profile]]
-active_in = [ "GenshinImpact.exe" ]
+active_in = "GenshinImpact.exe"
 flow_scale = 1.0
 gpu = "NVIDIA GeForce RTX 5080"
 multiplier = 2
@@ -26,5 +26,13 @@ active_in = [ "retroarch", "retroarch.exe", "parallel", "parallel-launcher.exe",
 flow_scale = 1.0
 multiplier = 4
 name = "retroarch / parallel"
+pacing = "none"
+performance_mode = false
+
+[[profile]]
+active_in = "AppRun.wrapped"
+flow_scale = 1.0
+multiplier = 2
+name = "ps3"
 pacing = "none"
 performance_mode = false
