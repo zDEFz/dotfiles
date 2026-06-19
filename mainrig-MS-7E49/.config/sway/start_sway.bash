@@ -82,11 +82,6 @@ export PATH="$PATH:$GOPATH/bin"
 # --- Execution ---
 _config="$XDG_CONFIG_HOME/sway/config"
 
-# Pre-flight check for sync daemons
-if ! pgrep -x "asd" > /dev/null; then
-    echo "Warning: ASD is not running. Building on physical disk!"
-fi
-
 case "${1:-}" in
     --debug|-d)
         echo "Starting Sway in Debug mode..."
