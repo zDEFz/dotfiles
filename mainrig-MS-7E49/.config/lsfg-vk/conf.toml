@@ -24,7 +24,7 @@ performance_mode = false
 [[profile]]
 active_in = [ "retroarch", "retroarch.exe", "parallel", "parallel-launcher.exe", "AppRun" ]
 flow_scale = 1.0
-multiplier = 4
+multiplier = 2
 name = "retroarch / parallel"
 pacing = "none"
 performance_mode = false
