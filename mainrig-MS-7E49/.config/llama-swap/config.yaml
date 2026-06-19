@@ -5,6 +5,7 @@
 #   coder-14b   -> lean, GPU-only, for the commit bot (6-word messages)
 #   coder-30b   -> daily driver for aider / real coding work
 #   gpt-oss-120b-> heavyweight reasoning, experts spill to the 192 GB RAM
+#   vision      -> Gemma 3 12B, images (mmproj auto-fetched via -hf)
 #
 # GGML_VK_VISIBLE_DEVICES=1 = the 9070 XT (the iGPU is Vulkan device 0).
 # --cpu-range 8-15 = the frequency CCD (cores 0-7 are the V-cache die).
@@ -13,9 +14,8 @@ healthCheckTimeout: 300
 logLevel: info
 
 models:
-  # ---- commit bot: dense 14B, ~9 GB, fits entirely in VRAM, stays snappy ----
-  # FILL IN THE -m PATH ONCE: run this and paste its output over <FILL_IN>:
-  #     ollama_gguf qwen2.5-coder:14b
+  # ---- commit bot: dense 14B, ~9 GB, fits entirely in VRAM ----
+  # FILL IN the -m path once:  ollama_gguf qwen2.5-coder:14b
   "coder-14b":
     aliases: ["commit"]
     env:
@@ -57,6 +57,23 @@ models:
       -ngl 999 --n-cpu-moe 34
       -fa on
       -c 32768 -b 4096 -ub 4096
+      -t 8 --cpu-range 8-15 --cpu-strict 1
+      --jinja
+    ttl: 120
+
+  # ---- vision: Gemma 3 12B, images. mmproj auto-fetched by -hf. ----
+  # NOTE: --mmproj is the trigger for the 9070 XT "never idles" quirk,
+  # so ttl is short. Add --no-mmproj-offload if the card stays pegged.
+  "vision":
+    aliases: ["vl", "gemma-vision"]
+    env:
+      - "GGML_VK_VISIBLE_DEVICES=1"
+    cmd: >
+      llama-server
+      --host 127.0.0.1 --port ${PORT}
+      -hf ggml-org/gemma-3-12b-it-GGUF
+      -ngl 999 -fa on
+      -c 8192 -b 2048 -ub 512
       -t 8 --cpu-range 8-15 --cpu-strict 1
       --jinja
     ttl: 120
