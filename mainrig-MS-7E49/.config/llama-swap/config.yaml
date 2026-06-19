@@ -2,21 +2,35 @@
 # One OpenAI-compatible endpoint on :8080 that hot-swaps models.
 # Backend: llama.cpp Vulkan (fastest path on RDNA4 / gfx1201).
 #
-# KEY FACTS baked in from the probe:
-#   * GGML_VK_VISIBLE_DEVICES=1  -> the 9070 XT (iGPU is Vulkan device 0).
-#   * --cpu-range 8-15           -> the FREQUENCY CCD (cores 0-7 are the
-#                                   V-cache die; the freq die wins for the
-#                                   bandwidth-bound CPU-offloaded experts).
-#   * --n-cpu-moe values are STARTING POINTS. Tune: raise until it loads
-#     without OOM, then lower while watching `rocm-smi --showmeminfo vram`
-#     until ~13 GB is used (leaves headroom for Sway + browsers on the
-#     same card). Lower n-cpu-moe = more experts on GPU = faster.
+#   coder-14b   -> lean, GPU-only, for the commit bot (6-word messages)
+#   coder-30b   -> daily driver for aider / real coding work
+#   gpt-oss-120b-> heavyweight reasoning, experts spill to the 192 GB RAM
+#
+# GGML_VK_VISIBLE_DEVICES=1 = the 9070 XT (the iGPU is Vulkan device 0).
+# --cpu-range 8-15 = the frequency CCD (cores 0-7 are the V-cache die).
 
 healthCheckTimeout: 300
 logLevel: info
 
 models:
-  # ---- daily driver: 30B MoE, ~3B active, mostly on-GPU, stays warm ----
+  # ---- commit bot: dense 14B, ~9 GB, fits entirely in VRAM, stays snappy ----
+  # FILL IN THE -m PATH ONCE: run this and paste its output over <FILL_IN>:
+  #     ollama_gguf qwen2.5-coder:14b
+  "coder-14b":
+    aliases: ["commit"]
+    env:
+      - "GGML_VK_VISIBLE_DEVICES=1"
+    cmd: >
+      llama-server
+      --host 127.0.0.1 --port ${PORT}
+      -m <FILL_IN_run_ollama_gguf_qwen2.5-coder:14b>
+      -ngl 999 -fa on
+      -c 8192 -b 2048 -ub 512
+      -t 8 --cpu-range 8-15 --cpu-strict 1
+      --jinja
+    ttl: 600
+
+  # ---- daily driver: 30B MoE, ~3B active, mostly on-GPU ----
   "coder-30b":
     aliases: ["qwen3-coder", "default"]
     env:
@@ -24,16 +38,15 @@ models:
     cmd: >
       llama-server
       --host 127.0.0.1 --port ${PORT}
-      -m /mnt/data1/models/qwen3-coder-30b-a3b-Q4_K_M.gguf
-      -ngl 999 --n-cpu-moe 8
+      -m /mnt/data1/ollama_models/blobs/sha256-1194192cf2a187eb02722edcc3f77b11d21f537048ce04b67ccf8ba78863006a
+      -ngl 999 --n-cpu-moe 8 --no-mmap
       -fa on
       -c 32768 -b 4096 -ub 1024
       -t 8 --cpu-range 8-15 --cpu-strict 1
       --jinja
-    ttl: 1800          # stays loaded 30 min after last request
+    ttl: 1800
 
   # ---- heavyweight reasoning: 120B MoE, ~5B active, experts in RAM ----
-  # Auto-downloads on first use. Unloads quickly to give the 60+ GB back.
   "gpt-oss-120b":
     env:
       - "GGML_VK_VISIBLE_DEVICES=1"
@@ -46,4 +59,4 @@ models:
       -c 32768 -b 4096 -ub 4096
       -t 8 --cpu-range 8-15 --cpu-strict 1
       --jinja
-    ttl: 120           # unloads 2 min after last request to free RAM
+    ttl: 120
