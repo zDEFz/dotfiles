@@ -8,7 +8,7 @@ Description=llama-swap — OpenAI endpoint that hot-swaps local models
 After=graphical-session.target
 
 [Service]
-ExecStart=/usr/bin/llama-swap --listen 127.0.0.1:8080 --config %h/.config/llama-swap/config.yaml
+ExecStart=/usr/bin/llama-swap --listen 127.0.0.1:11500 --config %h/.config/llama-swap/config.yaml
 Restart=on-failure
 RestartSec=3
 # A 60+ GB RAM-resident model shouldn't be first against the wall under
