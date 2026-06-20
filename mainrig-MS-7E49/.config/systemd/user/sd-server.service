@@ -1,0 +1,24 @@
+# ~/.config/systemd/user/sd-server.service
+#
+# ON-DEMAND image-gen server. Do NOT `enable` it (don't run at boot) — it holds
+# ~6.6 GB VRAM the whole time it's up, with no auto-unload. Start it when you
+# want to generate, stop it when done to give the card back to LLMs / games:
+#
+#     systemctl --user start  sd-server      # spin up (loads SDXL, ~few sec)
+#     systemctl --user stop   sd-server      # free the VRAM
+#
+# Web UI then lives at http://127.0.0.1:11502
+
+[Unit]
+Description=stable-diffusion.cpp server (on-demand image generation)
+After=graphical-session.target
+
+[Service]
+# Lock to the 9070 XT (Vulkan device 1; iGPU is device 0).
+Environment=GGML_VK_VISIBLE_DEVICES=1
+ExecStart=/mnt/data1/diffusion_models/src/build/bin/sd-server --listen-ip 127.0.0.1 --listen-port 11502 -m /mnt/data1/diffusion_models/checkpoints/sd_xl_base_1.0.safetensors --vae /mnt/data1/diffusion_models/vae/sdxl_vae.safetensors --vae-tiling --diffusion-fa
+Restart=on-failure
+RestartSec=3
+
+# Intentionally NO [Install]/WantedBy — this keeps it manual-start only.
+# (If you ever DO want it at boot, add: [Install]\nWantedBy=default.target)
