@@ -5,5 +5,6 @@
     "statusline": false,
     "tabsize": 8,
     "truecolor": "on",
-    "wordwrap": true
+    "wordwrap": true,     
 }
+
