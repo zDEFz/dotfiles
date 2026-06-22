@@ -14,5 +14,5 @@
     "CtrlX": "Cut",
     "CtrlY": "Redo",
     "CtrlZ": "Undo",
-    "F1": "command:term git commit -a"
+    "F1": "command:term zsh"
 }
