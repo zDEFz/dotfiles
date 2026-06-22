@@ -13,5 +13,6 @@
     "CtrlW": "Quit",
     "CtrlX": "Cut",
     "CtrlY": "Redo",
-    "CtrlZ": "Undo"
+    "CtrlZ": "Undo",
+    "F1": "command:term git commit -a"
 }
