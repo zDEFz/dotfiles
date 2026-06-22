@@ -3,7 +3,7 @@
 # --- Safety & Environment ---
 # set -euo pipefail
 
-export WLR_DRM_DEVICE=/dev/dri/9070xt_card
+export WLR_DRM_DEVICES=/dev/dri/9070xt_card:/dev/dri/igpu_card
 # --- Essential XDG Paths ---
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
