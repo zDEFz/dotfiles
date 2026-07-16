@@ -1,23 +1,22 @@
 version = 2
 
 [global]
-# dll = '/media/games/Lossless Scaling/Lossless.dll' # if you don't have LS in the default location
-allow_fp16 = true # this will improve give a MASSIVE performance boost on AMD, but be super slow on older (!) NVIDIA GPUs
+allow_fp16 = true
+dll = "/mnt/storage/games/PC/steam/steamapps/common/Lossless Scaling/Lossless.dll\n"
 
 [[profile]]
-name = "4x FG / 85% [Performance]"
-active_in = [ # see the wiki for more info
-    'vkcube',
-    'vkcubepp'
-]
-# gpu = 'NVIDIA GeForce RTX 5080' # see the wiki for more info
-multiplier = 4
+active_in = [ "vkcube", "vkcubepp" ]
 flow_scale = 0.85
+multiplier = 4
+name = "4x FG / 85% [Performance]"
+pacing = "none"
 performance_mode = true
-pacing = 'none' # see the wiki for more info
 
 [[profile]]
-name = "2x FG / 100%"
-active_in = 'GenshinImpact.exe'
-gpu = 'NVIDIA GeForce RTX 5080'
+active_in = "GenshinImpact.exe"
+flow_scale = 1.0
+gpu = "NVIDIA GeForce RTX 5080"
 multiplier = 2
+name = "2x FG / 100%"
+pacing = "none"
+performance_mode = false
