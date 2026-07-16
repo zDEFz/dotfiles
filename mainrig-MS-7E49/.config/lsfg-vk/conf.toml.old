@@ -20,3 +20,10 @@ multiplier = 2
 name = "2x FG / 100%"
 pacing = "none"
 performance_mode = false
+
+[[profile]]
+flow_scale = 1.0
+multiplier = 2
+name = "retroarch"
+pacing = "none"
+performance_mode = false
