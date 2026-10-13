@@ -22,6 +22,7 @@ export LIBVA_DRIVER_NAME=radeonsi
 # --- Proton / gaming ---
 export PROTON_ENABLE_WAYLAND=1
 export PROTON_FSR4_UPGRADE=1
+export WAYLANDDRV_PRIMARY_MONITOR=DP-1
 
 # --- Mesa ---
 export mesa_glthread=true
