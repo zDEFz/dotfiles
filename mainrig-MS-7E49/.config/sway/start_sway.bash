@@ -23,6 +23,7 @@ export LIBVA_DRIVER_NAME=radeonsi
 export PROTON_ENABLE_WAYLAND=1
 export PROTON_FSR4_UPGRADE=1
 export WAYLANDDRV_PRIMARY_MONITOR=DP-1
+PROTON_BATTLEYE_RUNTIME="$HOME/.local/share/Steam/steamapps/common/Proton BattlEye Runtime/"
 
 # --- Mesa ---
 export mesa_glthread=true
