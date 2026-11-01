@@ -13,7 +13,8 @@ export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
 
 # --- wlroots / renderer ---
 export WLR_RENDERER=vulkan
-export WLR_RENDER_NO_EXPLICIT_SYNC=1
+# Leave explicit sync enabled; set WLR_RENDER_NO_EXPLICIT_SYNC=1 only as a
+# workaround for a specific display or driver issue.
 # export WLR_SCENE_DISABLE_DIRECT_SCANOUT=1   # re-enable if you see flicker
 
 # --- Video acceleration ---
