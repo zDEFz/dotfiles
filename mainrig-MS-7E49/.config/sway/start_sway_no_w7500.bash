@@ -66,7 +66,7 @@ export GOCACHE="/mnt/data1/cache/go_build"
 export GOMODCACHE="/mnt/data1/cache/go_mod"
 
 # Ensure PATH includes Go binaries
-export PATH="$PATH:$GOPATH/bin"
+export PATH="$PATH:$XDG_DATA_HOME/soar/bin:$GOPATH/bin"
 
 # --- Execution ---
 _config="$XDG_CONFIG_HOME/sway/config_2"
