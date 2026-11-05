@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Sway
 Comment=An i3-compatible Wayland compositor
-Exec=sway
+Exec=/home/blu/.config/sway/start_sway.bash
 Type=Application
 DesktopNames=sway;wlroots
