@@ -57,7 +57,7 @@ export CCACHE_DIR=/mnt/data1/cache/ccache
 export GOPATH="$XDG_DATA_HOME/go"
 export GOCACHE=/mnt/data1/cache/go_build
 export GOMODCACHE=/mnt/data1/cache/go_mod
-export PATH="$PATH:$GOPATH/bin"
+export PATH="$PATH:$XDG_DATA_HOME/soar/bin:$GOPATH/bin"
 
 # --- Launch ---
 _config="$XDG_CONFIG_HOME/sway/config"
