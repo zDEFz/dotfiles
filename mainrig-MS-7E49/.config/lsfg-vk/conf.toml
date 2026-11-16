@@ -2,7 +2,7 @@ version = 2
 
 [global]
 allow_fp16 = true
-dll = "/mnt/storage/games/PC/steam/steamapps/common/Lossless Scaling/Lossless.dll"
+dll = "/mnt/storage/games/PC/steam/steamapps/common/Lossless Scaling/LosslessScaling.dll"
 log_level = "info"
 
 [[profile]]
